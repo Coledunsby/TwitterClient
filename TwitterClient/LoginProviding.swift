@@ -1,14 +1,14 @@
 //
-//  ViewController.swift
+//  LoginProvider.swift
 //  TwitterClient
 //
 //  Created by Cole Dunsby on 2017-06-05.
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import UIKit
+import RxSwift
 
-final class ViewController: UIViewController {
+protocol LoginProviding {
     
+    func login(email: String, password: String) -> Completable
 }
-
