@@ -5,6 +5,10 @@ target 'TwitterClient' do
 
     platform :ios, '10.0'
 
+    pod 'RxCocoa'
+    pod 'RxRealm'
+    pod 'RxSwift'
+    pod 'RxSwiftExt'
     pod 'SwiftLint'
 
 end
