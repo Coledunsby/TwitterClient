@@ -7,6 +7,7 @@
 //
 
 import RxSwift
+import RxSwiftExt
 
 extension ObservableType where E: EventConvertible {
     
@@ -30,21 +31,5 @@ extension ObservableType {
     
     func ignoreCompleted() -> Observable<E> {
         return materialize().skipCompleted().dematerialize()
-    }
-    
-    func thread<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
-        return flatMap(selector).ignoreCompleted()
-    }
-    
-    func threadWithIndex<O: ObservableConvertibleType>(_ selector: @escaping (E, Int) throws -> O) -> Observable<O.E> {
-        return flatMapWithIndex(selector).ignoreCompleted()
-    }
-    
-    func threadFirst<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
-        return flatMapFirst(selector).ignoreCompleted()
-    }
-    
-    func threadLatest<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
-        return flatMapLatest(selector).ignoreCompleted()
     }
 }

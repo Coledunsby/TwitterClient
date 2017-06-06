@@ -13,12 +13,13 @@ protocol LoginViewModelInputs {
     
     var emailVar: Variable<String?> { get }
     var passwordVar: Variable<String?> { get }
-    var logInSubject: PublishSubject<Void> { get }
+    var loginSubject: PublishSubject<Void> { get }
 }
 
 protocol LoginViewModelOutputs {
     
-    var loginObservable: Observable<Void> { get }
+    var successObservable: Observable<Void> { get }
+    var errorsObservable: Observable<Swift.Error> { get }
 }
 
 protocol LoginViewModelIO {
@@ -43,7 +44,7 @@ final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewMod
     
     let emailVar = Variable<String?>(nil)
     let passwordVar = Variable<String?>(nil)
-    let logInSubject = PublishSubject<Void>()
+    let loginSubject = PublishSubject<Void>()
     
     // MARK: - Outputs
     
@@ -51,7 +52,8 @@ final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewMod
         return self
     }
     
-    let loginObservable: Observable<Void>
+    let successObservable: Observable<Void>
+    let errorsObservable: Observable<Swift.Error>
     
     // MARK: - Init
     
@@ -60,17 +62,15 @@ final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewMod
         let password = passwordVar.asObservable()
         let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
         
-        let loginComplete = logInSubject
+        let loginComplete = loginSubject
             .withLatestFrom(emailAndPassword)
-            .threadLatest { email, password -> Observable<Void> in
-                return provider.login(email: email ?? "", password: password ?? "").asObservable().mapTo(())
-//                let events = provider.login(email: email ?? "", password: password ?? "").asObservable().materialize()
-//                let success = events.ignoreErrors().dematerialize().map { _ in LoginState.complete }
-//                let error = events.errors().map { LoginState.error($0) }
-//                return Observable.merge([success, error])
+            .flatMapLatest { email, password in
+                provider.login(email: email ?? "", password: password ?? "")
             }
+            .ignoreCompleted()
             .share()
         
-        
+        successObservable = loginComplete.ignoreErrors().mapTo(())
+        errorsObservable = loginComplete.materialize().errors()
     }
 }
