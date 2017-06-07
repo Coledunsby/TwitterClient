@@ -11,6 +11,7 @@ import RealmSwift
 final class Tweet: Object {
     
     dynamic var id: String!
+    dynamic var user: User!
     dynamic var message: String!
     dynamic var date: Date!
     

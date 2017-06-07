@@ -11,9 +11,7 @@ import RxSwiftExt
 
 protocol LoginViewModelInputs {
     
-    var emailVar: Variable<String?> { get }
-    var passwordVar: Variable<String?> { get }
-    var loginSubject: PublishSubject<Void> { get }
+    var loginSubject: PublishSubject<LoginProvider> { get }
 }
 
 protocol LoginViewModelOutputs {
@@ -30,21 +28,13 @@ protocol LoginViewModelIO {
 
 final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOutputs {
     
-    enum Error: Swift.Error {
-        
-        case invalidEmailAddress
-        case invalidPassword
-    }
-    
     // MARK: - Inputs
     
     var inputs: LoginViewModelInputs {
         return self
     }
     
-    let emailVar = Variable<String?>(nil)
-    let passwordVar = Variable<String?>(nil)
-    let loginSubject = PublishSubject<Void>()
+    let loginSubject = PublishSubject<LoginProvider>()
     
     // MARK: - Outputs
     
@@ -57,20 +47,12 @@ final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewMod
     
     // MARK: - Init
     
-    init(provider: LoginProviding) {
-        let email = emailVar.asObservable()
-        let password = passwordVar.asObservable()
-        let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
-        
+    init() {
         let loginComplete = loginSubject
-            .withLatestFrom(emailAndPassword)
-            .flatMapLatest { email, password in
-                provider.login(email: email ?? "", password: password ?? "")
-            }
-            .ignoreCompleted()
+            .flatMapLatest { $0.login().asObservable().mapTo(()).materialize() }
             .share()
         
-        successObservable = loginComplete.ignoreErrors().mapTo(())
-        errorsObservable = loginComplete.materialize().errors()
+        successObservable = loginComplete.elements()
+        errorsObservable = loginComplete.errors()
     }
 }

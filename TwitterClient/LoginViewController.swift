@@ -8,14 +8,16 @@
 
 import RxCocoa
 import RxSwift
+import RxSwiftExt
 
 final class LoginViewController: UIViewController {
     
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
-    @IBOutlet private weak var loginButton: UIButton!
+    @IBOutlet private weak var emailLoginButton: UIButton!
+    @IBOutlet private weak var twitterLoginButton: UIButton!
     
-    private let viewModel: LoginViewModelIO = LoginViewModel(provider: MockLoginProvider())
+    private let viewModel: LoginViewModelIO = LoginViewModel()
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -23,15 +25,19 @@ final class LoginViewController: UIViewController {
         
         // MARK: Inputs
         
-        emailTextField.rx.text
-            .bind(to: viewModel.inputs.emailVar)
-            .disposed(by: disposeBag)
+        let email = emailTextField.rx.text.orEmpty
+        let password = passwordTextField.rx.text.orEmpty
+        let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
         
-        passwordTextField.rx.text
-            .bind(to: viewModel.inputs.passwordVar)
-            .disposed(by: disposeBag)
+        let loginEmail = emailLoginButton.rx.tap
+            .withLatestFrom(emailAndPassword)
+            .map { LoginProvider.email(email: $0, password: $1) }
         
-        loginButton.rx.tap
+        let loginTwitter = twitterLoginButton.rx.tap.mapTo(LoginProvider.twitter)
+        
+        // TODO: More login providers can be added here (e.g. facebook, google, etc.)
+        
+        Observable.merge([loginEmail, loginTwitter])
             .bind(to: viewModel.inputs.loginSubject)
             .disposed(by: disposeBag)
         
@@ -45,6 +51,16 @@ final class LoginViewController: UIViewController {
             let alertController = UIAlertController(title: "Error!", message: error.localizedDescription, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             self.present(alertController, animated: true)
+        }).disposed(by: disposeBag)
+        
+        // MARK: UI Events
+        
+        emailTextField.rx.controlEvent(.editingDidEndOnExit).subscribe(onNext: { [unowned self] in
+            self.passwordTextField.becomeFirstResponder()
+        }).disposed(by: disposeBag)
+        
+        passwordTextField.rx.controlEvent(.editingDidEndOnExit).subscribe(onNext: { [unowned self] in
+            self.emailLoginButton.sendActions(for: .touchUpInside)
         }).disposed(by: disposeBag)
     }
 }

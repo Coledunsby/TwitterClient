@@ -9,6 +9,12 @@
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="AvenirNext.ttc">
+            <string>AvenirNext-Medium</string>
+            <string>AvenirNext-Regular</string>
+        </array>
+    </customFonts>
     <scenes>
         <!--Login View Controller-->
         <scene sceneID="tne-QT-ifu">
@@ -23,7 +29,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="pMT-mY-ETv">
-                                <rect key="frame" x="30" y="79" width="315" height="509"/>
+                                <rect key="frame" x="30" y="84" width="315" height="459"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitter" translatesAutoresizingMaskIntoConstraints="NO" id="4zd-11-aar">
                                         <rect key="frame" x="57.5" y="0.0" width="200" height="200"/>
@@ -81,31 +87,49 @@
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FhL-SG-exN">
-                                        <rect key="frame" x="0.0" y="359" width="315" height="150"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="18"/>
+                                        <rect key="frame" x="0.0" y="359" width="315" height="40"/>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
                                         <state key="normal" title="LOGIN">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkU-4A-zuw" customClass="CardButton" customModule="TwitterClient" customModuleProvider="target">
+                                        <rect key="frame" x="20" y="419" width="275" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="qg8-MF-oWy"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
+                                        <state key="normal" title="CONTINUE WITH TWITTER">
+                                            <color key="titleColor" red="0.1137254902" green="0.63137254899999995" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
                                 </subviews>
                                 <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="8Kt-zh-sol" secondAttribute="trailing" id="0q5-wY-bgz"/>
                                     <constraint firstItem="FhL-SG-exN" firstAttribute="leading" secondItem="pMT-mY-ETv" secondAttribute="leading" id="7g7-Av-3Rt"/>
-                                    <constraint firstItem="FhL-SG-exN" firstAttribute="height" secondItem="4zd-11-aar" secondAttribute="height" constant="-50" id="dTc-gf-NlK"/>
+                                    <constraint firstAttribute="trailing" secondItem="dkU-4A-zuw" secondAttribute="trailing" constant="20" id="BGP-DR-k4S"/>
+                                    <constraint firstAttribute="trailing" secondItem="FVn-oo-NMZ" secondAttribute="trailing" id="IIM-wQ-jFN"/>
+                                    <constraint firstItem="FVn-oo-NMZ" firstAttribute="leading" secondItem="pMT-mY-ETv" secondAttribute="leading" id="TyT-0b-lCm"/>
+                                    <constraint firstItem="dkU-4A-zuw" firstAttribute="leading" secondItem="pMT-mY-ETv" secondAttribute="leading" constant="20" id="ZNv-GQ-U17"/>
+                                    <constraint firstItem="dkU-4A-zuw" firstAttribute="height" secondItem="FhL-SG-exN" secondAttribute="height" id="aGR-b1-6de"/>
+                                    <constraint firstItem="8Kt-zh-sol" firstAttribute="leading" secondItem="pMT-mY-ETv" secondAttribute="leading" id="hya-Yv-gy0"/>
                                     <constraint firstAttribute="trailing" secondItem="FhL-SG-exN" secondAttribute="trailing" id="ly1-jc-b2r"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" red="0.11372549019607843" green="0.63137254901960782" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="pMT-mY-ETv" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="6UC-Yt-kOI"/>
+                            <constraint firstItem="pMT-mY-ETv" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-20" id="6UC-Yt-kOI"/>
                             <constraint firstAttribute="trailing" secondItem="pMT-mY-ETv" secondAttribute="trailing" constant="30" id="Mn3-8Y-JLH"/>
                             <constraint firstItem="pMT-mY-ETv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="R4T-Z9-Js3"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="emailLoginButton" destination="FhL-SG-exN" id="PvL-S3-Ma0"/>
                         <outlet property="emailTextField" destination="mMh-ZG-BAw" id="Vxs-Ra-Ig5"/>
-                        <outlet property="loginButton" destination="FhL-SG-exN" id="b7h-BY-hVb"/>
                         <outlet property="passwordTextField" destination="p88-Wr-Wnf" id="LUA-ch-2KU"/>
+                        <outlet property="twitterLoginButton" destination="dkU-4A-zuw" id="uuD-Ih-dHo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
