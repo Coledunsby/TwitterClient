@@ -81,18 +81,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="TWEETS" id="ppG-kV-Xa5">
-                        <barButtonItem key="leftBarButtonItem" title="Logout" id="Mws-na-p2h">
-                            <connections>
-                                <action selector="logoutWithSender:" destination="S6X-YA-xbB" id="GOV-7y-u51"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HsD-0T-Zv9">
-                            <connections>
-                                <action selector="postTweetWithSender:" destination="S6X-YA-xbB" id="l2U-bB-dW6"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="leftBarButtonItem" title="Logout" id="Mws-na-p2h"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HsD-0T-Zv9"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="addButton" destination="HsD-0T-Zv9" id="Xl5-Wt-PDZ"/>
+                        <outlet property="logoutButton" destination="Mws-na-p2h" id="FLf-xP-Dff"/>
                         <outlet property="tableView" destination="EBS-N2-X53" id="qCs-sc-ZMZ"/>
                     </connections>
                 </viewController>

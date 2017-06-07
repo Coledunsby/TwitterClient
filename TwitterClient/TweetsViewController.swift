@@ -14,6 +14,8 @@ import RxSwift
 final class TweetsViewController: UIViewController {
 
     @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var logoutButton: UIBarButtonItem!
+    @IBOutlet private weak var addButton: UIBarButtonItem!
     
     private let viewModel: TweetsViewModelIO = TweetsViewModel()
     private let disposeBag = DisposeBag()
@@ -22,7 +24,10 @@ final class TweetsViewController: UIViewController {
         super.viewDidLoad()
 
         let realm = try! Realm()
-        let tweets = realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false)
+        
+        let tweets = realm
+            .objects(Tweet.self)
+            .sorted(byKeyPath: "date", ascending: false)
         
         Observable
             .array(from: tweets)
@@ -30,6 +35,16 @@ final class TweetsViewController: UIViewController {
                 cell.label.text = tweet.message
             }
             .disposed(by: disposeBag)
+        
+        logoutButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                
+            })
+        
+        addButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                
+            })
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
@@ -41,13 +56,5 @@ final class TweetsViewController: UIViewController {
         if User.current == nil {
             navigationController?.performSegue(withIdentifier: "ShowLogin", sender: nil)
         }
-    }
-    
-    @IBAction private func logout(sender: AnyObject) {
-        
-    }
-    
-    @IBAction private func postTweet(sender: AnyObject) {
-        
     }
 }

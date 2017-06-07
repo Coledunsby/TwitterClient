@@ -17,7 +17,7 @@ protocol LoginViewModelInputs {
 protocol LoginViewModelOutputs {
     
     var successObservable: Observable<Void> { get }
-    var errorsObservable: Observable<Swift.Error> { get }
+    var errorsObservable: Observable<Error> { get }
 }
 
 protocol LoginViewModelIO {
@@ -43,7 +43,7 @@ final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewMod
     }
     
     let successObservable: Observable<Void>
-    let errorsObservable: Observable<Swift.Error>
+    let errorsObservable: Observable<Error>
     
     // MARK: - Init
     
