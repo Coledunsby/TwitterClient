@@ -12,5 +12,6 @@ target 'TwitterClient' do
     pod 'RxSwift'
     pod 'RxSwiftExt'
     pod 'SwiftLint'
+    pod 'TwitterKit'
 
 end
