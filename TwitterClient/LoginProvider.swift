@@ -7,7 +7,6 @@
 //
 
 import RxSwift
-import TwitterKit
 
 extension String {
     
@@ -52,8 +51,7 @@ enum LoginProvider {
             // get user
             return Single.just(User()).delay(1.0, scheduler: MainScheduler.instance)
         case .twitter:
-            return Twitter.sharedInstance().rx.logIn().asObservable().mapTo(User()).asSingle()
-//            return .error(LoginError.notImplemented)
+            return .error(LoginError.notImplemented)
         }
     }
 }

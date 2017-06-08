@@ -21,9 +21,6 @@ PODS:
   - RxSwiftExt/Core (2.4.1):
     - RxSwift (~> 3.4)
   - SwiftLint (0.19.0)
-  - TwitterCore (3.0.0)
-  - TwitterKit (3.0.3):
-    - TwitterCore (>= 3.0.0)
 
 DEPENDENCIES:
   - RxCocoa
@@ -33,7 +30,6 @@ DEPENDENCIES:
   - RxSwift
   - RxSwiftExt
   - SwiftLint
-  - TwitterKit
 
 SPEC CHECKSUMS:
   Realm: 929243ad2b618b3232e70658bedc61110e7563f1
@@ -45,9 +41,7 @@ SPEC CHECKSUMS:
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
   RxSwiftExt: 72278e4a84f35324a82a8dd359859782706576a6
   SwiftLint: 3537a05b34060e78e7510f04fb7537d738247803
-  TwitterCore: 8ce250be1eb34633a0e6acc89520d4165ec52c10
-  TwitterKit: 202404be71aadd81d19f677b34579fe77d9cb67e
 
-PODFILE CHECKSUM: a1797c556f0077195dbe728477aeea6e34779b54
+PODFILE CHECKSUM: 44ffd86796e50722b1d7ef9ae145eedea8f4ea29
 
 COCOAPODS: 1.2.1
