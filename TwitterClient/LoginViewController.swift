@@ -16,8 +16,7 @@ final class LoginViewController: UIViewController {
     
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
-    @IBOutlet private weak var emailLoginButton: UIButton!
-    @IBOutlet private weak var twitterLoginButton: UIButton!
+    @IBOutlet private weak var loginButton: UIButton!
     @IBOutlet private weak var logoHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
     
@@ -29,20 +28,15 @@ final class LoginViewController: UIViewController {
         
         // MARK: Inputs
         
-        let email = emailTextField.rx.text.orEmpty
-        let password = passwordTextField.rx.text.orEmpty
-        let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
+        emailTextField.rx.text
+            .bind(to: viewModel.inputs.emailVar)
+            .disposed(by: disposeBag)
         
-        let loginEmail = emailLoginButton.rx.tap
-            .withLatestFrom(emailAndPassword)
-            .map { LoginProvider.email(email: $0, password: $1) }
+        passwordTextField.rx.text
+            .bind(to: viewModel.inputs.emailVar)
+            .disposed(by: disposeBag)
         
-        let loginTwitter = twitterLoginButton.rx.tap.mapTo(LoginProvider.twitter)
-        
-        // TODO: More login providers can be added here (e.g. facebook, google, etc.)
-        
-        Observable
-            .merge([loginEmail, loginTwitter])
+        loginButton.rx.tap
             .bind(to: viewModel.inputs.loginSubject)
             .disposed(by: disposeBag)
         
@@ -93,7 +87,7 @@ final class LoginViewController: UIViewController {
         passwordTextField.rx
             .controlEvent(.editingDidEndOnExit)
             .subscribe(onNext: { [unowned self] in
-                self.emailLoginButton.sendActions(for: .touchUpInside)
+                self.loginButton.sendActions(for: .touchUpInside)
             })
             .disposed(by: disposeBag)
     }

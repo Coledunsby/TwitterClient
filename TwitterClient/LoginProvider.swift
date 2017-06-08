@@ -2,7 +2,7 @@
 //  LoginProvider.swift
 //  TwitterClient
 //
-//  Created by Cole Dunsby on 2017-06-06.
+//  Created by Cole Dunsby on 2017-06-08.
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
@@ -41,7 +41,6 @@ enum LoginError: LocalizedError {
 enum LoginProvider {
     
     case email(email: String, password: String)
-    case twitter
     
     func login() -> Single<User> {
         switch self {
@@ -50,8 +49,6 @@ enum LoginProvider {
             guard password.characters.count >= 6 else { return .error(LoginError.invalidPassword) }
             // get user
             return Single.just(User()).delay(1.0, scheduler: MainScheduler.instance)
-        case .twitter:
-            return .error(LoginError.notImplemented)
         }
     }
 }

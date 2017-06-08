@@ -35,13 +35,13 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="twitter" translatesAutoresizingMaskIntoConstraints="NO" id="4zd-11-aar">
-                                        <rect key="frame" x="0.0" y="44.5" width="315" height="200"/>
+                                        <rect key="frame" x="0.0" y="61.5" width="315" height="200"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="200" id="5o0-Ur-BQu"/>
                                         </constraints>
                                     </imageView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="8Kt-zh-sol">
-                                        <rect key="frame" x="0.0" y="289.5" width="315" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="323" width="315" height="49.5"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="johndoe@gmail.com" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="mMh-ZG-BAw">
                                                 <rect key="frame" x="0.0" y="0.0" width="315" height="22"/>
@@ -65,7 +65,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="FVn-oo-NMZ">
-                                        <rect key="frame" x="0.0" y="383.5" width="315" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="434.5" width="315" height="49.5"/>
                                         <subviews>
                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="••••••••" textAlignment="natural" adjustsFontSizeToFit="NO" minimumFontSize="16" translatesAutoresizingMaskIntoConstraints="NO" id="p88-Wr-Wnf">
                                                 <rect key="frame" x="0.0" y="0.0" width="315" height="22"/>
@@ -88,21 +88,14 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FhL-SG-exN">
-                                        <rect key="frame" x="0.0" y="477.5" width="315" height="40"/>
-                                        <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                        <state key="normal" title="LOGIN">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkU-4A-zuw" customClass="CardButton" customModule="TwitterClient" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="562.5" width="315" height="40"/>
+                                        <rect key="frame" x="0.0" y="545.5" width="315" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="qg8-MF-oWy"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" name="AvenirNext-Medium" family="Avenir Next" pointSize="16"/>
-                                        <state key="normal" title="CONTINUE WITH TWITTER">
+                                        <state key="normal" title="LOGIN">
                                             <color key="titleColor" red="0.1137254902" green="0.63137254899999995" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
@@ -115,7 +108,6 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstItem="dkU-4A-zuw" firstAttribute="height" secondItem="FhL-SG-exN" secondAttribute="height" id="aGR-b1-6de"/>
                                     <constraint firstItem="UO5-g1-w3m" firstAttribute="height" secondItem="XLe-np-zYx" secondAttribute="height" id="f0h-ED-Nti"/>
                                 </constraints>
                             </stackView>
@@ -130,11 +122,10 @@
                     </view>
                     <connections>
                         <outlet property="bottomConstraint" destination="kED-u4-BDc" id="WtW-zP-zTD"/>
-                        <outlet property="emailLoginButton" destination="FhL-SG-exN" id="PvL-S3-Ma0"/>
                         <outlet property="emailTextField" destination="mMh-ZG-BAw" id="Vxs-Ra-Ig5"/>
+                        <outlet property="loginButton" destination="dkU-4A-zuw" id="RqW-MU-rSS"/>
                         <outlet property="logoHeightConstraint" destination="5o0-Ur-BQu" id="3hM-gi-wRb"/>
                         <outlet property="passwordTextField" destination="p88-Wr-Wnf" id="LUA-ch-2KU"/>
-                        <outlet property="twitterLoginButton" destination="dkU-4A-zuw" id="uuD-Ih-dHo"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
