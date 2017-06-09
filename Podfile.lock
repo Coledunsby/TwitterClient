@@ -15,6 +15,11 @@ PODS:
   - RxRealm (0.6.0):
     - RealmSwift (~> 2.5)
     - RxSwift (~> 3.2)
+  - RxRealmDataSources (0.2.1):
+    - RealmSwift (~> 2.1)
+    - RxCocoa (~> 3.1)
+    - RxRealm (~> 0.5)
+    - RxSwift (~> 3.1)
   - RxSwift (3.5.0)
   - RxSwiftExt (2.4.1):
     - RxSwiftExt/Core (= 2.4.1)
@@ -27,6 +32,7 @@ DEPENDENCIES:
   - RxGesture
   - RxKeyboard
   - RxRealm
+  - RxRealmDataSources
   - RxSwift
   - RxSwiftExt
   - SwiftLint
@@ -38,10 +44,11 @@ SPEC CHECKSUMS:
   RxGesture: 1f770b247c69e8133fb8f4ef263571efd0ae91a1
   RxKeyboard: a0a681f3efa0c265e42ced07537f7a464e867e74
   RxRealm: 323de579b50b5e0f4a3e087d5925021f976ffaf1
+  RxRealmDataSources: 743901f35ef18533b2fc5d41a0f6b6b62b3c3304
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
   RxSwiftExt: 72278e4a84f35324a82a8dd359859782706576a6
   SwiftLint: 3537a05b34060e78e7510f04fb7537d738247803
 
-PODFILE CHECKSUM: 44ffd86796e50722b1d7ef9ae145eedea8f4ea29
+PODFILE CHECKSUM: baa4d69b14488f7af8e90bf6df8676bfb8893076
 
 COCOAPODS: 1.2.1

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -88,7 +88,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkU-4A-zuw" customClass="CardButton" customModule="TwitterClient" customModuleProvider="target">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dkU-4A-zuw">
                                         <rect key="frame" x="0.0" y="545.5" width="315" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -111,6 +111,9 @@
                                     <constraint firstItem="UO5-g1-w3m" firstAttribute="height" secondItem="XLe-np-zYx" secondAttribute="height" id="f0h-ED-Nti"/>
                                 </constraints>
                             </stackView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="MDW-iJ-tTc">
+                                <rect key="frame" x="177.5" y="323.5" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.11372549019607843" green="0.63137254901960782" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -118,14 +121,18 @@
                             <constraint firstAttribute="trailing" secondItem="pMT-mY-ETv" secondAttribute="trailing" constant="30" id="Mn3-8Y-JLH"/>
                             <constraint firstItem="pMT-mY-ETv" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="30" id="R4T-Z9-Js3"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="pMT-mY-ETv" secondAttribute="bottom" id="kED-u4-BDc"/>
+                            <constraint firstItem="MDW-iJ-tTc" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vJj-hJ-tM3"/>
+                            <constraint firstItem="MDW-iJ-tTc" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="xpe-j3-3yb"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicatorView" destination="MDW-iJ-tTc" id="7YK-LO-SXi"/>
                         <outlet property="bottomConstraint" destination="kED-u4-BDc" id="WtW-zP-zTD"/>
                         <outlet property="emailTextField" destination="mMh-ZG-BAw" id="Vxs-Ra-Ig5"/>
                         <outlet property="loginButton" destination="dkU-4A-zuw" id="RqW-MU-rSS"/>
                         <outlet property="logoHeightConstraint" destination="5o0-Ur-BQu" id="3hM-gi-wRb"/>
                         <outlet property="passwordTextField" destination="p88-Wr-Wnf" id="LUA-ch-2KU"/>
+                        <outlet property="stackView" destination="pMT-mY-ETv" id="Or1-vT-wxv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

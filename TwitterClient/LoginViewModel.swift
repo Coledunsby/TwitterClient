@@ -18,6 +18,7 @@ protocol LoginViewModelInputs {
 
 protocol LoginViewModelOutputs {
     
+    var isLoadingObservable: Observable<Bool> { get }
     var successObservable: Observable<Void> { get }
     var errorsObservable: Observable<Error> { get }
 }
@@ -28,7 +29,7 @@ protocol LoginViewModelIO {
     var outputs: LoginViewModelOutputs { get }
 }
 
-final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOutputs {
+struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOutputs {
     
     // MARK: - Inputs
     
@@ -46,6 +47,7 @@ final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewMod
         return self
     }
     
+    let isLoadingObservable: Observable<Bool>
     let successObservable: Observable<Void>
     let errorsObservable: Observable<Swift.Error>
     
@@ -56,18 +58,25 @@ final class LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewMod
         let password = passwordVar.asObservable()
         let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
         
+        let isLoadingSubject = PublishSubject<Bool>()
+        
         let loginComplete = loginSubject
             .withLatestFrom(emailAndPassword)
             .flatMapLatest { email, password in
-                LoginProvider
-                    .email(email: email ?? "", password: password ?? "")
-                    .login()
+                User
+                    .login(email: email ?? "", password: password ?? "")
                     .asObservable()
                     .mapTo(())
                     .materialize()
+                    .do(onSubscribe: {
+                        isLoadingSubject.onNext(true)
+                    }, onDispose: {
+                        isLoadingSubject.onNext(false)
+                    })
             }
             .share()
         
+        isLoadingObservable = isLoadingSubject
         successObservable = loginComplete.elements()
         errorsObservable = loginComplete.errors()
     }

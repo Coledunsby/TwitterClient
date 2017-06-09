@@ -9,6 +9,7 @@ target 'TwitterClient' do
     pod 'RxGesture'
     pod 'RxKeyboard'
     pod 'RxRealm'
+    pod 'RxRealmDataSources'
     pod 'RxSwift'
     pod 'RxSwiftExt'
     pod 'SwiftLint'

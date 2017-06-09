@@ -16,17 +16,13 @@
 		2542964E1EE5BA0B00B76404 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2542964D1EE5BA0B00B76404 /* LoginViewModel.swift */; };
 		254296541EE5EF4D00B76404 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 254296531EE5EF4D00B76404 /* Extensions.swift */; };
 		A6B8FD136524F0109232D4E5 /* Pods_TwitterClient.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE1DFDF80AFF23B58EEF9002 /* Pods_TwitterClient.framework */; };
-		ED1B601D1EE91D760059E40F /* LoginProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED1B601C1EE91D760059E40F /* LoginProvider.swift */; };
 		EDB76D9B1EE742BF008515A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDB76D9A1EE742BF008515A0 /* Main.storyboard */; };
 		EDB76D9D1EE742F1008515A0 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDB76D9C1EE742F1008515A0 /* Login.storyboard */; };
 		EDB76D9F1EE742F9008515A0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDB76D9E1EE742F9008515A0 /* LaunchScreen.storyboard */; };
 		EDB76DA71EE746EC008515A0 /* TweetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DA61EE746EC008515A0 /* TweetsViewController.swift */; };
 		EDB76DAB1EE7473D008515A0 /* TweetsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DAA1EE7473D008515A0 /* TweetsViewModel.swift */; };
 		EDB76DAD1EE74D08008515A0 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DAC1EE74D08008515A0 /* User.swift */; };
-		EDB76DB31EE752C7008515A0 /* UIView+Cardify.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DB21EE752C7008515A0 /* UIView+Cardify.swift */; };
-		EDB76DB51EE752F3008515A0 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DB41EE752F3008515A0 /* CardView.swift */; };
 		EDB76DB71EE75322008515A0 /* TweetTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DB61EE75322008515A0 /* TweetTableViewCell.swift */; };
-		EDB76DBB1EE759B0008515A0 /* CardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DBA1EE759B0008515A0 /* CardButton.swift */; };
 		EDB76DBF1EE7B34E008515A0 /* ExclusiveGestureRecognizerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB76DBE1EE7B34E008515A0 /* ExclusiveGestureRecognizerDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -65,17 +61,13 @@
 		254296531EE5EF4D00B76404 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		AE1DFDF80AFF23B58EEF9002 /* Pods_TwitterClient.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TwitterClient.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C49DD9D53F0E751B34C488B9 /* Pods-TwitterClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TwitterClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TwitterClient/Pods-TwitterClient.debug.xcconfig"; sourceTree = "<group>"; };
-		ED1B601C1EE91D760059E40F /* LoginProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginProvider.swift; sourceTree = "<group>"; };
 		EDB76D9A1EE742BF008515A0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		EDB76D9C1EE742F1008515A0 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		EDB76D9E1EE742F9008515A0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EDB76DA61EE746EC008515A0 /* TweetsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsViewController.swift; sourceTree = "<group>"; };
 		EDB76DAA1EE7473D008515A0 /* TweetsViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetsViewModel.swift; sourceTree = "<group>"; };
 		EDB76DAC1EE74D08008515A0 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		EDB76DB21EE752C7008515A0 /* UIView+Cardify.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Cardify.swift"; sourceTree = "<group>"; };
-		EDB76DB41EE752F3008515A0 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		EDB76DB61EE75322008515A0 /* TweetTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetTableViewCell.swift; sourceTree = "<group>"; };
-		EDB76DBA1EE759B0008515A0 /* CardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardButton.swift; sourceTree = "<group>"; };
 		EDB76DBE1EE7B34E008515A0 /* ExclusiveGestureRecognizerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExclusiveGestureRecognizerDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -141,9 +133,6 @@
 				254296531EE5EF4D00B76404 /* Extensions.swift */,
 				EDB76DBE1EE7B34E008515A0 /* ExclusiveGestureRecognizerDelegate.swift */,
 				2542961B1EE5A35400B76404 /* AppDelegate.swift */,
-				EDB76DB21EE752C7008515A0 /* UIView+Cardify.swift */,
-				EDB76DB41EE752F3008515A0 /* CardView.swift */,
-				EDB76DBA1EE759B0008515A0 /* CardButton.swift */,
 				EDB76DAE1EE74D1A008515A0 /* Models */,
 				2542964C1EE5B9FD00B76404 /* Login */,
 				EDB76DA81EE746F4008515A0 /* Tweets */,
@@ -179,7 +168,6 @@
 				EDB76D9C1EE742F1008515A0 /* Login.storyboard */,
 				2542961D1EE5A35400B76404 /* LoginViewController.swift */,
 				2542964D1EE5BA0B00B76404 /* LoginViewModel.swift */,
-				ED1B601C1EE91D760059E40F /* LoginProvider.swift */,
 			);
 			name = Login;
 			sourceTree = "<group>";
@@ -197,8 +185,8 @@
 			isa = PBXGroup;
 			children = (
 				EDB76DA61EE746EC008515A0 /* TweetsViewController.swift */,
-				EDB76DB61EE75322008515A0 /* TweetTableViewCell.swift */,
 				EDB76DAA1EE7473D008515A0 /* TweetsViewModel.swift */,
+				EDB76DB61EE75322008515A0 /* TweetTableViewCell.swift */,
 			);
 			name = Tweets;
 			sourceTree = "<group>";
@@ -401,11 +389,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				ED1B601D1EE91D760059E40F /* LoginProvider.swift in Sources */,
 				EDB76DBF1EE7B34E008515A0 /* ExclusiveGestureRecognizerDelegate.swift in Sources */,
 				EDB76DA71EE746EC008515A0 /* TweetsViewController.swift in Sources */,
-				EDB76DB31EE752C7008515A0 /* UIView+Cardify.swift in Sources */,
-				EDB76DBB1EE759B0008515A0 /* CardButton.swift in Sources */,
 				2542964E1EE5BA0B00B76404 /* LoginViewModel.swift in Sources */,
 				2542964B1EE5AC5100B76404 /* Tweet.swift in Sources */,
 				2542961E1EE5A35400B76404 /* LoginViewController.swift in Sources */,
@@ -413,7 +398,6 @@
 				EDB76DAB1EE7473D008515A0 /* TweetsViewModel.swift in Sources */,
 				2542961C1EE5A35400B76404 /* AppDelegate.swift in Sources */,
 				EDB76DAD1EE74D08008515A0 /* User.swift in Sources */,
-				EDB76DB51EE752F3008515A0 /* CardView.swift in Sources */,
 				254296541EE5EF4D00B76404 /* Extensions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

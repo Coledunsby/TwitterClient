@@ -9,6 +9,7 @@
 import RealmSwift
 import RxCocoa
 import RxRealm
+import RxRealmDataSources
 import RxSwift
 
 final class TweetsViewController: UIViewController {
@@ -22,39 +23,52 @@ final class TweetsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let realm = try! Realm()
         
-        let tweets = realm
-            .objects(Tweet.self)
-            .sorted(byKeyPath: "date", ascending: false)
+        // MARK: Inputs
         
-        Observable
-            .array(from: tweets)
-            .bind(to: tableView.rx.items(cellIdentifier: "Cell", cellType: TweetTableViewCell.self)) { row, tweet, cell in
-                cell.label.text = tweet.message
+        self.logoutButton.rx.tap
+            .bind(to: viewModel.inputs.logoutSubject)
+            .disposed(by: disposeBag)
+        
+        // MARK: Outputs
+        
+        let dataSource = RxTableViewRealmDataSource<Tweet>(cellIdentifier: "Cell", cellType: TweetTableViewCell.self) { cell, _, tweet in
+            cell.textLabel?.text = tweet.message
+        }
+        
+        self.viewModel.outputs.tweetsObservable
+            .bind(to: tableView.rx.realmChanges(dataSource))
+            .disposed(by: disposeBag)
+        
+        self.viewModel.outputs.loggedOutObservable
+            .bind { [unowned self] in self.showLogin() }
+            .disposed(by: disposeBag)
+        
+        addButton.rx.tap
+            .bind  {
+                User.current?.tweet(message: "testing 1 2 3 4")
             }
             .disposed(by: disposeBag)
         
-        logoutButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                
-            })
-        
-        addButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                
-            })
-        
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        self.viewModel.inputs.userVar.value = User.current
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if User.current == nil {
-            navigationController?.performSegue(withIdentifier: "ShowLogin", sender: nil)
+            showLogin()
         }
+    }
+    
+    private func showLogin() {
+        navigationController?.performSegue(withIdentifier: "ShowLogin", sender: nil)
     }
 }

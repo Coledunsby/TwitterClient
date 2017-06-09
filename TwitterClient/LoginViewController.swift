@@ -14,14 +14,16 @@ import RxSwiftExt
 
 final class LoginViewController: UIViewController {
     
+    private let viewModel: LoginViewModelIO = LoginViewModel()
+    private let disposeBag = DisposeBag()
+    
+    @IBOutlet private weak var stackView: UIStackView!
     @IBOutlet private weak var emailTextField: UITextField!
     @IBOutlet private weak var passwordTextField: UITextField!
     @IBOutlet private weak var loginButton: UIButton!
     @IBOutlet private weak var logoHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
-    
-    private let viewModel: LoginViewModelIO = LoginViewModel()
-    private let disposeBag = DisposeBag()
+    @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +35,7 @@ final class LoginViewController: UIViewController {
             .disposed(by: disposeBag)
         
         passwordTextField.rx.text
-            .bind(to: viewModel.inputs.emailVar)
+            .bind(to: viewModel.inputs.passwordVar)
             .disposed(by: disposeBag)
         
         loginButton.rx.tap
@@ -42,18 +44,30 @@ final class LoginViewController: UIViewController {
         
         // MARK: Outputs
         
+        viewModel.outputs.isLoadingObservable
+            .bind { [unowned self] isLoading in
+                self.stackView.alpha = isLoading ? 0.5 : 1.0
+                if isLoading {
+                    self.activityIndicatorView.startAnimating()
+                } else {
+                    self.activityIndicatorView.stopAnimating()
+                }
+                
+            }
+            .disposed(by: disposeBag)
+        
         viewModel.outputs.successObservable
-            .subscribe(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.dismiss(animated: true)
-            })
+            }
             .disposed(by: disposeBag)
         
         viewModel.outputs.errorsObservable
-            .subscribe(onNext: { [unowned self] error in
+            .bind { [unowned self] error in
                 let alertController = UIAlertController(title: "Error!", message: error.localizedDescription, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alertController, animated: true)
-            })
+            }
             .disposed(by: disposeBag)
         
         // MARK: UI Events
@@ -61,9 +75,9 @@ final class LoginViewController: UIViewController {
         view.rx
             .tapGesture(configuration: { $0.delegate = ExclusiveGestureRecognizerDelegate.shared })
             .when(.recognized)
-            .subscribe(onNext: { [unowned self] _ in
+            .bind { [unowned self] _ in
                 self.view.endEditing(true)
-            })
+            }
             .disposed(by: disposeBag)
         
         RxKeyboard.instance.visibleHeight
@@ -79,16 +93,16 @@ final class LoginViewController: UIViewController {
         
         emailTextField.rx
             .controlEvent(.editingDidEndOnExit)
-            .subscribe(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.passwordTextField.becomeFirstResponder()
-            })
+            }
             .disposed(by: disposeBag)
         
         passwordTextField.rx
             .controlEvent(.editingDidEndOnExit)
-            .subscribe(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.loginButton.sendActions(for: .touchUpInside)
-            })
+            }
             .disposed(by: disposeBag)
     }
 }
