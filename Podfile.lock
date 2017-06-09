@@ -29,7 +29,7 @@ PODS:
 
 DEPENDENCIES:
   - RxCocoa
-  - RxGesture
+  - RxGesture (from `https://github.com/Coledunsby/RxGesture.git`)
   - RxKeyboard
   - RxRealm
   - RxRealmDataSources
@@ -37,11 +37,20 @@ DEPENDENCIES:
   - RxSwiftExt
   - SwiftLint
 
+EXTERNAL SOURCES:
+  RxGesture:
+    :git: https://github.com/Coledunsby/RxGesture.git
+
+CHECKOUT OPTIONS:
+  RxGesture:
+    :commit: 3a33d746d0032470ee5df9463d8633c178c63bae
+    :git: https://github.com/Coledunsby/RxGesture.git
+
 SPEC CHECKSUMS:
   Realm: 929243ad2b618b3232e70658bedc61110e7563f1
   RealmSwift: 5b7079b891f2833d1849294161ba3e092bbda3f6
   RxCocoa: a0a09f45d0e5b48ecb6a4a7b4b4c89c88d3f633f
-  RxGesture: 1f770b247c69e8133fb8f4ef263571efd0ae91a1
+  RxGesture: 22d6fbe3e54c6f62c0e0499a25325b8bc78b148c
   RxKeyboard: a0a681f3efa0c265e42ced07537f7a464e867e74
   RxRealm: 323de579b50b5e0f4a3e087d5925021f976ffaf1
   RxRealmDataSources: 743901f35ef18533b2fc5d41a0f6b6b62b3c3304
@@ -49,6 +58,6 @@ SPEC CHECKSUMS:
   RxSwiftExt: 72278e4a84f35324a82a8dd359859782706576a6
   SwiftLint: 3537a05b34060e78e7510f04fb7537d738247803
 
-PODFILE CHECKSUM: baa4d69b14488f7af8e90bf6df8676bfb8893076
+PODFILE CHECKSUM: f3ba2ff6011fc3e965f2d9962449332167c6fab3
 
 COCOAPODS: 1.2.1

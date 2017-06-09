@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "CFDE7E747E9D9B7CE3E2849C0C1D73F47BB151C2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "64F675FCFA0AD6B6D78294D7FBF9811452119A19" : 9223372036854775807,
+    "CFDE7E747E9D9B7CE3E2849C0C1D73F47BB151C2" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "D62AD0CC-C8CD-4F0C-AC94-8FFB247F8B71",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "64F675FCFA0AD6B6D78294D7FBF9811452119A19" : "RxGesture\/",
+    "CFDE7E747E9D9B7CE3E2849C0C1D73F47BB151C2" : "TwitterClient\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TwitterClient",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TwitterClient.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Coledunsby\/RxGesture.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "64F675FCFA0AD6B6D78294D7FBF9811452119A19"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/Coledunsby\/TwitterClient.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "CFDE7E747E9D9B7CE3E2849C0C1D73F47BB151C2"
+    }
+  ]
+}
