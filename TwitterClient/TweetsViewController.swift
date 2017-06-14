@@ -18,7 +18,7 @@ final class TweetsViewController: UIViewController {
     @IBOutlet private weak var logoutButton: UIBarButtonItem!
     @IBOutlet private weak var addButton: UIBarButtonItem!
     
-    private let viewModel: TweetsViewModelIO = TweetsViewModel()
+    private let viewModel: TweetsViewModelIO = TweetsViewModel(provider: TweetProvider.realm)
     private let disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -32,8 +32,8 @@ final class TweetsViewController: UIViewController {
         
         // MARK: Outputs
         
-        let dataSource = RxTableViewRealmDataSource<Tweet>(cellIdentifier: "Cell", cellType: TweetTableViewCell.self) { cell, _, tweet in
-            cell.textLabel?.text = tweet.message
+        let dataSource = RxTableViewRealmDataSource<Tweet>(cellIdentifier: "Cell", cellType: TweetCellView.self) { cell, _, tweet in
+            cell.viewModel.tweet.value = tweet
         }
         
         self.viewModel.outputs.tweetsObservable
@@ -45,7 +45,7 @@ final class TweetsViewController: UIViewController {
             .disposed(by: disposeBag)
         
         addButton.rx.tap
-            .bind  {
+            .bind {
                 User.current?.tweet(message: "testing 1 2 3 4")
             }
             .disposed(by: disposeBag)
@@ -57,7 +57,7 @@ final class TweetsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.viewModel.inputs.userVar.value = User.current
+        self.viewModel.inputs.user.value = User.current
     }
     
     override func viewDidAppear(_ animated: Bool) {

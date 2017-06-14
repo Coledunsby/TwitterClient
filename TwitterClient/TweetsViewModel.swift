@@ -16,7 +16,7 @@ typealias TweetRealmChangest = (AnyRealmCollection<Tweet>, RealmChangeset?)
 
 protocol TweetsViewModelInputs {
     
-    var userVar: Variable<User?> { get }
+    var user: Variable<User?> { get }
     var logoutSubject: PublishSubject<Void> { get }
 }
 
@@ -40,7 +40,7 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
         return self
     }
     
-    let userVar = Variable<User?>(nil)
+    let user = Variable<User?>(nil)
     let logoutSubject = PublishSubject<Void>()
     
     // MARK: - Outputs
@@ -54,8 +54,8 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
     let tweetsObservable: Observable<TweetRealmChangest>
     var loggedOutObservable: Observable<Void>
     
-    init() {
-        tweetsObservable = userVar
+    init(provider: TweetProvider) {
+        tweetsObservable = user
             .asObservable()
             .unwrap()
             .flatMapLatest { user -> Observable<TweetRealmChangest> in
@@ -64,7 +64,7 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
             }
         
         loggedOutObservable = logoutSubject.do(onNext: {
-            User.logout()
+//            User.logout()
         })
     }
 }

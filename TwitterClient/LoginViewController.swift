@@ -31,11 +31,11 @@ final class LoginViewController: UIViewController {
         // MARK: Inputs
         
         emailTextField.rx.text
-            .bind(to: viewModel.inputs.emailVar)
+            .bind(to: viewModel.inputs.email)
             .disposed(by: disposeBag)
         
         passwordTextField.rx.text
-            .bind(to: viewModel.inputs.passwordVar)
+            .bind(to: viewModel.inputs.password)
             .disposed(by: disposeBag)
         
         loginButton.rx.tap

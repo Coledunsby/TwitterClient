@@ -11,8 +11,8 @@ import RxSwiftExt
 
 protocol LoginViewModelInputs {
     
-    var emailVar: Variable<String?> { get }
-    var passwordVar: Variable<String?> { get }
+    var email: Variable<String?> { get }
+    var password: Variable<String?> { get }
     var loginSubject: PublishSubject<Void> { get }
 }
 
@@ -37,8 +37,8 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         return self
     }
     
-    let emailVar = Variable<String?>(nil)
-    let passwordVar = Variable<String?>(nil)
+    let email = Variable<String?>(nil)
+    let password = Variable<String?>(nil)
     let loginSubject = PublishSubject<Void>()
     
     // MARK: - Outputs
@@ -49,22 +49,24 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
     
     let isLoadingObservable: Observable<Bool>
     let successObservable: Observable<Void>
-    let errorsObservable: Observable<Swift.Error>
+    let errorsObservable: Observable<Error>
     
     // MARK: - Init
     
     init() {
-        let email = emailVar.asObservable()
-        let password = passwordVar.asObservable()
+        let email = self.email.asObservable()
+        let password = self.password.asObservable()
         let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
+        let credentials = emailAndPassword.map { LoginCredentials(email: $0 ?? "", password: $1 ?? "") }
+        let provider = credentials.map { LoginProvider.email($0) }
         
         let isLoadingSubject = PublishSubject<Bool>()
         
         let loginComplete = loginSubject
-            .withLatestFrom(emailAndPassword)
-            .flatMapLatest { email, password in
-                User
-                    .login(email: email ?? "", password: password ?? "")
+            .withLatestFrom(provider)
+            .flatMapLatest { provider in
+                provider
+                    .login()
                     .asObservable()
                     .mapTo(())
                     .materialize()
