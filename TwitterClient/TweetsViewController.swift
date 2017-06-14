@@ -14,12 +14,16 @@ import RxSwift
 
 final class TweetsViewController: UIViewController {
 
+    private static let provider = TweetProvider.realm
+    
+    private let viewModel: TweetsViewModelIO = TweetsViewModel(provider: provider)
+    private let disposeBag = DisposeBag()
+    
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var logoutButton: UIBarButtonItem!
     @IBOutlet private weak var addButton: UIBarButtonItem!
     
-    private let viewModel: TweetsViewModelIO = TweetsViewModel(provider: TweetProvider.realm)
-    private let disposeBag = DisposeBag()
+    // MARK: - View Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,7 +37,7 @@ final class TweetsViewController: UIViewController {
         // MARK: Outputs
         
         let dataSource = RxTableViewRealmDataSource<Tweet>(cellIdentifier: "Cell", cellType: TweetCellView.self) { cell, _, tweet in
-            cell.viewModel.tweet.value = tweet
+            cell.viewModel.inputs.tweet.value = tweet
         }
         
         self.viewModel.outputs.tweetsObservable
@@ -46,7 +50,7 @@ final class TweetsViewController: UIViewController {
         
         addButton.rx.tap
             .bind {
-                User.current?.tweet(message: "testing 1 2 3 4")
+//                User.current?.tweet(message: "testing 1 2 3 4")
             }
             .disposed(by: disposeBag)
         
@@ -68,7 +72,16 @@ final class TweetsViewController: UIViewController {
         }
     }
     
+    // MARK: - Private Functions
+    
     private func showLogin() {
         navigationController?.performSegue(withIdentifier: "ShowLogin", sender: nil)
+    }
+    
+    // MARK: - Navigation
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let composeVC = segue.destination as? ComposeViewController else { return }
+        composeVC.viewModel = ComposeViewModel(provider: TweetsViewController.provider)
     }
 }

@@ -239,6 +239,7 @@
 				254296161EE5A35400B76404 /* Resources */,
 				80D615F37E862421F41D0115 /* [CP] Embed Pods Frameworks */,
 				6F66452AD46DBD476C9A5757 /* [CP] Copy Pods Resources */,
+				EDAA1C8C1EF0E44E007EE16F /* SwiftLint */,
 			);
 			buildRules = (
 			);
@@ -408,6 +409,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TwitterClient/Pods-TwitterClient-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		EDAA1C8C1EF0E44E007EE16F /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

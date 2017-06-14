@@ -66,11 +66,18 @@ enum LoginProvider: LoginProviding {
     
     static let userDefaultsKey = "email"
     
-    case email(LoginCredentials)
+    case mock
+    case realm(LoginCredentials)
     
     func login() -> Single<User> {
         switch self {
-        case .email(let credentials):
+        case .mock:
+            let user = User()
+            user.email = ""
+            user.password = "password"
+            // Wait 1 second to simulate network delay
+            return Single.just(user).delay(1.0, scheduler: MainScheduler.instance)
+        case .realm(let credentials):
             do {
                 try credentials.validate()
             } catch {
@@ -102,7 +109,12 @@ enum LoginProvider: LoginProviding {
     }
     
     func logout() -> Completable {
-        UserDefaults.standard.removeObject(forKey: LoginProvider.userDefaultsKey)
-        return .never()
+        switch self {
+        case .mock:
+            return .never()
+        case .realm:
+            UserDefaults.standard.removeObject(forKey: LoginProvider.userDefaultsKey)
+            return .never()
+        }
     }
 }

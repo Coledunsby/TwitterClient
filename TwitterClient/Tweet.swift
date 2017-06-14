@@ -10,10 +10,10 @@ import RealmSwift
 
 final class Tweet: Object {
     
-    dynamic var id: String!
+    dynamic var id = UUID().uuidString
     dynamic var user: User!
-    dynamic var message: String!
-    dynamic var date: Date!
+    dynamic var message = ""
+    dynamic var date = Date()
     
     public override static func primaryKey() -> String? {
         return "id"

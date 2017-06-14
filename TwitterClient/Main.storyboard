@@ -61,7 +61,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="TWEETS" id="ppG-kV-Xa5">
                         <barButtonItem key="leftBarButtonItem" image="logout" id="Mws-na-p2h"/>
-                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HsD-0T-Zv9"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="HsD-0T-Zv9">
+                            <connections>
+                                <segue destination="7cl-hG-dsQ" kind="presentation" id="Lw5-yi-RFw"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="addButton" destination="HsD-0T-Zv9" id="Xl5-Wt-PDZ"/>
@@ -72,6 +76,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zxg-tq-0GN" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-231" y="-179"/>
+        </scene>
+        <!--Compose-->
+        <scene sceneID="jJg-la-Zu3">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Compose" id="7cl-hG-dsQ" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZCJ-7a-bsJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="329" y="-180"/>
         </scene>
         <!--Login-->
         <scene sceneID="HVA-07-46A">

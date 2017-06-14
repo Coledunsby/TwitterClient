@@ -14,26 +14,14 @@ final class User: Object {
     dynamic var email: String!
     dynamic var password: String!
     
+    var handle: String! {
+        return email.components(separatedBy: "@").first
+    }
+    
     let tweets = LinkingObjects(fromType: Tweet.self, property: "user")
     
     public override static func primaryKey() -> String? {
         return "email"
-    }
-}
-
-extension User {
-    
-    func tweet(message: String) {
-        let tweet = Tweet()
-        tweet.id = UUID().uuidString
-        tweet.user = self
-        tweet.message = message
-        tweet.date = Date()
-        
-        let realm = try! Realm()
-        try! realm.write {
-            realm.add(tweet)
-        }
     }
 }
 

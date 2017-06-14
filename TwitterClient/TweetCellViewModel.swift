@@ -43,19 +43,19 @@ struct TweetCellViewModel: TweetCellViewModelIO, TweetCellViewModelInputs, Tweet
         return self
     }
     
-    var userImageObservable: Observable<UIImage?> {
-        return .just(nil)
-    }
+    let userImageObservable: Observable<UIImage?>
+    let userHandleObservable: Observable<String?>
+    let dateObservable: Observable<String?>
+    let messageObservable: Observable<String?>
     
-    var userHandleObservable: Observable<String?> {
-        return tweet.asObservable().map { $0?.user.email.components(separatedBy: "@").first }
-    }
+    // MARK: - Init
     
-    var dateObservable: Observable<String?> {
-        return tweet.asObservable().map { DateFormatter.localizedString(from: $0?.date ?? Date(), dateStyle: .short, timeStyle: .none) }
-    }
-    
-    var messageObservable: Observable<String?> {
-        return tweet.asObservable().map { $0?.message }
+    init() {
+        let tweet = self.tweet.asObservable()
+        
+        userImageObservable = .just(nil)
+        userHandleObservable = tweet.map { $0?.user.handle }
+        dateObservable = tweet.map { DateFormatter.localizedString(from: $0?.date ?? Date(), dateStyle: .short, timeStyle: .none) }
+        messageObservable = tweet.map { $0?.message }
     }
 }

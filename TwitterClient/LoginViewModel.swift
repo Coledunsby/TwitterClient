@@ -58,7 +58,7 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         let password = self.password.asObservable()
         let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
         let credentials = emailAndPassword.map { LoginCredentials(email: $0 ?? "", password: $1 ?? "") }
-        let provider = credentials.map { LoginProvider.email($0) }
+        let provider = credentials.map { LoginProvider.realm($0) }
         
         let isLoadingSubject = PublishSubject<Bool>()
         

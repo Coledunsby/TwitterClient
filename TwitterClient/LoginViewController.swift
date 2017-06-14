@@ -25,6 +25,8 @@ final class LoginViewController: UIViewController {
     @IBOutlet private weak var bottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var activityIndicatorView: UIActivityIndicatorView!
     
+    // MARK: - View Lifecycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
