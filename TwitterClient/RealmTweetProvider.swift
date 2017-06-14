@@ -22,10 +22,3 @@ struct RealmTweetPoster: TweetPosting {
         return .never()
     }
 }
-
-struct RealmTweetDeleter: TweetDeleting {
-    
-    func delete(_ tweet: Tweet) -> Completable {
-        return .never()
-    }
-}

@@ -21,10 +21,3 @@ struct MockTweetPoster: TweetPosting {
         return .never()
     }
 }
-
-struct MockTweetDeleter: TweetDeleting {
-    
-    func delete(_ tweet: Tweet) -> Completable {
-        return .never()
-    }
-}

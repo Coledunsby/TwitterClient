@@ -18,11 +18,6 @@ protocol TweetPosting {
     func post(_ tweet: Tweet) -> Completable
 }
 
-protocol TweetDeleting {
-    
-    func delete(_ tweet: Tweet) -> Completable
-}
-
 enum TweetProvider {
     
     case mock
@@ -43,15 +38,6 @@ enum TweetProvider {
             return MockTweetPoster()
         case .realm:
             return RealmTweetPoster()
-        }
-    }
-    
-    var deleter: TweetDeleting {
-        switch self {
-        case .mock:
-            return MockTweetDeleter()
-        case .realm:
-            return RealmTweetDeleter()
         }
     }
 }

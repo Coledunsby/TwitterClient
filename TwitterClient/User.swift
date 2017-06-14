@@ -7,7 +7,6 @@
 //
 
 import RealmSwift
-import RxSwift
 
 final class User: Object {
     
