@@ -12,13 +12,13 @@ import RxSwiftExt
 protocol TweetsViewModelInputs {
     
     var user: Variable<User?> { get }
-    var logoutSubject: PublishSubject<Void> { get }
+    var logout: PublishSubject<Void> { get }
 }
 
 protocol TweetsViewModelOutputs {
     
-    var tweetsObservable: Observable<TweetChangeset> { get }
-    var loggedOutObservable: Observable<Void> { get }
+    var sections: Observable<[Section<Tweet>]> { get }
+    var loggedOut: Observable<Void>! { get }
 }
 
 protocol TweetsViewModelIO {
@@ -27,7 +27,11 @@ protocol TweetsViewModelIO {
     var outputs: TweetsViewModelOutputs { get }
 }
 
-struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewModelOutputs {
+final class TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewModelOutputs {
+    
+    // MARK: - Private
+    
+    private let disposeBag = DisposeBag()
     
     // MARK: - Inputs
     
@@ -36,7 +40,7 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
     }
     
     let user = Variable<User?>(nil)
-    let logoutSubject = PublishSubject<Void>()
+    let logout = PublishSubject<Void>()
     
     // MARK: - Outputs
     
@@ -46,22 +50,21 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
     
     // MARK: - Init
     
-    let tweetsObservable: Observable<TweetChangeset>
-    var loggedOutObservable: Observable<Void>
+    let sections: Observable<[Section<Tweet>]>
+    var loggedOut: Observable<Void>!
     
     init(provider: TweetProvider) {
-        tweetsObservable = provider.fetcher.fetch()
+        var section = Section<Tweet>()
         
+        sections = .just([section])
         
-//        tweetsObservable = user
-//            .asObservable()
-//            .unwrap()
-//            .flatMapLatest { user -> Observable<TweetRealmChangeset> in
-//                let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
-//                return Observable.changeset(from: tweets)
-//            }
+        provider.fetcher
+            .fetch()
+            .do(onNext: { $0.performOperation(on: &section) })
+            .subscribe()
+            .disposed(by: disposeBag)
         
-        loggedOutObservable = logoutSubject.do(onNext: {
+        loggedOut = logout.do(onNext: {
 //            User.logout()
         })
     }

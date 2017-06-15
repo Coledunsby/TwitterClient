@@ -8,24 +8,9 @@
 
 import RxSwift
 
-struct TweetChangeset {
-    
-    var tweets: [Tweet] = []
-    var inserted: [Int] = []
-    var updated: [Int] = []
-    var deleted: [Int] = []
-    
-    static func insert(tweets: [Tweet]) -> TweetChangeset {
-        var changeset = TweetChangeset()
-        changeset.tweets = tweets
-        changeset.inserted = tweets.flatMap { tweets.index(of: $0) }
-        return changeset
-    }
-}
-
 protocol TweetFetching {
     
-    func fetch() -> Observable<TweetChangeset>
+    func fetch() -> Observable<ListChange<Tweet>>
 }
 
 protocol TweetPosting {

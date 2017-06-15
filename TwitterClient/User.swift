@@ -8,7 +8,7 @@
 
 import RealmSwift
 
-final class User: Object {
+final class User: RealmObject {
     
     dynamic var email: String!
     dynamic var password: String!

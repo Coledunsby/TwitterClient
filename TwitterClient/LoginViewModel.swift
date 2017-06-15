@@ -13,14 +13,14 @@ protocol LoginViewModelInputs {
     
     var email: Variable<String?> { get }
     var password: Variable<String?> { get }
-    var loginSubject: PublishSubject<Void> { get }
+    var login: PublishSubject<Void> { get }
 }
 
 protocol LoginViewModelOutputs {
     
-    var isLoadingObservable: Observable<Bool> { get }
-    var successObservable: Observable<Void> { get }
-    var errorsObservable: Observable<Error> { get }
+    var isLoading: Observable<Bool> { get }
+    var success: Observable<Void> { get }
+    var errors: Observable<Error> { get }
 }
 
 protocol LoginViewModelIO {
@@ -39,7 +39,7 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
     
     let email = Variable<String?>(nil)
     let password = Variable<String?>(nil)
-    let loginSubject = PublishSubject<Void>()
+    let login = PublishSubject<Void>()
     
     // MARK: - Outputs
     
@@ -47,9 +47,9 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         return self
     }
     
-    let isLoadingObservable: Observable<Bool>
-    let successObservable: Observable<Void>
-    let errorsObservable: Observable<Error>
+    let isLoading: Observable<Bool>
+    let success: Observable<Void>
+    let errors: Observable<Error>
     
     // MARK: - Init
     
@@ -62,7 +62,7 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         
         let isLoadingSubject = PublishSubject<Bool>()
         
-        let loginComplete = loginSubject
+        let loginComplete = login
             .withLatestFrom(provider)
             .flatMapLatest { provider in
                 provider
@@ -78,8 +78,8 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
             }
             .share()
         
-        isLoadingObservable = isLoadingSubject
-        successObservable = loginComplete.elements()
-        errorsObservable = loginComplete.errors()
+        isLoading = isLoadingSubject
+        success = loginComplete.elements()
+        errors = loginComplete.errors()
     }
 }

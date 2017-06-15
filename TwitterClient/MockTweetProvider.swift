@@ -41,12 +41,13 @@ private extension Tweet {
 
 struct MockTweetFetcher: TweetFetching {
     
-    func fetch() -> Observable<TweetChangeset> {
-        let tweets = (0 ..< 10)
+    func fetch() -> Observable<ListChange<Tweet>> {
+        let listChanges = (0 ..< 10)
             .map { _ in Tweet.random() }
             .sorted { $0.0.date < $0.1.date }
-        let changeset = TweetChangeset.insert(tweets: tweets)
-        return Observable.just(changeset)
+            .map { ListChange(.insert, $0) }
+        
+        return Observable.from(listChanges)
     }
 }
 

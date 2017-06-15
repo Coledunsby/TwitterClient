@@ -6,9 +6,8 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import RealmSwift
 import RxCocoa
-import RxRealm
+import RxDataSources
 import RxSwift
 
 final class TweetsViewController: UIViewController {
@@ -26,24 +25,27 @@ final class TweetsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+            
         // MARK: Inputs
         
-        self.logoutButton.rx.tap
-            .bind(to: viewModel.inputs.logoutSubject)
+        logoutButton.rx.tap
+            .bind(to: viewModel.inputs.logout)
             .disposed(by: disposeBag)
         
         // MARK: Outputs
         
-        let dataSource = RxTableViewRealmDataSource<Tweet>(cellIdentifier: "Cell", cellType: TweetCellView.self) { cell, _, tweet in
-            cell.viewModel.inputs.tweet.value = tweet
+        let dataSource = RxTableViewSectionedAnimatedDataSource<Section<Tweet>>()
+        dataSource.configureCell = { dataSource, tableView, indexPath, tweet in
+            let tweetCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! TweetCell
+            tweetCell.viewModel.inputs.tweet.value = tweet
+            return tweetCell
         }
         
-        self.viewModel.outputs.tweetsObservable
-            .bind(to: tableView.rx.realmChanges(dataSource))
+        viewModel.outputs.sections
+            .bind(to: tableView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
-        self.viewModel.outputs.loggedOutObservable
+        viewModel.outputs.loggedOut
             .bind { [unowned self] in self.showLogin() }
             .disposed(by: disposeBag)
         
@@ -52,6 +54,8 @@ final class TweetsViewController: UIViewController {
 //                User.current?.tweet(message: "testing 1 2 3 4")
             }
             .disposed(by: disposeBag)
+        
+        // MARK: UI
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100

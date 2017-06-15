@@ -15,10 +15,10 @@ protocol TweetCellViewModelInputs {
 
 protocol TweetCellViewModelOutputs {
     
-    var userImageObservable: Observable<UIImage?> { get }
-    var userHandleObservable: Observable<String?> { get }
-    var dateObservable: Observable<String?> { get }
-    var messageObservable: Observable<String?> { get }
+    var userImage: Observable<UIImage?> { get }
+    var userHandle: Observable<String?> { get }
+    var date: Observable<String?> { get }
+    var message: Observable<String?> { get }
 }
 
 protocol TweetCellViewModelIO {
@@ -43,19 +43,19 @@ struct TweetCellViewModel: TweetCellViewModelIO, TweetCellViewModelInputs, Tweet
         return self
     }
     
-    let userImageObservable: Observable<UIImage?>
-    let userHandleObservable: Observable<String?>
-    let dateObservable: Observable<String?>
-    let messageObservable: Observable<String?>
+    let userImage: Observable<UIImage?>
+    let userHandle: Observable<String?>
+    let date: Observable<String?>
+    let message: Observable<String?>
     
     // MARK: - Init
     
     init() {
         let tweet = self.tweet.asObservable()
         
-        userImageObservable = .just(nil)
-        userHandleObservable = tweet.map { $0?.user.handle }
-        dateObservable = tweet.map { DateFormatter.localizedString(from: $0?.date ?? Date(), dateStyle: .short, timeStyle: .none) }
-        messageObservable = tweet.map { $0?.message }
+        userImage = .just(nil)
+        userHandle = tweet.map { $0?.user.handle }
+        date = tweet.map { DateFormatter.localizedString(from: $0?.date ?? Date(), dateStyle: .short, timeStyle: .none) }
+        message = tweet.map { $0?.message }
     }
 }

@@ -8,7 +8,7 @@
 
 import RealmSwift
 
-final class Tweet: Object {
+final class Tweet: RealmObject {
     
     dynamic var id = UUID().uuidString
     dynamic var user: User!

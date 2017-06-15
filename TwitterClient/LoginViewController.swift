@@ -41,12 +41,12 @@ final class LoginViewController: UIViewController {
             .disposed(by: disposeBag)
         
         loginButton.rx.tap
-            .bind(to: viewModel.inputs.loginSubject)
+            .bind(to: viewModel.inputs.login)
             .disposed(by: disposeBag)
         
         // MARK: Outputs
         
-        viewModel.outputs.isLoadingObservable
+        viewModel.outputs.isLoading
             .bind { [unowned self] isLoading in
                 self.stackView.alpha = isLoading ? 0.5 : 1.0
                 if isLoading {
@@ -58,13 +58,13 @@ final class LoginViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        viewModel.outputs.successObservable
+        viewModel.outputs.success
             .bind { [unowned self] in
                 self.dismiss(animated: true)
             }
             .disposed(by: disposeBag)
         
-        viewModel.outputs.errorsObservable
+        viewModel.outputs.errors
             .bind { [unowned self] error in
                 let alertController = UIAlertController(title: "Error!", message: error.localizedDescription, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

@@ -1,5 +1,5 @@
 //
-//  TweetCellView.swift
+//  TweetCell.swift
 //  TwitterClient
 //
 //  Created by Cole Dunsby on 2017-06-06.
@@ -9,7 +9,7 @@
 import RxCocoa
 import RxSwift
 
-final class TweetCellView: UITableViewCell {
+final class TweetCell: UITableViewCell {
     
     let viewModel: TweetCellViewModelIO = TweetCellViewModel()
     
@@ -23,19 +23,19 @@ final class TweetCellView: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        self.viewModel.outputs.userImageObservable
+        viewModel.outputs.userImage
             .bind(to: userImageView.rx.image)
             .disposed(by: disposeBag)
         
-        self.viewModel.outputs.userHandleObservable
+        viewModel.outputs.userHandle
             .bind(to: userHandleLabel.rx.text)
             .disposed(by: disposeBag)
         
-        self.viewModel.outputs.dateObservable
+        viewModel.outputs.date
             .bind(to: dateLabel.rx.text)
             .disposed(by: disposeBag)
         
-        self.viewModel.outputs.messageObservable
+        viewModel.outputs.message
             .bind(to: messageLabel.rx.text)
             .disposed(by: disposeBag)
     }

@@ -12,15 +12,14 @@ import RxSwift
 
 struct RealmTweetFetcher: TweetFetching {
     
-    func fetch() -> Observable<TweetChangeset> {
+    func fetch() -> Observable<ListChange<Tweet>> {
         let tweets = User.current!.tweets.sorted(byKeyPath: "date", ascending: false)
-        return Observable.changeset(from: tweets).map { tweets, realmChangset in
-            var changeset = TweetChangeset()
-            changeset.tweets = tweets.toArray()
-            changeset.inserted = realmChangset?.inserted ?? []
-            changeset.updated = realmChangset?.updated ?? []
-            changeset.deleted = realmChangset?.deleted ?? []
-            return changeset
+        return Observable.changeset(from: tweets).flatMap { tweets, changeset -> Observable<ListChange<Tweet>> in
+            var listChanges = [ListChange<Tweet>]()
+            listChanges.append(contentsOf: changeset?.deleted.map({ ListChange(.delete, tweets[$0]) }) ?? [])
+            listChanges.append(contentsOf: changeset?.updated.map({ ListChange(.update, tweets[$0]) }) ?? [])
+            listChanges.append(contentsOf: changeset?.inserted.map({ ListChange(.insert, tweets[$0]) }) ?? [])
+            return Observable.from(listChanges)
         }
     }
 }

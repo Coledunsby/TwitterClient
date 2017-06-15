@@ -8,41 +8,13 @@
 
 import RxDataSources
 
-struct Section<T: IdentifiableType & Equatable> {
-    
-    fileprivate var uuid = UUID()
-    var items: [T]
-    var header: String?
-    var footer: String?
-    
-    init(items: [T]? = [], header: String? = nil, footer: String? = nil) {
-        self.items = items ?? []
-        self.header = header
-        self.footer = footer
-    }
-}
-
-extension Section: AnimatableSectionModelType {
-    
-    typealias Item = T
-    
-    var identity: UUID {
-        return uuid
-    }
-    
-    init(original: Section, items: [Item]) {
-        self = original
-        self.items = items
-    }
-}
-
-struct ListChange<T> {
+struct ListChange<T: IdentifiableType & Equatable> {
     
     enum Operation {
         
         case insert
         case update
-        case remove
+        case delete
     }
     
     var operation: Operation
@@ -60,7 +32,7 @@ struct ListChange<T> {
             section.items.insert(object, at: index)
         case .update:
             section.items[index] = object
-        case .remove:
+        case .delete:
             section.items.remove(at: index)
         }
     }
