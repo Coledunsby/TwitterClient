@@ -9,7 +9,6 @@
 import RealmSwift
 import RxCocoa
 import RxRealm
-import RxRealmDataSources
 import RxSwift
 
 final class TweetsViewController: UIViewController {

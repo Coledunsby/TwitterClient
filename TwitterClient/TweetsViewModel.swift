@@ -6,13 +6,8 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import RealmSwift
-import RxRealm
-import RxRealmDataSources
 import RxSwift
 import RxSwiftExt
-
-typealias TweetRealmChangest = (AnyRealmCollection<Tweet>, RealmChangeset?)
 
 protocol TweetsViewModelInputs {
     
@@ -22,7 +17,7 @@ protocol TweetsViewModelInputs {
 
 protocol TweetsViewModelOutputs {
     
-    var tweetsObservable: Observable<TweetRealmChangest> { get }
+    var tweetsObservable: Observable<TweetChangeset> { get }
     var loggedOutObservable: Observable<Void> { get }
 }
 
@@ -51,17 +46,20 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
     
     // MARK: - Init
     
-    let tweetsObservable: Observable<TweetRealmChangest>
+    let tweetsObservable: Observable<TweetChangeset>
     var loggedOutObservable: Observable<Void>
     
     init(provider: TweetProvider) {
-        tweetsObservable = user
-            .asObservable()
-            .unwrap()
-            .flatMapLatest { user -> Observable<TweetRealmChangest> in
-                let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
-                return Observable.changeset(from: tweets)
-            }
+        tweetsObservable = provider.fetcher.fetch()
+        
+        
+//        tweetsObservable = user
+//            .asObservable()
+//            .unwrap()
+//            .flatMapLatest { user -> Observable<TweetRealmChangeset> in
+//                let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
+//                return Observable.changeset(from: tweets)
+//            }
         
         loggedOutObservable = logoutSubject.do(onNext: {
 //            User.logout()

@@ -111,10 +111,10 @@ enum LoginProvider: LoginProviding {
     func logout() -> Completable {
         switch self {
         case .mock:
-            return .never()
+            return .empty()
         case .realm:
             UserDefaults.standard.removeObject(forKey: LoginProvider.userDefaultsKey)
-            return .never()
+            return .empty()
         }
     }
 }

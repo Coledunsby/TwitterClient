@@ -23,6 +23,7 @@
 		ED4C119C1EF0D45700E8D5F7 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4C119B1EF0D45700E8D5F7 /* ComposeViewController.swift */; };
 		ED4C119E1EF0D46000E8D5F7 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4C119D1EF0D46000E8D5F7 /* ComposeViewModel.swift */; };
 		ED4C11A01EF0D55700E8D5F7 /* Compose.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED4C119F1EF0D55700E8D5F7 /* Compose.storyboard */; };
+		ED81B7911EF310B10028F362 /* ListChange.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81B7901EF310B10028F362 /* ListChange.swift */; };
 		EDAA1C8E1EF0E82C007EE16F /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDAA1C8D1EF0E82C007EE16F /* Config.swift */; };
 		EDB76D9B1EE742BF008515A0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDB76D9A1EE742BF008515A0 /* Main.storyboard */; };
 		EDB76D9D1EE742F1008515A0 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDB76D9C1EE742F1008515A0 /* Login.storyboard */; };
@@ -75,6 +76,7 @@
 		ED4C119B1EF0D45700E8D5F7 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		ED4C119D1EF0D46000E8D5F7 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		ED4C119F1EF0D55700E8D5F7 /* Compose.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Compose.storyboard; sourceTree = "<group>"; };
+		ED81B7901EF310B10028F362 /* ListChange.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListChange.swift; sourceTree = "<group>"; };
 		EDAA1C8D1EF0E82C007EE16F /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		EDB76D9A1EE742BF008515A0 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		EDB76D9C1EE742F1008515A0 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 			children = (
 				EDAA1C8D1EF0E82C007EE16F /* Config.swift */,
 				2542961B1EE5A35400B76404 /* AppDelegate.swift */,
+				ED81B7901EF310B10028F362 /* ListChange.swift */,
 				EDB76DAE1EE74D1A008515A0 /* Models */,
 				2542964C1EE5B9FD00B76404 /* Login */,
 				EDB76DA81EE746F4008515A0 /* Tweets */,
@@ -435,6 +438,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED4C119E1EF0D46000E8D5F7 /* ComposeViewModel.swift in Sources */,
+				ED81B7911EF310B10028F362 /* ListChange.swift in Sources */,
 				EDB76DA71EE746EC008515A0 /* TweetsViewController.swift in Sources */,
 				ED1DA0C31EEE538900DD97B3 /* MockTweetProvider.swift in Sources */,
 				2542964E1EE5BA0B00B76404 /* LoginViewModel.swift in Sources */,

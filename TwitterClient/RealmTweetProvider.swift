@@ -7,18 +7,27 @@
 //
 
 import RealmSwift
+import RxRealm
 import RxSwift
 
 struct RealmTweetFetcher: TweetFetching {
     
-    func fetch() -> Observable<[Tweet]> {
-        return .just([])
+    func fetch() -> Observable<TweetChangeset> {
+        let tweets = User.current!.tweets.sorted(byKeyPath: "date", ascending: false)
+        return Observable.changeset(from: tweets).map { tweets, realmChangset in
+            var changeset = TweetChangeset()
+            changeset.tweets = tweets.toArray()
+            changeset.inserted = realmChangset?.inserted ?? []
+            changeset.updated = realmChangset?.updated ?? []
+            changeset.deleted = realmChangset?.deleted ?? []
+            return changeset
+        }
     }
 }
 
 struct RealmTweetPoster: TweetPosting {
     
     func post(_ tweet: Tweet) -> Completable {
-        return .never()
+        return .empty()
     }
 }
