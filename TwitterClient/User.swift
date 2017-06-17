@@ -7,6 +7,7 @@
 //
 
 import RealmSwift
+import SwiftRandom
 
 final class User: RealmObject {
     
@@ -27,8 +28,25 @@ final class User: RealmObject {
 extension User {
     
     static var current: User? {
-//        guard let email = UserDefaults.standard.string(forKey: userDefaultsKey) else { return nil }
-        let realm = try! Realm()
-        return realm.object(ofType: User.self, forPrimaryKey: "")
+        return Config.loginProvider.currentUser
+    }
+}
+
+extension User {
+    
+    static func random() -> User {
+        let user = User()
+        user.email = Randoms.randomFakeEmail()
+        return user
+    }
+}
+
+private extension Randoms {
+    
+    static func randomFakeEmail() -> String {
+        let fakeNames = Randoms.randomFakeName().components(separatedBy: " ")
+        let firstName = fakeNames[0].lowercased()
+        let lastName = fakeNames[1].lowercased()
+        return "\(firstName).\(lastName)@gmail.com"
     }
 }

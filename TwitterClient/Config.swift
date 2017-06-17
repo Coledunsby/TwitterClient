@@ -10,7 +10,7 @@ import Foundation
 
 struct Config {
     
-    static let shared = Config()
-    
-    let tweetProvider = TweetProvider.realm
+    static let loginProvider = RealmLoginProvider()
+    static let tweetProvider = RealmTweetProvider()
+    static let userDefaultsKey = "email"
 }

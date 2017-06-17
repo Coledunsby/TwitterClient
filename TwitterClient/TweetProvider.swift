@@ -18,26 +18,8 @@ protocol TweetPosting {
     func post(_ tweet: Tweet) -> Completable
 }
 
-enum TweetProvider {
+protocol TweetProviding {
     
-    case mock
-    case realm
-    
-    var fetcher: TweetFetching {
-        switch self {
-        case .mock:
-            return MockTweetFetcher()
-        case .realm:
-            return RealmTweetFetcher()
-        }
-    }
-    
-    var poster: TweetPosting {
-        switch self {
-        case .mock:
-            return MockTweetPoster()
-        case .realm:
-            return RealmTweetPoster()
-        }
-    }
+    var fetcher: TweetFetching { get }
+    var poster: TweetPosting { get }
 }

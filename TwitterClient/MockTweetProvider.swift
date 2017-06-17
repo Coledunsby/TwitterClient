@@ -7,37 +7,6 @@
 //
 
 import RxSwift
-import SwiftRandom
-
-private extension Randoms {
-    
-    static func randomFakeEmail() -> String {
-        let fakeNames = Randoms.randomFakeName().components(separatedBy: " ")
-        let firstName = fakeNames[0].lowercased()
-        let lastName = fakeNames[1].lowercased()
-        return "\(firstName).\(lastName)@gmail.com"
-    }
-}
-
-private extension User {
-    
-    static func random() -> User {
-        let user = User()
-        user.email = Randoms.randomFakeEmail()
-        return user
-    }
-}
-
-private extension Tweet {
-    
-    static func random() -> Tweet {
-        let tweet = Tweet()
-        tweet.user = User.random()
-        tweet.message = Randoms.randomFakeConversation()
-        tweet.date = Date.randomWithinDaysBeforeToday(30)
-        return tweet
-    }
-}
 
 struct MockTweetFetcher: TweetFetching {
     
@@ -54,6 +23,12 @@ struct MockTweetFetcher: TweetFetching {
 struct MockTweetPoster: TweetPosting {
     
     func post(_ tweet: Tweet) -> Completable {
-        return .empty()
+        return Completable.empty().delay(1.0, scheduler: MainScheduler.instance)
     }
+}
+
+struct MockTweetProvider: TweetProviding {
+    
+    var fetcher: TweetFetching = MockTweetFetcher()
+    var poster: TweetPosting = MockTweetPoster()
 }

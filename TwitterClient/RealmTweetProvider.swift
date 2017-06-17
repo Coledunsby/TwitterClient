@@ -13,7 +13,8 @@ import RxSwift
 struct RealmTweetFetcher: TweetFetching {
     
     func fetch() -> Observable<ListChange<Tweet>> {
-        let tweets = User.current!.tweets.sorted(byKeyPath: "date", ascending: false)
+        guard let user = User.current else { return .empty() }
+        let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
         return Observable.changeset(from: tweets).flatMap { tweets, changeset -> Observable<ListChange<Tweet>> in
             var listChanges = [ListChange<Tweet>]()
             listChanges.append(contentsOf: changeset?.deleted.map({ ListChange(.delete, tweets[$0]) }) ?? [])
@@ -27,6 +28,16 @@ struct RealmTweetFetcher: TweetFetching {
 struct RealmTweetPoster: TweetPosting {
     
     func post(_ tweet: Tweet) -> Completable {
-        return .empty()
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(tweet)
+        }
+        return Completable.empty().delay(1.0, scheduler: MainScheduler.instance)
     }
+}
+
+struct RealmTweetProvider: TweetProviding {
+    
+    var fetcher: TweetFetching = RealmTweetFetcher()
+    var poster: TweetPosting = RealmTweetPoster()
 }

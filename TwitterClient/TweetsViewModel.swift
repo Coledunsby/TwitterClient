@@ -9,9 +9,19 @@
 import RxSwift
 import RxSwiftExt
 
+extension PrimitiveSequence where TraitType == CompletableTrait {
+    
+    public func asSingle() -> Single<Void> {
+        return self
+            .asObservable()
+            .mapTo(())
+            .concat(Observable.just(()))
+            .asSingle()
+    }
+}
+
 protocol TweetsViewModelInputs {
     
-    var user: Variable<User?> { get }
     var logout: PublishSubject<Void> { get }
 }
 
@@ -27,7 +37,7 @@ protocol TweetsViewModelIO {
     var outputs: TweetsViewModelOutputs { get }
 }
 
-final class TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewModelOutputs {
+struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewModelOutputs {
     
     // MARK: - Private
     
@@ -53,19 +63,24 @@ final class TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsVie
     let sections: Observable<[Section<Tweet>]>
     var loggedOut: Observable<Void>!
     
-    init(provider: TweetProvider) {
+    init(provider: TweetProviding) {
         var section = Section<Tweet>()
         
         sections = .just([section])
         
         provider.fetcher
             .fetch()
-            .do(onNext: { $0.performOperation(on: &section) })
+            .do(onNext: {
+                $0.performOperation(on: &section)
+            })
             .subscribe()
             .disposed(by: disposeBag)
         
-        loggedOut = logout.do(onNext: {
-//            User.logout()
-        })
+        loggedOut = logout
+            .flatMap {
+                Config.loginProvider
+                    .logout()
+                    .asSingle()
+            }
     }
 }

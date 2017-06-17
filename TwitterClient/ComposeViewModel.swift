@@ -12,16 +12,16 @@ import RxSwiftExt
 protocol ComposeViewModelInputs {
     
     var text: Variable<String?> { get }
-    var tweetSubject: PublishSubject<Void> { get }
-    var dismissSubject: PublishSubject<Void> { get }
+    var tweet: PublishSubject<Void> { get }
+    var dismiss: PublishSubject<Void> { get }
 }
 
 protocol ComposeViewModelOutputs {
     
-    var charactersRemainingObservable: Observable<String?> { get }
-    var isValidObservable: Observable<Bool> { get }
-    var isLoadingObservable: Observable<Bool> { get }
-    var dismissObservable: Observable<Void> { get }
+    var charactersRemaining: Observable<Int> { get }
+    var isValid: Observable<Bool> { get }
+    var isLoading: Observable<Bool> { get }
+    var shouldDismiss: Observable<Void> { get }
 }
 
 protocol ComposeViewModelIO {
@@ -39,8 +39,8 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
     }
     
     let text = Variable<String?>(nil)
-    let tweetSubject = PublishSubject<Void>()
-    let dismissSubject = PublishSubject<Void>()
+    let tweet = PublishSubject<Void>()
+    let dismiss = PublishSubject<Void>()
     
     // MARK: - Outputs
     
@@ -48,16 +48,16 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
         return self
     }
     
-    let charactersRemainingObservable: Observable<String?>
-    let isValidObservable: Observable<Bool>
-    let isLoadingObservable: Observable<Bool>
-    let dismissObservable: Observable<Void>
+    let charactersRemaining: Observable<Int>
+    let isValid: Observable<Bool>
+    let isLoading: Observable<Bool>
+    let shouldDismiss: Observable<Void>
     
     // MARK: - Init
     
-    init(provider: TweetProvider) {
+    init(provider: TweetProviding) {
         let text = self.text.asObservable()
-        let dismiss = self.dismissSubject.asObservable()
+        let dismiss = self.dismiss.asObservable()
 
         let tweet = text.map { message -> Tweet in
             let tweet = Tweet()
@@ -68,13 +68,12 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
         
         let isLoadingSubject = PublishSubject<Bool>()
         
-        let post = tweetSubject
+        let post = self.tweet
             .withLatestFrom(tweet)
             .flatMapLatest { tweet in
                 provider.poster
                     .post(tweet)
-                    .asObservable()
-                    .mapTo(())
+                    .asSingle()
                     .do(onSubscribe: {
                         isLoadingSubject.onNext(true)
                     }, onDispose: {
@@ -82,9 +81,9 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
                     })
             }
         
-        charactersRemainingObservable = text.map { "\(140 - ($0?.characters.count ?? 0))" }
-        isValidObservable = text.map { !($0?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ?? true) }
-        isLoadingObservable = isLoadingSubject
-        dismissObservable = Observable.merge([dismiss, post])
+        charactersRemaining = text.map { 140 - ($0?.characters.count ?? 0) }
+        isValid = charactersRemaining.map { (0 ..< 140) ~= $0 }
+        isLoading = isLoadingSubject
+        shouldDismiss = Observable.merge([dismiss, post])
     }
 }

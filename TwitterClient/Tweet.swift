@@ -7,6 +7,7 @@
 //
 
 import RealmSwift
+import SwiftRandom
 
 final class Tweet: RealmObject {
     
@@ -17,5 +18,16 @@ final class Tweet: RealmObject {
     
     public override static func primaryKey() -> String? {
         return "id"
+    }
+}
+
+extension Tweet {
+    
+    static func random() -> Tweet {
+        let tweet = Tweet()
+        tweet.user = User.random()
+        tweet.message = Randoms.randomFakeConversation()
+        tweet.date = Date.randomWithinDaysBeforeToday(30)
+        return tweet
     }
 }

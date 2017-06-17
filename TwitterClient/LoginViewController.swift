@@ -14,7 +14,7 @@ import RxSwiftExt
 
 final class LoginViewController: UIViewController {
     
-    private let viewModel: LoginViewModelIO = LoginViewModel()
+    private let viewModel: LoginViewModelIO = LoginViewModel(provider: Config.loginProvider.asAnyLoginProvider())
     private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var stackView: UIStackView!

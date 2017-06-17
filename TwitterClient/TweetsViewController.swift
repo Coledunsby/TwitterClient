@@ -11,10 +11,8 @@ import RxDataSources
 import RxSwift
 
 final class TweetsViewController: UIViewController {
-
-    private static let provider = TweetProvider.realm
     
-    private let viewModel: TweetsViewModelIO = TweetsViewModel(provider: provider)
+    private let viewModel: TweetsViewModelIO = TweetsViewModel(provider: Config.tweetProvider)
     private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var tableView: UITableView!
@@ -49,22 +47,10 @@ final class TweetsViewController: UIViewController {
             .bind { [unowned self] in self.showLogin() }
             .disposed(by: disposeBag)
         
-        addButton.rx.tap
-            .bind {
-//                User.current?.tweet(message: "testing 1 2 3 4")
-            }
-            .disposed(by: disposeBag)
-        
         // MARK: UI
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.viewModel.inputs.user.value = User.current
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,12 +65,5 @@ final class TweetsViewController: UIViewController {
     
     private func showLogin() {
         navigationController?.performSegue(withIdentifier: "ShowLogin", sender: nil)
-    }
-    
-    // MARK: - Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let composeVC = segue.destination as? ComposeViewController else { return }
-        composeVC.viewModel = ComposeViewModel(provider: TweetsViewController.provider)
     }
 }

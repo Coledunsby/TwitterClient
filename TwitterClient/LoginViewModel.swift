@@ -53,20 +53,19 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
     
     // MARK: - Init
     
-    init() {
+    init<T>(provider: AnyLoginProvider<T>) {
         let email = self.email.asObservable()
         let password = self.password.asObservable()
         let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
-        let credentials = emailAndPassword.map { LoginCredentials(email: $0 ?? "", password: $1 ?? "") }
-        let provider = credentials.map { LoginProvider.realm($0) }
+        let credentials = emailAndPassword.map { RealmLoginCredentials(email: $0 ?? "", password: $1 ?? "") }
         
         let isLoadingSubject = PublishSubject<Bool>()
         
         let loginComplete = login
-            .withLatestFrom(provider)
-            .flatMapLatest { provider in
+            .withLatestFrom(credentials)
+            .flatMapLatest { credentials in
                 provider
-                    .login()
+                    .login(credentials as? T)
                     .asObservable()
                     .mapTo(())
                     .materialize()
