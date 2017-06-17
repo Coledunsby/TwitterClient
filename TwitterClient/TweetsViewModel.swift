@@ -28,7 +28,7 @@ protocol TweetsViewModelInputs {
 protocol TweetsViewModelOutputs {
     
     var sections: Observable<[Section<Tweet>]> { get }
-    var loggedOut: Observable<Void>! { get }
+    var loggedOut: Observable<Void> { get }
 }
 
 protocol TweetsViewModelIO {
@@ -38,10 +38,6 @@ protocol TweetsViewModelIO {
 }
 
 struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewModelOutputs {
-    
-    // MARK: - Private
-    
-    private let disposeBag = DisposeBag()
     
     // MARK: - Inputs
     
@@ -61,20 +57,17 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
     // MARK: - Init
     
     let sections: Observable<[Section<Tweet>]>
-    var loggedOut: Observable<Void>!
+    let loggedOut: Observable<Void>
     
     init(provider: TweetProviding) {
         var section = Section<Tweet>()
         
-        sections = .just([section])
-        
-        provider.fetcher
+        sections = provider.fetcher
             .fetch()
-            .do(onNext: {
+            .map {
                 $0.performOperation(on: &section)
-            })
-            .subscribe()
-            .disposed(by: disposeBag)
+                return [section]
+            }
         
         loggedOut = logout
             .flatMap {

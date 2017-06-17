@@ -17,7 +17,6 @@ final class TweetsViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var logoutButton: UIBarButtonItem!
-    @IBOutlet private weak var addButton: UIBarButtonItem!
     
     // MARK: - View Lifecycle
     

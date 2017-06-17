@@ -241,8 +241,8 @@
 				ED81B7921EF314A10028F362 /* RealmObject.swift */,
 				ED81B7961EF318790028F362 /* Section.swift */,
 				ED81B7901EF310B10028F362 /* ListChange.swift */,
-				EDB76DAC1EE74D08008515A0 /* User.swift */,
 				2542964A1EE5AC5100B76404 /* Tweet.swift */,
+				EDB76DAC1EE74D08008515A0 /* User.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";

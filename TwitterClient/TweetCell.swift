@@ -23,6 +23,8 @@ final class TweetCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
+        userImageView.layer.cornerRadius = 2.0
+        
         viewModel.outputs.userImage
             .bind(to: userImageView.rx.image)
             .disposed(by: disposeBag)

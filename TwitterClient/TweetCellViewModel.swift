@@ -53,9 +53,9 @@ struct TweetCellViewModel: TweetCellViewModelIO, TweetCellViewModelInputs, Tweet
     init() {
         let tweet = self.tweet.asObservable()
         
-        userImage = .just(nil)
+        userImage = .just(#imageLiteral(resourceName: "profile"))
         userHandle = tweet.map { $0?.user.handle }
-        date = tweet.map { DateFormatter.localizedString(from: $0?.date ?? Date(), dateStyle: .short, timeStyle: .none) }
+        date = tweet.map { DateFormatter.localizedString(from: $0?.date ?? Date(), dateStyle: .short, timeStyle: .short) }
         message = tweet.map { $0?.message }
     }
 }

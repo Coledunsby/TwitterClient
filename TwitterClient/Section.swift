@@ -14,7 +14,7 @@ struct Section<T: IdentifiableType & Equatable> {
     
     var items: [T]
     
-    init(items: [T]? = [], header: String? = nil, footer: String? = nil) {
+    init(items: [T]? = []) {
         self.items = items ?? []
     }
 }

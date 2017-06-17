@@ -26,7 +26,7 @@ struct ListChange<T: IdentifiableType & Equatable> {
     }
     
     func performOperation(on section: inout Section<T>) {
-        let index = section.items.index(where: { $0.identity == object.identity }) ?? section.items.count
+        let index = section.items.index(where: { $0.identity == object.identity }) ?? 0
         switch operation {
         case .insert:
             section.items.insert(object, at: index)

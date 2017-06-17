@@ -14,12 +14,16 @@ struct RealmTweetFetcher: TweetFetching {
     
     func fetch() -> Observable<ListChange<Tweet>> {
         guard let user = User.current else { return .empty() }
-        let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
+        let tweets = user.tweets.sorted(byKeyPath: "date")
         return Observable.changeset(from: tweets).flatMap { tweets, changeset -> Observable<ListChange<Tweet>> in
             var listChanges = [ListChange<Tweet>]()
-            listChanges.append(contentsOf: changeset?.deleted.map({ ListChange(.delete, tweets[$0]) }) ?? [])
-            listChanges.append(contentsOf: changeset?.updated.map({ ListChange(.update, tweets[$0]) }) ?? [])
-            listChanges.append(contentsOf: changeset?.inserted.map({ ListChange(.insert, tweets[$0]) }) ?? [])
+            if let changeset = changeset {
+                listChanges.append(contentsOf: changeset.deleted.map({ ListChange(.delete, tweets[$0]) }))
+                listChanges.append(contentsOf: changeset.updated.map({ ListChange(.update, tweets[$0]) }))
+                listChanges.append(contentsOf: changeset.inserted.map({ ListChange(.insert, tweets[$0]) }))
+            } else {
+                listChanges.append(contentsOf: (0 ..< tweets.count).map({ ListChange(.insert, tweets[$0]) }))
+            }
             return Observable.from(listChanges)
         }
     }
