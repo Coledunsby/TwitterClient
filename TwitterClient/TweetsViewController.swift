@@ -59,6 +59,7 @@ final class TweetsViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.outputs.doneLoadingNewer
+            .skip(1)
             .mapTo(false)
             .bind(to: refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
