@@ -5,6 +5,7 @@ target 'TwitterClient' do
 
     platform :ios, '10.0'
 
+    pod 'KeychainSwift'
     pod 'RxCocoa'
     pod 'RxGesture', :git => 'https://github.com/Coledunsby/RxGesture.git'
     pod 'RxKeyboard'

@@ -6,6 +6,7 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
+import KeychainSwift
 import RealmSwift
 import RxSwift
 import SwiftRandom
@@ -13,7 +14,11 @@ import SwiftRandom
 final class User: Object {
     
     dynamic var email: String!
-    dynamic var password: String!
+    
+    var password: String {
+        get { return KeychainSwift().get(email)! }
+        set { KeychainSwift().set(newValue, forKey: email) }
+    }
     
     var handle: String! {
         return email.components(separatedBy: "@").first
@@ -23,6 +28,10 @@ final class User: Object {
     
     public override static func primaryKey() -> String? {
         return "email"
+    }
+    
+    public override static func ignoredProperties() -> [String] {
+        return ["password"]
     }
 }
 

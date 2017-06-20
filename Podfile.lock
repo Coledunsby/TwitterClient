@@ -1,4 +1,5 @@
 PODS:
+  - KeychainSwift (8.0.2)
   - Realm (2.8.3):
     - Realm/Headers (= 2.8.3)
   - Realm/Headers (2.8.3)
@@ -29,6 +30,7 @@ PODS:
   - SwiftRandom (1.0.0)
 
 DEPENDENCIES:
+  - KeychainSwift
   - RxCocoa
   - RxGesture (from `https://github.com/Coledunsby/RxGesture.git`)
   - RxKeyboard
@@ -49,6 +51,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Coledunsby/RxGesture.git
 
 SPEC CHECKSUMS:
+  KeychainSwift: 213db04dfe7244988e61f77c72a2afb2f775954a
   Realm: 3601ef091c8c499a31101d8563b991e75546cdce
   RealmSwift: 8183818515471b01a99abdd2970f8e4fd52b6f4a
   RxCocoa: a0a09f45d0e5b48ecb6a4a7b4b4c89c88d3f633f
@@ -61,6 +64,6 @@ SPEC CHECKSUMS:
   SwiftLint: 3f7543509c931d1291395335f34e245d3919b7f2
   SwiftRandom: 437275c63500ddf5a565cbd56996fb23f12cfc3d
 
-PODFILE CHECKSUM: 620ea4ca59e7e8a04381c844447a2a56cb17091a
+PODFILE CHECKSUM: fbbdb2fac1f760be79fda7949a98e3130af3a145
 
 COCOAPODS: 1.2.1
