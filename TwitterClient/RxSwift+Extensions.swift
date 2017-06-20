@@ -8,23 +8,6 @@
 
 import RxSwift
 
-extension ObservableType {
-    
-    func prevAndNext() -> Observable<(E?, E)> {
-        return self
-            .scan((.none, .none)) { acc, next in
-                return (acc.1, next)
-            }
-            .map { prev, next in
-                return (prev, next!)
-            }
-    }
-    
-    public func asOptional() -> Observable<E?> {
-        return self.map { $0 as E? }
-    }
-}
-
 extension PrimitiveSequence {
     
     /// Returns an observable sequence containing as many elements as its input but all of them are the constant provided as a parameter
@@ -32,12 +15,19 @@ extension PrimitiveSequence {
     /// - Parameter value: A constant that each element of the input sequence is being replaced with
     /// - Returns: An observable sequence containing the values `value` provided as a parameter
     public func mapTo<R>(_ value: R) -> Observable<R> {
-        return asObservable().mapTo(value)
+        return self
+            .asObservable()
+            .mapTo(value)
     }
 }
 
 extension PrimitiveSequence where TraitType == CompletableTrait {
     
+    /// Converting a `Completable` to an `Observable` then to a `Single` does not work
+    /// because a `Completable` does not emit any elements by design. This function 
+    /// converts a `Completable` to a `Single<Void>` by concatenating an empty void observable
+    ///
+    /// - Returns: A `Single<Void>` representation of the `Completable`
     public func asSingle() -> Single<Void> {
         return self
             .mapTo(())

@@ -22,11 +22,12 @@ extension UIStoryboard {
         return UIStoryboard(name: "Compose", bundle: nil)
     }
     
+    /// Instantiates and returns the initial view controller of a specific 
+    /// type in the view controller graph
+    ///
+    /// - Parameter type: The type of the initial view controller
+    /// - Returns: The initial view controller
     func instantiateInitialViewController<C: UIViewController>(ofType type: C.Type) -> C {
         return self.instantiateInitialViewController() as! C
-    }
-    
-    func instantiateViewController<C: UIViewController>(ofType type: C.Type) -> C {
-        return self.instantiateViewController(withIdentifier: "\(type)") as! C
     }
 }

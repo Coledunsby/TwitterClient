@@ -14,11 +14,6 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        customizeAppearance()
-        return true
-    }
-    
-    private func customizeAppearance() {
         let primaryColor = #colorLiteral(red: 0.1137254902, green: 0.631372549, blue: 0.9490196078, alpha: 1)
         let secondaryColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
@@ -44,5 +39,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
             NSFontAttributeName: UIFont(name: "AvenirNext-Medium", size: 9)!,
             NSForegroundColorAttributeName: secondaryColor
         ], for: .normal)
+        
+        return true
     }
 }

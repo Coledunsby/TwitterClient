@@ -9,11 +9,19 @@
 import RealmSwift
 import SwiftRandom
 
+/// Represents a tweet object in the realm database
 final class Tweet: Object {
     
+    /// The unique identifier of the tweet
     dynamic var id = UUID().uuidString
+    
+    /// The user who posted the tweet
     dynamic var user: User!
+    
+    /// The content of the tweet
     dynamic var message = ""
+    
+    /// The post date of the tweet
     dynamic var date = Date()
     
     public override static func primaryKey() -> String? {

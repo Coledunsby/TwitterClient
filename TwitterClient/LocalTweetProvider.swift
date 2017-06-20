@@ -17,7 +17,10 @@ struct LocalTweetFetcher: TweetFetching {
     }
     
     func fetch() -> Single<[Tweet]> {
-        return Single.just([]).delay(1.0, scheduler: MainScheduler.instance)
+        return Single
+            .just([])
+            // Delay 1 second to simulate network conditions
+            .delay(1.0, scheduler: MainScheduler.instance)
     }
 }
 
@@ -38,6 +41,7 @@ struct LocalTweetPoster: TweetPosting {
                 single(.success(tweet))
                 return Disposables.create()
             }
+            // Delay 1 second to simulate network conditions
             .delay(1.0, scheduler: MainScheduler.instance)
     }
 }

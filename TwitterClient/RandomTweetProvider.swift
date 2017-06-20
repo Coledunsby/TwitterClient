@@ -23,6 +23,7 @@ struct RandomTweetFetcher: TweetFetching {
                 single(.success(tweets))
                 return Disposables.create()
             }
+            // Delay 1 second to simulate network conditions
             .delay(1.0, scheduler: MainScheduler.instance)
     }
 }
@@ -41,6 +42,7 @@ struct RandomTweetPoster: TweetPosting {
                 single(.success(Tweet.random()))
                 return Disposables.create()
             }
+            // Delay 1 second to simulate network conditions
             .delay(1.0, scheduler: MainScheduler.instance)
     }
 }
