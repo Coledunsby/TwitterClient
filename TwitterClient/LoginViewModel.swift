@@ -19,7 +19,7 @@ protocol LoginViewModelInputs {
 protocol LoginViewModelOutputs {
     
     var isLoading: Observable<Bool> { get }
-    var success: Observable<Void> { get }
+    var tweetsViewModel: Observable<TweetsViewModel> { get }
     var errors: Observable<Error> { get }
 }
 
@@ -48,7 +48,7 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
     }
     
     let isLoading: Observable<Bool>
-    let success: Observable<Void>
+    let tweetsViewModel: Observable<TweetsViewModel>
     let errors: Observable<Error>
     
     // MARK: - Init
@@ -57,7 +57,7 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         let email = self.email.asObservable()
         let password = self.password.asObservable()
         let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
-        let credentials = emailAndPassword.map { RealmLoginCredentials(email: $0 ?? "", password: $1 ?? "") }
+        let credentials = emailAndPassword.map { LoginCredentials(email: $0 ?? "", password: $1 ?? "") }
         
         let isLoadingSubject = PublishSubject<Bool>()
         
@@ -65,20 +65,22 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
             .withLatestFrom(credentials)
             .flatMapLatest { credentials in
                 provider
-                    .login(credentials as? T)
+                    .login(with: credentials as! T)
                     .asObservable()
-                    .mapTo(())
-                    .materialize()
-                    .do(onSubscribe: {
+                    .do(onNext: { user in
+                        Cache.shared.user = user
+                    }, onSubscribe: {
                         isLoadingSubject.onNext(true)
                     }, onDispose: {
                         isLoadingSubject.onNext(false)
                     })
+                    .map { TweetsViewModel(loginProvider: provider, tweetProvider: RandomTweetProvider(user: $0)) }
+                    .materialize()
             }
             .share()
         
         isLoading = isLoadingSubject
-        success = loginComplete.elements()
+        tweetsViewModel = loginComplete.dematerialize().ignoreErrors()
         errors = loginComplete.errors()
     }
 }

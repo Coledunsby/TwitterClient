@@ -10,15 +10,21 @@ import RxSwift
 
 protocol TweetFetching {
     
-    func fetch() -> Observable<ListChange<Tweet>>
+    init(user: User)
+    
+    func fetch() -> Single<[Tweet]>
 }
 
 protocol TweetPosting {
     
-    func post(_ tweet: Tweet) -> Completable
+    init(user: User)
+    
+    func post(_ text: String) -> Single<Tweet>
 }
 
 protocol TweetProviding {
+    
+    init(user: User)
     
     var fetcher: TweetFetching { get }
     var poster: TweetPosting { get }

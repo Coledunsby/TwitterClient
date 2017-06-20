@@ -6,11 +6,10 @@ target 'TwitterClient' do
     platform :ios, '10.0'
 
     pod 'RxCocoa'
-    pod 'RxDataSources'
     pod 'RxGesture', :git => 'https://github.com/Coledunsby/RxGesture.git'
     pod 'RxKeyboard'
     pod 'RxRealm'
-    # pod 'RxRealmDataSources'
+    pod 'RxRealmDataSources'
     pod 'RxSwift'
     pod 'RxSwiftExt'
     pod 'SwiftLint'

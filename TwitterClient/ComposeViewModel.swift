@@ -58,27 +58,22 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
     init(provider: TweetProviding) {
         let text = self.text.asObservable()
         let dismiss = self.dismiss.asObservable()
-
-        let tweet = text.map { message -> Tweet in
-            let tweet = Tweet()
-            tweet.message = message ?? ""
-            tweet.user = User.current
-            return tweet
-        }
         
         let isLoadingSubject = PublishSubject<Bool>()
         
         let post = self.tweet
-            .withLatestFrom(tweet)
-            .flatMapLatest { tweet in
+            .withLatestFrom(text)
+            .flatMapLatest { text in
                 provider.poster
-                    .post(tweet)
-                    .asSingle()
-                    .do(onSubscribe: {
+                    .post(text ?? "")
+                    .do(onNext: { tweet in
+                        Cache.shared.addTweet(tweet)
+                    }, onSubscribe: {
                         isLoadingSubject.onNext(true)
                     }, onDispose: {
                         isLoadingSubject.onNext(false)
                     })
+                    .mapTo(())
             }
         
         charactersRemaining = text.map { 140 - ($0?.characters.count ?? 0) }

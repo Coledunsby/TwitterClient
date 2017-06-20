@@ -9,7 +9,7 @@
 import RealmSwift
 import SwiftRandom
 
-final class Tweet: RealmObject {
+final class Tweet: Object {
     
     dynamic var id = UUID().uuidString
     dynamic var user: User!
@@ -23,7 +23,7 @@ final class Tweet: RealmObject {
 
 extension Tweet {
     
-    static func random() -> Tweet {
+    static func random(newerThan: Date = Date()) -> Tweet {
         let tweet = Tweet()
         tweet.user = User.random()
         tweet.message = Randoms.randomFakeConversation()

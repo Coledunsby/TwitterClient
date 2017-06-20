@@ -14,7 +14,7 @@ import RxSwiftExt
 
 final class LoginViewController: UIViewController {
     
-    private let viewModel: LoginViewModelIO = LoginViewModel(provider: Config.loginProvider.asAnyLoginProvider())
+    private let viewModel: LoginViewModelIO = LoginViewModel(provider: MockLoginProvider().asAnyLoginProvider())
     private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var stackView: UIStackView!
@@ -58,9 +58,11 @@ final class LoginViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
-        viewModel.outputs.success
-            .bind { [unowned self] in
-                self.dismiss(animated: true)
+        viewModel.outputs.tweetsViewModel
+            .bind { [unowned self] tweetsViewModel in
+                let tweetsVC = UIStoryboard.tweets.instantiateInitialViewController(ofType: TweetsViewController.self)
+                tweetsVC.viewModel = tweetsViewModel as TweetsViewModelIO
+                self.navigationController?.pushViewController(tweetsVC, animated: true)
             }
             .disposed(by: disposeBag)
         
@@ -106,5 +108,15 @@ final class LoginViewController: UIViewController {
                 self.loginButton.sendActions(for: .touchUpInside)
             }
             .disposed(by: disposeBag)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 }

@@ -12,7 +12,7 @@ import RxSwift
 
 final class ComposeViewController: UIViewController {
     
-    var viewModel: ComposeViewModelIO = ComposeViewModel(provider: Config.tweetProvider)
+    var viewModel: ComposeViewModelIO!
     
     private let disposeBag = DisposeBag()
     

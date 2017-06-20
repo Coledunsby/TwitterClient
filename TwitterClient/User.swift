@@ -7,9 +7,10 @@
 //
 
 import RealmSwift
+import RxSwift
 import SwiftRandom
 
-final class User: RealmObject {
+final class User: Object {
     
     dynamic var email: String!
     dynamic var password: String!
@@ -22,13 +23,6 @@ final class User: RealmObject {
     
     public override static func primaryKey() -> String? {
         return "email"
-    }
-}
-
-extension User {
-    
-    static var current: User? {
-        return Config.loginProvider.currentUser
     }
 }
 

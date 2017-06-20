@@ -9,25 +9,15 @@
 import RxSwift
 import RxSwiftExt
 
-extension PrimitiveSequence where TraitType == CompletableTrait {
-    
-    public func asSingle() -> Single<Void> {
-        return self
-            .asObservable()
-            .mapTo(())
-            .concat(Observable.just(()))
-            .asSingle()
-    }
-}
-
 protocol TweetsViewModelInputs {
     
+    var loadNewer: PublishSubject<Void> { get }
     var logout: PublishSubject<Void> { get }
 }
 
 protocol TweetsViewModelOutputs {
     
-    var sections: Observable<[Section<Tweet>]> { get }
+    var doneLoadingNewer: Observable<Void> { get }
     var loggedOut: Observable<Void> { get }
 }
 
@@ -45,7 +35,7 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
         return self
     }
     
-    let user = Variable<User?>(nil)
+    let loadNewer = PublishSubject<Void>()
     let logout = PublishSubject<Void>()
     
     // MARK: - Outputs
@@ -54,24 +44,27 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
         return self
     }
     
-    // MARK: - Init
-    
-    let sections: Observable<[Section<Tweet>]>
+    let doneLoadingNewer: Observable<Void>
     let loggedOut: Observable<Void>
     
-    init(provider: TweetProviding) {
-        var section = Section<Tweet>()
-        
-        sections = provider.fetcher
-            .fetch()
-            .map {
-                $0.performOperation(on: &section)
-                return [section]
+    // MARK: - Init
+    
+    init<T>(loginProvider: AnyLoginProvider<T>, tweetProvider: TweetProviding) {
+        doneLoadingNewer = loadNewer
+            .startWith(())
+            .flatMap {
+                tweetProvider.fetcher
+                    .fetch()
+                    .do(onNext: { tweets in
+                        tweets.forEach { Cache.shared.addTweet($0) }
+                    })
+                    .mapTo(())
             }
+        
         
         loggedOut = logout
             .flatMap {
-                Config.loginProvider
+                loginProvider
                     .logout()
                     .asSingle()
             }
