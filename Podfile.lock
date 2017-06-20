@@ -1,9 +1,9 @@
 PODS:
-  - Realm (2.8.2):
-    - Realm/Headers (= 2.8.2)
-  - Realm/Headers (2.8.2)
-  - RealmSwift (2.8.2):
-    - Realm (= 2.8.2)
+  - Realm (2.8.3):
+    - Realm/Headers (= 2.8.3)
+  - Realm/Headers (2.8.3)
+  - RealmSwift (2.8.3):
+    - Realm (= 2.8.3)
   - RxCocoa (3.5.0):
     - RxSwift (~> 3.4)
   - RxGesture (1.0.1):
@@ -15,7 +15,7 @@ PODS:
   - RxRealm (0.6.0):
     - RealmSwift (~> 2.5)
     - RxSwift (~> 3.2)
-  - RxRealmDataSources (0.2.1):
+  - RxRealmDataSources (0.2.2):
     - RealmSwift (~> 2.1)
     - RxCocoa (~> 3.1)
     - RxRealm (~> 0.5)
@@ -49,13 +49,13 @@ CHECKOUT OPTIONS:
     :git: https://github.com/Coledunsby/RxGesture.git
 
 SPEC CHECKSUMS:
-  Realm: 0e262abf087c7054013e00579274f7e070486d4a
-  RealmSwift: 73565e91bc403c1149e4acf31ff9de506b2f9459
+  Realm: 3601ef091c8c499a31101d8563b991e75546cdce
+  RealmSwift: 8183818515471b01a99abdd2970f8e4fd52b6f4a
   RxCocoa: a0a09f45d0e5b48ecb6a4a7b4b4c89c88d3f633f
   RxGesture: 22d6fbe3e54c6f62c0e0499a25325b8bc78b148c
   RxKeyboard: a0a681f3efa0c265e42ced07537f7a464e867e74
   RxRealm: 323de579b50b5e0f4a3e087d5925021f976ffaf1
-  RxRealmDataSources: 743901f35ef18533b2fc5d41a0f6b6b62b3c3304
+  RxRealmDataSources: a5fb0bbd4e5938ba8a776dfb7510150fd981c7a0
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
   RxSwiftExt: 72278e4a84f35324a82a8dd359859782706576a6
   SwiftLint: 3f7543509c931d1291395335f34e245d3919b7f2

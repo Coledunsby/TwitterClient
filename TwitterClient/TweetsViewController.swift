@@ -18,6 +18,7 @@ final class TweetsViewController: UIViewController {
     
     @IBOutlet private weak var tableView: UITableView!
     @IBOutlet private weak var logoutButton: UIBarButtonItem!
+    @IBOutlet private weak var composeButton: UIBarButtonItem!
     
     // MARK: - View Lifecycle
     
@@ -43,7 +44,9 @@ final class TweetsViewController: UIViewController {
             .bind(to: viewModel.inputs.logout)
             .disposed(by: disposeBag)
         
-//        viewModel.inputs.loadNewer.onNext(())
+        composeButton.rx.tap
+            .bind(to: viewModel.inputs.compose)
+            .disposed(by: disposeBag)
         
         // MARK: Outputs
         
@@ -58,6 +61,15 @@ final class TweetsViewController: UIViewController {
         viewModel.outputs.doneLoadingNewer
             .mapTo(false)
             .bind(to: refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+        
+        viewModel.outputs.composeViewModel
+            .bind { [unowned self] composeViewModel in
+                let composeNavigationController = UIStoryboard.compose.instantiateInitialViewController(ofType: UINavigationController.self)
+                let composeVC = composeNavigationController.viewControllers[0] as! ComposeViewController
+                composeVC.viewModel = composeViewModel as ComposeViewModelIO
+                self.navigationController?.present(composeNavigationController, animated: true)
+            }
             .disposed(by: disposeBag)
         
         viewModel.outputs.loggedOut

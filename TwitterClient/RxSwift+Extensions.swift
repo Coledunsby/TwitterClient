@@ -19,6 +19,10 @@ extension ObservableType {
                 return (prev, next!)
             }
     }
+    
+    public func asOptional() -> Observable<E?> {
+        return self.map { $0 as E? }
+    }
 }
 
 extension PrimitiveSequence {

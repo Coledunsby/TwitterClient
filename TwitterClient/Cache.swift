@@ -17,42 +17,57 @@ final class Cache {
     static let shared = Cache()
     private static let userDefaultsKey = "email"
     
-    private var _user = Variable<User?>(nil)
+    private let _user = Variable<User?>(nil)
     
-    var user: User? {
-        get {
-            return _user.value
-        }
-        set {
-            if let newUser = newValue {
-                UserDefaults.standard.set(newUser.email, forKey: Cache.userDefaultsKey)
-            } else {
-                UserDefaults.standard.removeObject(forKey: Cache.userDefaultsKey)
-            }
-            _user.value = newValue
-        }
-    }
-    
+    let user: Observable<User?>
     let tweets: Observable<TweetChangeset>
     
     init() {
-        if let email = UserDefaults.standard.string(forKey: Cache.userDefaultsKey) {
-            let realm = try! Realm()
-            _user.value = realm.object(ofType: User.self, forPrimaryKey: email)
-        }
+        user = _user.asObservable().share()
         
-        tweets = _user
-            .asObservable()
+        tweets = user
             .flatMap { user -> Observable<TweetChangeset> in
                 guard let user = user else { return .empty() }
-                return Observable.changeset(from: user.tweets.sorted(byKeyPath: "date"))
+                let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
+                return Observable.changeset(from: tweets)
             }
+        
+//        tweets = Observable.changeset(from: realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false))
+        
+        let realm = try! Realm()
+        
+        if let email = UserDefaults.standard.string(forKey: Cache.userDefaultsKey),
+            let user = realm.object(ofType: User.self, forPrimaryKey: email) {
+            setCurrentUser(user)
+        }
+    }
+    
+    func setCurrentUser(_ user: User) {
+        UserDefaults.standard.set(user.email, forKey: Cache.userDefaultsKey)
+        _user.value = user
+    }
+    
+    func invalidateCurrentUser() {
+        UserDefaults.standard.removeObject(forKey: Cache.userDefaultsKey)
+        _user.value = nil
     }
     
     func addTweet(_ tweet: Tweet) {
+        addTweets([tweet])
+    }
+    
+    func addTweets(_ tweets: [Tweet]) {
         let realm = try! Realm()
         try! realm.write {
-            realm.add(tweet)
+            realm.add(tweets.map({ $0.user }), update: true)
+            realm.add(tweets)
+        }
+    }
+    
+    func clear() {
+        let realm = try! Realm()
+        try! realm.write {
+            realm.deleteAll()
         }
     }
 }

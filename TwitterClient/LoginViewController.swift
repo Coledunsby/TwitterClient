@@ -14,7 +14,7 @@ import RxSwiftExt
 
 final class LoginViewController: UIViewController {
     
-    private let viewModel: LoginViewModelIO = LoginViewModel(provider: MockLoginProvider().asAnyLoginProvider())
+    private let viewModel: LoginViewModelIO = LoginViewModel()
     private let disposeBag = DisposeBag()
     
     @IBOutlet private weak var stackView: UIStackView!
@@ -47,19 +47,19 @@ final class LoginViewController: UIViewController {
         // MARK: Outputs
         
         viewModel.outputs.isLoading
-            .bind { [unowned self] isLoading in
-                self.stackView.alpha = isLoading ? 0.5 : 1.0
-                if isLoading {
-                    self.activityIndicatorView.startAnimating()
-                } else {
-                    self.activityIndicatorView.stopAnimating()
-                }
-                
-            }
+            .map { $0 ? 0.5 : 1.0 }
+            .bind(to: self.stackView.rx.alpha)
+            .disposed(by: disposeBag)
+        
+        viewModel.outputs.isLoading
+            .bind(to: self.activityIndicatorView.rx.isAnimating)
             .disposed(by: disposeBag)
         
         viewModel.outputs.tweetsViewModel
             .bind { [unowned self] tweetsViewModel in
+                self.emailTextField.text = ""
+                self.passwordTextField.text = ""
+                
                 let tweetsVC = UIStoryboard.tweets.instantiateInitialViewController(ofType: TweetsViewController.self)
                 tweetsVC.viewModel = tweetsViewModel as TweetsViewModelIO
                 self.navigationController?.pushViewController(tweetsVC, animated: true)
@@ -79,7 +79,8 @@ final class LoginViewController: UIViewController {
         view.rx
             .tapGesture(configuration: { $0.delegate = ExclusiveGestureRecognizerDelegate.shared })
             .when(.recognized)
-            .bind { [unowned self] _ in
+            .mapTo(())
+            .bind { [unowned self] in
                 self.view.endEditing(true)
             }
             .disposed(by: disposeBag)

@@ -53,34 +53,36 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
     
     // MARK: - Init
     
-    init<T>(provider: AnyLoginProvider<T>) {
-        let email = self.email.asObservable()
-        let password = self.password.asObservable()
-        let emailAndPassword = Observable.combineLatest(email, password, resultSelector: { ($0, $1) })
-        let credentials = emailAndPassword.map { LoginCredentials(email: $0 ?? "", password: $1 ?? "") }
+    init() {
+        let email = self.email.asObservable().unwrap()
+        let password = self.password.asObservable().unwrap()
+        let emailAndPassword = Observable.combineLatest(email, password) { ($0, $1) }
+        let credentials = emailAndPassword.map { LoginCredentials(email: $0, password: $1) }
         
+        let provider = LocalLoginProvider().asAnyLoginProvider()
         let isLoadingSubject = PublishSubject<Bool>()
         
-        let loginComplete = login
+        isLoading = isLoadingSubject
+        
+        tweetsViewModel = Cache.shared.user
+            .unwrap()
+            .map { TweetsViewModel(loginProvider: provider, tweetProvider: RandomTweetProvider(user: $0)) }
+        
+        errors = login
             .withLatestFrom(credentials)
             .flatMapLatest { credentials in
                 provider
-                    .login(with: credentials as! T)
-                    .asObservable()
+                    .login(with: credentials)
                     .do(onNext: { user in
-                        Cache.shared.user = user
+                        Cache.shared.setCurrentUser(user)
                     }, onSubscribe: {
                         isLoadingSubject.onNext(true)
                     }, onDispose: {
                         isLoadingSubject.onNext(false)
                     })
-                    .map { TweetsViewModel(loginProvider: provider, tweetProvider: RandomTweetProvider(user: $0)) }
+                    .asObservable()
                     .materialize()
+                    .errors()
             }
-            .share()
-        
-        isLoading = isLoadingSubject
-        tweetsViewModel = loginComplete.dematerialize().ignoreErrors()
-        errors = loginComplete.errors()
     }
 }

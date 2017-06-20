@@ -13,11 +13,13 @@ protocol TweetsViewModelInputs {
     
     var loadNewer: PublishSubject<Void> { get }
     var logout: PublishSubject<Void> { get }
+    var compose: PublishSubject<Void> { get }
 }
 
 protocol TweetsViewModelOutputs {
     
     var doneLoadingNewer: Observable<Void> { get }
+    var composeViewModel: Observable<ComposeViewModel> { get }
     var loggedOut: Observable<Void> { get }
 }
 
@@ -37,6 +39,7 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
     
     let loadNewer = PublishSubject<Void>()
     let logout = PublishSubject<Void>()
+    let compose = PublishSubject<Void>()
     
     // MARK: - Outputs
     
@@ -45,6 +48,7 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
     }
     
     let doneLoadingNewer: Observable<Void>
+    let composeViewModel: Observable<ComposeViewModel>
     let loggedOut: Observable<Void>
     
     // MARK: - Init
@@ -55,18 +59,19 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
             .flatMap {
                 tweetProvider.fetcher
                     .fetch()
-                    .do(onNext: { tweets in
-                        tweets.forEach { Cache.shared.addTweet($0) }
-                    })
+                    .do(onNext: { Cache.shared.addTweets($0) })
                     .mapTo(())
             }
-        
         
         loggedOut = logout
             .flatMap {
                 loginProvider
                     .logout()
                     .asSingle()
+                    .do(onNext: { Cache.shared.invalidateCurrentUser() })
             }
+        
+        composeViewModel = compose
+            .mapTo(ComposeViewModel(provider: tweetProvider))
     }
 }

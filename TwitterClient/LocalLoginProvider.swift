@@ -44,7 +44,7 @@ struct LoginCredentials {
     }
 }
 
-struct MockLoginProvider: LoginProviding {
+struct LocalLoginProvider: LoginProviding {
     
     typealias Parameter = LoginCredentials
     
