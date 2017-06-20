@@ -66,7 +66,7 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         
         tweetsViewModel = Cache.shared.user
             .unwrap()
-            .map { TweetsViewModel(loginProvider: provider, tweetProvider: RandomTweetProvider(user: $0)) }
+            .map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
         
         errors = login
             .withLatestFrom(credentials)

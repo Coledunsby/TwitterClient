@@ -114,6 +114,7 @@ final class LoginViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
+        emailTextField.becomeFirstResponder()
     }
     
     override func viewWillDisappear(_ animated: Bool) {

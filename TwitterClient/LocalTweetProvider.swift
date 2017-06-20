@@ -1,14 +1,14 @@
 //
-//  RandomTweetProvider.swift
+//  LocalTweetProvider.swift
 //  TwitterClient
 //
-//  Created by Cole Dunsby on 2017-06-12.
+//  Created by Cole Dunsby on 2017-06-20.
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
 import RxSwift
 
-struct RandomTweetFetcher: TweetFetching {
+struct LocalTweetFetcher: TweetFetching {
     
     private let user: User
     
@@ -17,17 +17,11 @@ struct RandomTweetFetcher: TweetFetching {
     }
     
     func fetch() -> Single<[Tweet]> {
-        return Single
-            .create { single in
-                let tweets = (0 ..< 10).map { _ in Tweet.random() }
-                single(.success(tweets))
-                return Disposables.create()
-            }
-            .delay(1.0, scheduler: MainScheduler.instance)
+        return Single.just([]).delay(1.0, scheduler: MainScheduler.instance)
     }
 }
 
-struct RandomTweetPoster: TweetPosting {
+struct LocalTweetPoster: TweetPosting {
     
     private let user: User
     
@@ -38,20 +32,23 @@ struct RandomTweetPoster: TweetPosting {
     func post(_ text: String) -> Single<Tweet> {
         return Single
             .create { single in
-                single(.success(Tweet.random()))
+                let tweet = Tweet()
+                tweet.message = text
+                tweet.user = self.user
+                single(.success(tweet))
                 return Disposables.create()
             }
             .delay(1.0, scheduler: MainScheduler.instance)
     }
 }
 
-struct RandomTweetProvider: TweetProviding {
+struct LocalTweetProvider: TweetProviding {
     
     let fetcher: TweetFetching
     let poster: TweetPosting
     
     init(user: User) {
-        fetcher = RandomTweetFetcher(user: user)
-        poster = RandomTweetPoster(user: user)
+        fetcher = LocalTweetFetcher(user: user)
+        poster = LocalTweetPoster(user: user)
     }
 }

@@ -23,18 +23,18 @@ final class Cache {
     let tweets: Observable<TweetChangeset>
     
     init() {
-        user = _user.asObservable().share()
+        user = _user.asObservable()
         
         tweets = user
-            .flatMap { user -> Observable<TweetChangeset> in
-                guard let user = user else { return .empty() }
+            .unwrap()
+            .flatMapLatest { user -> Observable<TweetChangeset> in
                 let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
                 return Observable.changeset(from: tweets)
             }
         
-//        tweets = Observable.changeset(from: realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false))
-        
         let realm = try! Realm()
+        
+//        tweets = Observable.changeset(from: realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false))
         
         if let email = UserDefaults.standard.string(forKey: Cache.userDefaultsKey),
             let user = realm.object(ofType: User.self, forPrimaryKey: email) {

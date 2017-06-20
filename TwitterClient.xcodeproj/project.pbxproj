@@ -23,6 +23,7 @@
 		ED4C119C1EF0D45700E8D5F7 /* ComposeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4C119B1EF0D45700E8D5F7 /* ComposeViewController.swift */; };
 		ED4C119E1EF0D46000E8D5F7 /* ComposeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED4C119D1EF0D46000E8D5F7 /* ComposeViewModel.swift */; };
 		ED4C11A01EF0D55700E8D5F7 /* Compose.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ED4C119F1EF0D55700E8D5F7 /* Compose.storyboard */; };
+		ED5341AE1EF9D9A400176FE8 /* LocalTweetProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED5341AD1EF9D9A400176FE8 /* LocalTweetProvider.swift */; };
 		ED81B7951EF316840028F362 /* TweetCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81B7941EF316840028F362 /* TweetCell.swift */; };
 		ED81B7991EF338BE0028F362 /* LocalLoginProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED81B7981EF338BE0028F362 /* LocalLoginProvider.swift */; };
 		EDB76D9D1EE742F1008515A0 /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EDB76D9C1EE742F1008515A0 /* Login.storyboard */; };
@@ -78,6 +79,7 @@
 		ED4C119B1EF0D45700E8D5F7 /* ComposeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewController.swift; sourceTree = "<group>"; };
 		ED4C119D1EF0D46000E8D5F7 /* ComposeViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComposeViewModel.swift; sourceTree = "<group>"; };
 		ED4C119F1EF0D55700E8D5F7 /* Compose.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Compose.storyboard; sourceTree = "<group>"; };
+		ED5341AD1EF9D9A400176FE8 /* LocalTweetProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalTweetProvider.swift; sourceTree = "<group>"; };
 		ED81B7941EF316840028F362 /* TweetCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TweetCell.swift; sourceTree = "<group>"; };
 		ED81B7981EF338BE0028F362 /* LocalLoginProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalLoginProvider.swift; sourceTree = "<group>"; };
 		EDB76D9C1EE742F1008515A0 /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
@@ -224,6 +226,7 @@
 				ED81B7941EF316840028F362 /* TweetCell.swift */,
 				ED4C11971EF0CD1200E8D5F7 /* TweetCellViewModel.swift */,
 				ED1DA0C01EEE528700DD97B3 /* TweetProvider.swift */,
+				ED5341AD1EF9D9A400176FE8 /* LocalTweetProvider.swift */,
 				ED1DA0C21EEE538900DD97B3 /* RandomTweetProvider.swift */,
 			);
 			name = Tweets;
@@ -461,6 +464,7 @@
 				EDB76DAD1EE74D08008515A0 /* User.swift in Sources */,
 				ED81B7951EF316840028F362 /* TweetCell.swift in Sources */,
 				EDCCBD091EF85ABD0048F971 /* UIStoryboard+Extensions.swift in Sources */,
+				ED5341AE1EF9D9A400176FE8 /* LocalTweetProvider.swift in Sources */,
 				ED4C119C1EF0D45700E8D5F7 /* ComposeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
