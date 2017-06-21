@@ -46,19 +46,21 @@ final class ComposeViewController: UIViewController {
         
         viewModel.outputs.charactersRemaining
             .map(String.init)
-            .bind(to: charactersRemainingLabel.rx.text)
+            .drive(charactersRemainingLabel.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.outputs.isValid
-            .bind(to: tweetButton.rx.isEnabled)
+            .drive(tweetButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
         viewModel.outputs.isLoading
-            .bind(to: activityIndicatorView.rx.isAnimating)
+            .drive(activityIndicatorView.rx.isAnimating)
             .disposed(by: disposeBag)
         
         viewModel.outputs.shouldDismiss
-            .bind { [unowned self] in self.dismiss(animated: true) }
+            .drive(onNext: { [unowned self] in
+                self.dismiss(animated: true)
+            })
             .disposed(by: disposeBag)
         
         // MARK: UI

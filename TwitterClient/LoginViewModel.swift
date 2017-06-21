@@ -6,6 +6,7 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
+import RxCocoa
 import RxSwift
 
 protocol LoginViewModelInputs {
@@ -17,9 +18,9 @@ protocol LoginViewModelInputs {
 
 protocol LoginViewModelOutputs {
     
-    var isLoading: Observable<Bool> { get }
-    var tweetsViewModel: Observable<TweetsViewModel> { get }
-    var errors: Observable<Error> { get }
+    var isLoading: Driver<Bool> { get }
+    var tweetsViewModel: Driver<TweetsViewModel> { get }
+    var errors: Driver<Error> { get }
 }
 
 protocol LoginViewModelIO {
@@ -46,24 +47,26 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         return self
     }
     
-    let isLoading: Observable<Bool>
-    let tweetsViewModel: Observable<TweetsViewModel>
-    let errors: Observable<Error>
+    let isLoading: Driver<Bool>
+    let tweetsViewModel: Driver<TweetsViewModel>
+    let errors: Driver<Error>
     
     // MARK: - Init
     
     init() {
-        let email = self.email.asObservable().unwrap().map { $0.lowercased() }
-        let password = self.password.asObservable().unwrap()
-        let emailAndPassword = Observable.combineLatest(email, password) { ($0, $1) }
+        let email = self.email.asDriver().unwrap().map { $0.lowercased() }
+        let password = self.password.asDriver().unwrap()
+        let emailAndPassword = Driver.combineLatest(email, password) { ($0, $1) }
         let credentials = emailAndPassword.map { LoginCredentials(email: $0, password: $1) }
         
         let provider = LocalLoginProvider().asAnyLoginProvider()
         let isLoadingSubject = PublishSubject<Bool>()
         
         isLoading = isLoadingSubject
+            .asDriver(onErrorJustReturn: false)
         
         tweetsViewModel = Cache.shared.user
+            .asDriver(onErrorJustReturn: nil)
             .unwrap()
             .map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
         
@@ -83,5 +86,8 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
                     .materialize()
                     .errors()
             }
+            .asOptional()
+            .asDriver(onErrorJustReturn: nil)
+            .unwrap()
     }
 }

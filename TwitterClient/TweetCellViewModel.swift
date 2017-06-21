@@ -6,6 +6,7 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
+import RxCocoa
 import RxSwift
 
 protocol TweetCellViewModelInputs {
@@ -15,10 +16,10 @@ protocol TweetCellViewModelInputs {
 
 protocol TweetCellViewModelOutputs {
     
-    var userImage: Observable<UIImage?> { get }
-    var userHandle: Observable<String?> { get }
-    var date: Observable<String?> { get }
-    var message: Observable<String?> { get }
+    var userImage: Driver<UIImage?> { get }
+    var userHandle: Driver<String?> { get }
+    var date: Driver<String?> { get }
+    var message: Driver<String?> { get }
 }
 
 protocol TweetCellViewModelIO {
@@ -43,15 +44,15 @@ struct TweetCellViewModel: TweetCellViewModelIO, TweetCellViewModelInputs, Tweet
         return self
     }
     
-    let userImage: Observable<UIImage?>
-    let userHandle: Observable<String?>
-    let date: Observable<String?>
-    let message: Observable<String?>
+    let userImage: Driver<UIImage?>
+    let userHandle: Driver<String?>
+    let date: Driver<String?>
+    let message: Driver<String?>
     
     // MARK: - Init
     
     init() {
-        let tweet = self.tweet.asObservable()
+        let tweet = self.tweet.asDriver()
         
         userImage = .just(#imageLiteral(resourceName: "profile"))
         userHandle = tweet.map { $0?.user.handle }

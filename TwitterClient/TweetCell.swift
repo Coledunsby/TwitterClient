@@ -26,19 +26,19 @@ final class TweetCell: UITableViewCell {
         userImageView.layer.cornerRadius = 2.0
         
         viewModel.outputs.userImage
-            .bind(to: userImageView.rx.image)
+            .drive(userImageView.rx.image)
             .disposed(by: disposeBag)
         
         viewModel.outputs.userHandle
-            .bind(to: userHandleLabel.rx.text)
+            .drive(userHandleLabel.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.outputs.date
-            .bind(to: dateLabel.rx.text)
+            .drive(dateLabel.rx.text)
             .disposed(by: disposeBag)
         
         viewModel.outputs.message
-            .bind(to: messageLabel.rx.text)
+            .drive(messageLabel.rx.text)
             .disposed(by: disposeBag)
     }
 }

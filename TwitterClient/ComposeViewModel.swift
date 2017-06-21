@@ -6,6 +6,7 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
+import RxCocoa
 import RxSwift
 
 protocol ComposeViewModelInputs {
@@ -17,10 +18,10 @@ protocol ComposeViewModelInputs {
 
 protocol ComposeViewModelOutputs {
     
-    var charactersRemaining: Observable<Int> { get }
-    var isValid: Observable<Bool> { get }
-    var isLoading: Observable<Bool> { get }
-    var shouldDismiss: Observable<Void> { get }
+    var charactersRemaining: Driver<Int> { get }
+    var isValid: Driver<Bool> { get }
+    var isLoading: Driver<Bool> { get }
+    var shouldDismiss: Driver<Void> { get }
 }
 
 protocol ComposeViewModelIO {
@@ -47,24 +48,28 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
         return self
     }
     
-    let charactersRemaining: Observable<Int>
-    let isValid: Observable<Bool>
-    let isLoading: Observable<Bool>
-    let shouldDismiss: Observable<Void>
+    let charactersRemaining: Driver<Int>
+    let isValid: Driver<Bool>
+    let isLoading: Driver<Bool>
+    let shouldDismiss: Driver<Void>
     
     // MARK: - Init
     
     init(provider: TweetProviding) {
-        let text = self.text.asObservable()
-        let dismiss = self.dismiss.asObservable()
+        let text = self.text.asDriver()
+        let dismiss = self.dismiss.asDriver(onErrorJustReturn: ())
         
         let isLoadingSubject = PublishSubject<Bool>()
         
         let post = tweet
+            .asDriver(onErrorJustReturn: ())
             .withLatestFrom(text)
             .flatMapLatest { text in
                 provider.poster
                     .post(text ?? "")
+                    .asOptional()
+                    .asDriver(onErrorJustReturn: nil)
+                    .unwrap()
                     .do(onNext: { tweet in
                         Cache.shared.addTweet(tweet)
                     }, onSubscribe: {
@@ -77,7 +82,7 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
         
         charactersRemaining = text.map { 140 - ($0?.characters.count ?? 0) }
         isValid = charactersRemaining.map { (0 ..< 140) ~= $0 }
-        isLoading = isLoadingSubject
-        shouldDismiss = Observable.merge([dismiss, post])
+        isLoading = isLoadingSubject.asDriver(onErrorJustReturn: false)
+        shouldDismiss = Driver.merge([dismiss, post])
     }
 }
