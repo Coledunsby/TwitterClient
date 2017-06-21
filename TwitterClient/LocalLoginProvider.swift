@@ -24,21 +24,6 @@ extension String {
 /// A struct to store and validate email-password pairs
 struct LoginCredentials {
     
-    enum Error: LocalizedError {
-        
-        case invalidEmail
-        case invalidPassword
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidEmail:
-                return "Email address is invalid."
-            case .invalidPassword:
-                return "Password is invalid."
-            }
-        }
-    }
-    
     let email: String
     let password: String
     
@@ -46,8 +31,8 @@ struct LoginCredentials {
     ///
     /// - Throws: an `Error` if the criteria is not met
     func validate() throws {
-        guard email.isValidEmail() else { throw Error.invalidEmail }
-        guard password.characters.count >= 6 else { throw Error.invalidPassword }
+        guard email.isValidEmail() else { throw LoginError.invalidEmail }
+        guard password.characters.count >= 6 else { throw LoginError.invalidPassword }
     }
 }
 
@@ -55,18 +40,6 @@ struct LoginCredentials {
 struct LocalLoginProvider: LoginProviding {
     
     typealias Parameter = LoginCredentials
-    
-    enum Error: LocalizedError {
-        
-        case invalidCredentials
-        
-        var errorDescription: String? {
-            switch self {
-            case .invalidCredentials:
-                return "Credentials are invalid."
-            }
-        }
-    }
     
     func login(with parameter: LoginCredentials) -> Single<User> {
         do {
@@ -80,7 +53,7 @@ struct LocalLoginProvider: LoginProviding {
         
         if let existingUser = realm.object(ofType: User.self, forPrimaryKey: parameter.email) {
             // If a user exists with the provided email, check if the passwords match
-            guard existingUser.password == parameter.password else { return .error(Error.invalidCredentials) }
+            guard existingUser.password == parameter.password else { return .error(LoginError.invalidCredentials) }
             user = existingUser
         } else {
             // Create a new user if one does not already exist with that email

@@ -9,6 +9,27 @@
 import RxCocoa
 import RxSwift
 
+enum LoginError: LocalizedError {
+    
+    case invalidEmail
+    case invalidPassword
+    case invalidCredentials
+    case unknown
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidEmail:
+            return "Email address is invalid."
+        case .invalidPassword:
+            return "Password is invalid."
+        case .invalidCredentials:
+            return "Credentials are invalid."
+        case .unknown:
+            return "An unknown error occurred."
+        }
+    }
+}
+
 protocol LoginViewModelInputs {
     
     var email: Variable<String?> { get }

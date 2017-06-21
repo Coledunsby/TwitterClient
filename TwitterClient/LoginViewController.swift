@@ -71,6 +71,17 @@ final class LoginViewController: UIViewController {
                 let alertController = UIAlertController(title: "Error!", message: error.localizedDescription, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alertController, animated: true)
+                
+                guard let loginError = error as? LoginError else { return }
+                
+                switch loginError {
+                case .invalidEmail:
+                    self.emailTextField.becomeFirstResponder()
+                case .invalidPassword:
+                    self.passwordTextField.becomeFirstResponder()
+                default:
+                    break
+                }
             })
             .disposed(by: disposeBag)
         
