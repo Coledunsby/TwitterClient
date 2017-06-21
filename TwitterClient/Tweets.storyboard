@@ -15,7 +15,7 @@
         </array>
     </customFonts>
     <scenes>
-        <!--TWEETS-->
+        <!--Twitter Client-->
         <scene sceneID="hxr-Zq-8hf">
             <objects>
                 <viewController id="S6X-YA-xbB" customClass="TweetsViewController" customModule="TwitterClient" customModuleProvider="target" sceneMemberID="viewController">
@@ -107,7 +107,7 @@
                             <constraint firstAttribute="trailing" secondItem="EBS-N2-X53" secondAttribute="trailing" id="p2L-rN-QPN"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="TWEETS" id="ppG-kV-Xa5">
+                    <navigationItem key="navigationItem" title="Twitter Client" id="ppG-kV-Xa5">
                         <barButtonItem key="leftBarButtonItem" image="logout" id="Mws-na-p2h"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="HsD-0T-Zv9"/>
                     </navigationItem>
