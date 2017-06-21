@@ -53,7 +53,7 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
     // MARK: - Init
     
     init() {
-        let email = self.email.asObservable().unwrap()
+        let email = self.email.asObservable().unwrap().map { $0.lowercased() }
         let password = self.password.asObservable().unwrap()
         let emailAndPassword = Observable.combineLatest(email, password) { ($0, $1) }
         let credentials = emailAndPassword.map { LoginCredentials(email: $0, password: $1) }

@@ -28,6 +28,14 @@ final class User: Object {
         return email.components(separatedBy: "@").first
     }
     
+    var firstTweet: Tweet? {
+        return tweets.sorted(byKeyPath: "date").first
+    }
+    
+    var lastTweet: Tweet? {
+        return tweets.sorted(byKeyPath: "date").last
+    }
+    
     /// A list of the user's tweets
     let tweets = LinkingObjects(fromType: Tweet.self, property: "user")
     

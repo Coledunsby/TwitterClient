@@ -36,7 +36,7 @@ final class Cache {
             .flatMapLatest { user -> Observable<TweetChangeset> in
                 let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
                 return Observable.changeset(from: tweets)
-        }
+            }
         
         let realm = try! Realm()
         
