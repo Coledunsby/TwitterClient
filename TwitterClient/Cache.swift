@@ -40,8 +40,8 @@ final class Cache {
         
         let realm = try! Realm()
         
-        //        This was to show tweets from all users
-        //        tweets = Observable.changeset(from: realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false))
+//        This was to show tweets from all users
+//        tweets = Observable.changeset(from: realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false))
         
         /// Check if user was persisted from a previous session
         if let email = UserDefaults.standard.string(forKey: Cache.userDefaultsKey),
