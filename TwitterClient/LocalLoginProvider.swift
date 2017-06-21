@@ -6,7 +6,6 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import RealmSwift
 import RxSwift
 
 extension String {
@@ -49,9 +48,8 @@ struct LocalLoginProvider: LoginProviding {
         }
         
         let user: User
-        let realm = try! Realm()
         
-        if let existingUser = realm.object(ofType: User.self, forPrimaryKey: parameter.email) {
+        if let existingUser = Cache.shared.getUser(withEmail: parameter.email) {
             // If a user exists with the provided email, check if the passwords match
             guard existingUser.password == parameter.password else { return .error(LoginError.invalidCredentials) }
             user = existingUser

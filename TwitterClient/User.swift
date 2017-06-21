@@ -6,7 +6,6 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import KeychainSwift
 import RealmSwift
 import RxSwift
 import SwiftRandom
@@ -17,11 +16,8 @@ final class User: Object {
     /// The email address of the user
     dynamic var email: String!
     
-    /// The password of the user (from keychain)
-    var password: String {
-        get { return KeychainSwift().get(email)! }
-        set { KeychainSwift().set(newValue, forKey: email) }
-    }
+    /// The password of the user
+    var password: String!
     
     /// The computed handle of the user from their email adress
     var handle: String! {
