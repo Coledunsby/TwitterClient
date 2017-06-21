@@ -7,6 +7,7 @@
 //
 
 import RxSwift
+import SwiftRandom
 
 extension PrimitiveSequence {
     
@@ -18,6 +19,13 @@ extension PrimitiveSequence {
         return self
             .asObservable()
             .mapTo(value)
+    }
+    
+    /// Simulate a random network delay
+    ///
+    /// - Returns: the source Observable shifted in time by the random network delay
+    func simulateNetworkDelay() -> PrimitiveSequence<Trait, Element> {
+        return self.delay(TimeInterval.random(0.1, 1.0), scheduler: MainScheduler.instance)
     }
 }
 

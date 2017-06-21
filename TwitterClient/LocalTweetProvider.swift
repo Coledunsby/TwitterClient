@@ -49,8 +49,7 @@ struct LocalTweetFetcher: TweetFetching {
         
         return Single
             .just(newTweets)
-            // Delay 1 second to simulate network conditions
-            .delay(1.0, scheduler: MainScheduler.instance)
+            .simulateNetworkDelay()
     }
 }
 
@@ -69,8 +68,7 @@ struct LocalTweetPoster: TweetPosting {
         
         return Single
             .just(tweet)
-            // Delay 1 second to simulate network conditions
-            .delay(1.0, scheduler: MainScheduler.instance)
+            .simulateNetworkDelay()
     }
 }
 

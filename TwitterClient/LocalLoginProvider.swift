@@ -75,31 +75,23 @@ struct LocalLoginProvider: LoginProviding {
             return .error(error)
         }
         
+        let user: User
         let realm = try! Realm()
-        let existingUser = realm.object(ofType: User.self, forPrimaryKey: parameter.email)
         
-        // If a user exists with the provided email, check if the passwords match
-        if let existingUser = existingUser, existingUser.password != parameter.password {
-            return .error(Error.invalidCredentials)
+        if let existingUser = realm.object(ofType: User.self, forPrimaryKey: parameter.email) {
+            // If a user exists with the provided email, check if the passwords match
+            guard existingUser.password == parameter.password else { return .error(Error.invalidCredentials) }
+            user = existingUser
+        } else {
+            // Create a new user if one does not already exist with that email
+            user = User()
+            user.email = parameter.email
+            user.password = parameter.password
         }
         
         return Single
-            .create { single in
-                var user: User! = existingUser
-                
-                // Create a new user if one does not already exist with that email
-                if user == nil {
-                    user = User()
-                    user.email = parameter.email
-                    user.password = parameter.password
-                }
-                
-                single(.success(user))
-                
-                return Disposables.create()
-            }
-            // Delay 1 second to simulate network conditions
-            .delay(1.0, scheduler: MainScheduler.instance)
+            .just(user)
+            .simulateNetworkDelay()
     }
     
     func logout() -> Completable {
