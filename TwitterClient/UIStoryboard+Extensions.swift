@@ -28,6 +28,6 @@ extension UIStoryboard {
     /// - Parameter type: The type of the initial view controller
     /// - Returns: The initial view controller
     func instantiateInitialViewController<C: UIViewController>(ofType type: C.Type) -> C {
-        return self.instantiateInitialViewController() as! C
+        return instantiateInitialViewController() as! C
     }
 }

@@ -31,15 +31,15 @@ final class ComposeViewController: UIViewController {
         // MARK: Inputs
         
         textView.rx.text
-            .bind(to: self.viewModel.inputs.text)
+            .bind(to: viewModel.inputs.text)
             .disposed(by: disposeBag)
         
         tweetButton.rx.tap
-            .bind(to: self.viewModel.inputs.tweet)
+            .bind(to: viewModel.inputs.tweet)
             .disposed(by: disposeBag)
         
         dismissButton.rx.tap
-            .bind(to: self.viewModel.inputs.dismiss)
+            .bind(to: viewModel.inputs.dismiss)
             .disposed(by: disposeBag)
         
         // MARK: Outputs

@@ -15,10 +15,8 @@ extension PrimitiveSequence {
     ///
     /// - Parameter value: A constant that each element of the input sequence is being replaced with
     /// - Returns: An observable sequence containing the values `value` provided as a parameter
-    public func mapTo<R>(_ value: R) -> Observable<R> {
-        return self
-            .asObservable()
-            .mapTo(value)
+    func mapTo<R>(_ value: R) -> PrimitiveSequence<Trait, R> {
+        return self.map { _ in value }
     }
     
     /// Simulate a random network delay

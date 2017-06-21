@@ -7,7 +7,6 @@
 //
 
 import RxSwift
-import RxSwiftExt
 
 protocol ComposeViewModelInputs {
     
@@ -61,7 +60,7 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
         
         let isLoadingSubject = PublishSubject<Bool>()
         
-        let post = self.tweet
+        let post = tweet
             .withLatestFrom(text)
             .flatMapLatest { text in
                 provider.poster
