@@ -15,5 +15,10 @@ target 'TwitterClient' do
     pod 'RxSwiftExt'
     pod 'SwiftLint'
     pod 'SwiftRandom'
+    
+    target 'TwitterClientTests' do
+        inherit! :search_paths
+        pod 'RxTest'
+    end
 
 end

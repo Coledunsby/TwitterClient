@@ -26,6 +26,8 @@ PODS:
     - RxSwiftExt/Core (= 2.4.1)
   - RxSwiftExt/Core (2.4.1):
     - RxSwift (~> 3.4)
+  - RxTest (3.5.0):
+    - RxSwift (~> 3.4)
   - SwiftLint (0.20.0)
   - SwiftRandom (1.0.0)
 
@@ -38,6 +40,7 @@ DEPENDENCIES:
   - RxRealmDataSources
   - RxSwift
   - RxSwiftExt
+  - RxTest
   - SwiftLint
   - SwiftRandom
 
@@ -61,9 +64,10 @@ SPEC CHECKSUMS:
   RxRealmDataSources: a5fb0bbd4e5938ba8a776dfb7510150fd981c7a0
   RxSwift: 18ee9d78b45edb3b0b7e79916b47a116e6dbc842
   RxSwiftExt: 72278e4a84f35324a82a8dd359859782706576a6
+  RxTest: 1763765fd0e2282b0eb44c9050effdd7fe7156d4
   SwiftLint: 3f7543509c931d1291395335f34e245d3919b7f2
   SwiftRandom: 437275c63500ddf5a565cbd56996fb23f12cfc3d
 
-PODFILE CHECKSUM: fbbdb2fac1f760be79fda7949a98e3130af3a145
+PODFILE CHECKSUM: 2b46298137fb2e7f88b8d8795238fb83793dcdf4
 
 COCOAPODS: 1.2.1
