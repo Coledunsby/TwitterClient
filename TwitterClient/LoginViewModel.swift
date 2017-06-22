@@ -39,9 +39,9 @@ protocol LoginViewModelInputs {
 
 protocol LoginViewModelOutputs {
     
-    var isLoading: Driver<Bool> { get }
-    var tweetsViewModel: Driver<TweetsViewModel> { get }
-    var errors: Driver<Error> { get }
+    var isLoading: Observable<Bool> { get }
+    var tweetsViewModel: Observable<TweetsViewModel> { get }
+    var errors: Observable<Error> { get }
 }
 
 protocol LoginViewModelIO {
@@ -68,32 +68,24 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         return self
     }
     
-    let isLoading: Driver<Bool>
-    let tweetsViewModel: Driver<TweetsViewModel>
-    let errors: Driver<Error>
+    let isLoading: Observable<Bool>
+    let tweetsViewModel: Observable<TweetsViewModel>
+    let errors: Observable<Error>
     
     // MARK: - Init
     
     init() {
-        let email = self.email.asDriver().unwrap().map { $0.lowercased() }
-        let password = self.password.asDriver().unwrap()
-        let emailAndPassword = Driver.combineLatest(email, password) { ($0, $1) }
+        let email = self.email.asObservable().unwrap().map { $0.lowercased() }
+        let password = self.password.asObservable().unwrap()
+        let emailAndPassword = Observable.combineLatest(email, password) { ($0, $1) }
         let credentials = emailAndPassword.map { LoginCredentials(email: $0, password: $1) }
         
         let provider = LocalLoginProvider().asAnyLoginProvider()
         let isLoadingSubject = PublishSubject<Bool>()
         
-        isLoading = isLoadingSubject
-            .asDriver(onErrorJustReturn: false)
-        
-        tweetsViewModel = Cache.shared.user
-            .asDriver(onErrorJustReturn: nil)
-            .unwrap()
-            .map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
-        
-        errors = login
+        let loginComplete = login.debug()
             .withLatestFrom(credentials)
-            .flatMapLatest { credentials in
+            .threadLatest { credentials in
                 provider
                     .login(with: credentials)
                     .do(onNext: { user in
@@ -103,12 +95,24 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
                     }, onDispose: {
                         isLoadingSubject.onNext(false)
                     })
-                    .asObservable()
-                    .materialize()
-                    .errors()
             }
-            .asOptional()
-            .asDriver(onErrorJustReturn: nil)
-            .unwrap()
+            .share()
+        
+        isLoading = isLoadingSubject.share().debug()
+
+        tweetsViewModel = loginComplete
+            .ignoreErrors()
+            .map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
+        
+//        tweetsViewModel = Observable
+//            .merge([
+//                loginComplete.ignoreErrors(),
+//                Observable<User?>.just(Cache.shared.user).unwrap().ignoreCompleted()
+//            ])
+//            .map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
+        
+        errors = loginComplete.debug()
+            .materialize().debug()
+            .errors().debug()
     }
 }

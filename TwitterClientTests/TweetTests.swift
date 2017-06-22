@@ -6,11 +6,20 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
+import RealmSwift
 import XCTest
 
 @testable import TwitterClient
 
 final class TweetTests: XCTestCase {
+    
+    override func setUp() {
+        super.setUp()
+        
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = "test database"
+        
+        Cache.shared.clear()
+    }
     
     func testConvenienceInitializer() {
         let user = User.random()
@@ -20,5 +29,20 @@ final class TweetTests: XCTestCase {
         XCTAssertEqual(tweet.user, user)
         XCTAssertEqual(tweet.message, message)
         XCTAssertEqual(tweet.date, date)
+    }
+    
+    func testUserRelationship() {
+        let user = User.random()
+        
+        let tweet = Tweet.random()
+        tweet.user = user
+        
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(tweet)
+        }
+        
+        let tweetFromDatabase = realm.objects(Tweet.self).last
+        XCTAssertEqual(tweetFromDatabase?.user, user)
     }
 }

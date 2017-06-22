@@ -39,7 +39,7 @@ final class LoginViewModelTests: XCTestCase {
         let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
-        viewModel.outputs.errors.drive(errors).disposed(by: disposeBag)
+        viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
@@ -53,7 +53,7 @@ final class LoginViewModelTests: XCTestCase {
         let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
-        viewModel.outputs.errors.drive(errors).disposed(by: disposeBag)
+        viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
@@ -69,7 +69,7 @@ final class LoginViewModelTests: XCTestCase {
         let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
-        viewModel.outputs.errors.drive(errors).disposed(by: disposeBag)
+        viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
@@ -83,7 +83,7 @@ final class LoginViewModelTests: XCTestCase {
         let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
         
         bindInputs(email: email, password: password, login: login)
-        viewModel.outputs.tweetsViewModel.drive(tweetsViewModel).disposed(by: disposeBag)
+        viewModel.outputs.tweetsViewModel.bind(to: tweetsViewModel).disposed(by: disposeBag)
         
         scheduler.start()
         
@@ -99,7 +99,7 @@ final class LoginViewModelTests: XCTestCase {
         let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
         
         bindInputs(email: email, password: password, login: login)
-        viewModel.outputs.tweetsViewModel.drive(tweetsViewModel).disposed(by: disposeBag)
+        viewModel.outputs.tweetsViewModel.bind(to: tweetsViewModel).disposed(by: disposeBag)
         
         scheduler.start()
         

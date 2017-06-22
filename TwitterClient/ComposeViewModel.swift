@@ -20,8 +20,8 @@ protocol ComposeViewModelOutputs {
     
     var charactersRemaining: Driver<Int> { get }
     var isValid: Driver<Bool> { get }
-    var isLoading: Driver<Bool> { get }
-    var shouldDismiss: Driver<Void> { get }
+    var isLoading: Observable<Bool> { get }
+    var shouldDismiss: Observable<Void> { get }
 }
 
 protocol ComposeViewModelIO {
@@ -50,26 +50,22 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
     
     let charactersRemaining: Driver<Int>
     let isValid: Driver<Bool>
-    let isLoading: Driver<Bool>
-    let shouldDismiss: Driver<Void>
+    let isLoading: Observable<Bool>
+    let shouldDismiss: Observable<Void>
     
     // MARK: - Init
     
     init(provider: TweetProviding) {
         let text = self.text.asDriver()
-        let dismiss = self.dismiss.asDriver(onErrorJustReturn: ())
+        let dismiss = self.dismiss.asObservable()
         
         let isLoadingSubject = PublishSubject<Bool>()
         
         let post = tweet
-            .asDriver(onErrorJustReturn: ())
             .withLatestFrom(text)
-            .flatMapLatest { text in
+            .threadLatest { text in
                 provider.poster
                     .post(text ?? "")
-                    .asOptional()
-                    .asDriver(onErrorJustReturn: nil)
-                    .unwrap()
                     .do(onNext: { tweet in
                         Cache.shared.addTweet(tweet)
                     }, onSubscribe: {
@@ -79,10 +75,11 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
                     })
                     .mapTo(())
             }
+            .ignoreErrors()
         
         charactersRemaining = text.map { 140 - ($0?.characters.count ?? 0) }
         isValid = charactersRemaining.map { (0 ..< 140) ~= $0 }
-        isLoading = isLoadingSubject.asDriver(onErrorJustReturn: false)
-        shouldDismiss = Driver.merge([dismiss, post])
+        isLoading = isLoadingSubject
+        shouldDismiss = Observable.merge([dismiss, post])
     }
 }

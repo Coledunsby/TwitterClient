@@ -18,9 +18,9 @@ protocol TweetsViewModelInputs {
 
 protocol TweetsViewModelOutputs {
     
-    var doneLoadingNewer: Driver<Void> { get }
-    var composeViewModel: Driver<ComposeViewModel> { get }
-    var loggedOut: Driver<Void> { get }
+    var doneLoadingNewer: Observable<Void> { get }
+    var composeViewModel: Observable<ComposeViewModel> { get }
+    var loggedOut: Observable<Void> { get }
 }
 
 protocol TweetsViewModelIO {
@@ -47,36 +47,33 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
         return self
     }
     
-    let doneLoadingNewer: Driver<Void>
-    let composeViewModel: Driver<ComposeViewModel>
-    let loggedOut: Driver<Void>
+    let doneLoadingNewer: Observable<Void>
+    let composeViewModel: Observable<ComposeViewModel>
+    let loggedOut: Observable<Void>
     
     // MARK: - Init
     
     init<T>(loginProvider: AnyLoginProvider<T>, tweetProvider: TweetProviding) {
         doneLoadingNewer = loadNewer
-            .asDriver(onErrorJustReturn: ())
             .startWith(())
-            .flatMap {
+            .threadLatest {
                 tweetProvider.fetcher
                     .fetch()
-                    .asDriver(onErrorJustReturn: [])
                     .do(onNext: { Cache.shared.addTweets($0) })
                     .mapTo(())
             }
+            .ignoreErrors()
         
         loggedOut = logout
-            .asDriver(onErrorJustReturn: ())
-            .flatMap {
+            .threadLatest {
                 loginProvider
                     .logout()
                     .asSingle()
-                    .asDriver(onErrorJustReturn: ())
                     .do(onNext: { Cache.shared.invalidateCurrentUser() })
             }
+            .ignoreErrors()
         
         composeViewModel = compose
-            .asDriver(onErrorJustReturn: ())
             .mapTo(ComposeViewModel(provider: tweetProvider))
     }
 }

@@ -61,22 +61,22 @@ final class TweetsViewController: UIViewController {
         viewModel.outputs.doneLoadingNewer
             .skip(1)
             .mapTo(false)
-            .drive(refreshControl.rx.isRefreshing)
+            .bind(to: refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
         
         viewModel.outputs.composeViewModel
-            .drive(onNext: { [unowned self] composeViewModel in
+            .bind { [unowned self] composeViewModel in
                 let composeNavigationController = UIStoryboard.compose.instantiateInitialViewController(ofType: UINavigationController.self)
                 let composeVC = composeNavigationController.viewControllers[0] as! ComposeViewController
                 composeVC.viewModel = composeViewModel as ComposeViewModelIO
                 self.navigationController?.present(composeNavigationController, animated: true)
-            })
+            }
             .disposed(by: disposeBag)
         
         viewModel.outputs.loggedOut
-            .drive(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.navigationController?.popViewController(animated: true)
-            })
+            }
             .disposed(by: disposeBag)
     }
 }

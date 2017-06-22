@@ -48,26 +48,25 @@ final class LoginViewController: UIViewController {
         
         viewModel.outputs.isLoading
             .map { $0 ? 0.5 : 1.0 }
-            .drive(stackView.rx.alpha)
+            .bind(to: stackView.rx.alpha)
             .disposed(by: disposeBag)
         
         viewModel.outputs.isLoading
-            .drive(activityIndicatorView.rx.isAnimating)
+            .bind(to: activityIndicatorView.rx.isAnimating)
             .disposed(by: disposeBag)
         
         viewModel.outputs.tweetsViewModel
-            .drive(onNext: { [unowned self] tweetsViewModel in
-                self.emailTextField.text = ""
-                self.passwordTextField.text = ""
+            .bind { [unowned self] tweetsViewModel in
+                [self.emailTextField, self.passwordTextField].forEach { $0.text = "" }
                 
                 let tweetsVC = UIStoryboard.tweets.instantiateInitialViewController(ofType: TweetsViewController.self)
                 tweetsVC.viewModel = tweetsViewModel as TweetsViewModelIO
                 self.navigationController?.pushViewController(tweetsVC, animated: true)
-            })
+            }
             .disposed(by: disposeBag)
         
         viewModel.outputs.errors
-            .drive(onNext: { [unowned self] error in
+            .bind { [unowned self] error in
                 let alertController = UIAlertController(title: "Error!", message: error.localizedDescription, preferredStyle: .alert)
                 alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
                 self.present(alertController, animated: true)
@@ -82,7 +81,7 @@ final class LoginViewController: UIViewController {
                 default:
                     break
                 }
-            })
+            }
             .disposed(by: disposeBag)
         
         // MARK: UI Events
@@ -91,10 +90,9 @@ final class LoginViewController: UIViewController {
             .tapGesture(configuration: { $0.delegate = ExclusiveGestureRecognizerDelegate.shared })
             .when(.recognized)
             .mapTo(())
-            .asDriver(onErrorJustReturn: ())
-            .drive(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.view.endEditing(true)
-            })
+            }
             .disposed(by: disposeBag)
         
         RxKeyboard.instance.visibleHeight
@@ -110,18 +108,16 @@ final class LoginViewController: UIViewController {
         
         emailTextField.rx
             .controlEvent(.editingDidEndOnExit)
-            .asDriver()
-            .drive(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.passwordTextField.becomeFirstResponder()
-            })
+            }
             .disposed(by: disposeBag)
         
         passwordTextField.rx
             .controlEvent(.editingDidEndOnExit)
-            .asDriver()
-            .drive(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.loginButton.sendActions(for: .touchUpInside)
-            })
+            }
             .disposed(by: disposeBag)
     }
     

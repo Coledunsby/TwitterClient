@@ -38,9 +38,9 @@ final class Tweet: Object {
 
 extension Tweet {
     
-    static func random(newerThan: Date = Date()) -> Tweet {
+    static func random(withUser user: User? = nil) -> Tweet {
         return Tweet(
-            user: User.random(),
+            user: user ?? User.random(),
             message: Randoms.randomFakeConversation(),
             date: Date.randomWithinDaysBeforeToday(30)
         )

@@ -34,42 +34,40 @@ final class Cache {
     /// A shared instance to the `Cache`
     static let shared = Cache()
     
-    /// An `Observable` instance delivering the current user
-    let user: Observable<User?>
+    /// The current `User`
+    var user: User? { return _user.value }
     
     /// An `Observable` instance delivering the tweet changeset for the current user
     let tweets: Observable<TweetChangeset>
     
     init() {
-        user = _user.asObservable()
-        
-        tweets = user
+        tweets = _user
+            .asObservable()
             .unwrap()
             .flatMapLatest { user -> Observable<TweetChangeset> in
                 let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
                 return Observable.changeset(from: tweets)
             }
         
-        let realm = try! Realm()
-        
 //        This was to show tweets from all users
 //        tweets = Observable.changeset(from: realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false))
         
-        /// Check if user was persisted from a previous session
-        if let email = UserDefaults.standard.string(forKey: Cache.userDefaultsKey),
-            let user = realm.object(ofType: User.self, forPrimaryKey: email) {
-            setCurrentUser(user)
-        }
+        restoreFromUserDefaults()
+    }
+    
+    /// Check if user was persisted from a previous session
+    func restoreFromUserDefaults() {
+        guard let email = UserDefaults.standard.string(forKey: Cache.userDefaultsKey) else { return }
+        let realm = try! Realm()
+        guard let user = realm.object(ofType: User.self, forPrimaryKey: email) else { return }
+        setCurrentUser(user)
     }
     
     /// Set and persist a new current `User`
     ///
     /// - Parameter user: The new current `User`
     func setCurrentUser(_ user: User) {
-        if getUser(withEmail: user.email) == nil {
-            addUser(user)
-        }
-        
+        addUser(user)
         UserDefaults.standard.set(user.email, forKey: Cache.userDefaultsKey)
         _user.value = user
     }
@@ -78,6 +76,8 @@ final class Cache {
     ///
     /// - Parameter user: The `User` to add
     func addUser(_ user: User) {
+        guard getUser(withEmail: user.email) == nil else { return }
+        
         keychain.set(user.password, forKey: user.email)
         
         let realm = try! Realm()

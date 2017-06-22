@@ -46,6 +46,24 @@ final class UserTests: XCTestCase {
         XCTAssertEqual(user.lastTweet, tweet2)
     }
     
+    func testTweetsRelationship() {
+        let user = User.random()
+        
+        let tweet1 = Tweet.random(withUser: user)
+        let tweet2 = Tweet.random(withUser: user)
+        
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(tweet1)
+            realm.add(tweet2)
+        }
+        
+        let userFromDatabase = realm.objects(User.self).last
+        XCTAssertEqual(userFromDatabase?.tweets.count, 2)
+        XCTAssertEqual(userFromDatabase?.tweets[0], tweet1)
+        XCTAssertEqual(userFromDatabase?.tweets[1], tweet2)
+    }
+    
     // MARK: - Private Helper Functions
     
     private func tweet(date: Date) -> Tweet {

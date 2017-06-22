@@ -54,13 +54,13 @@ final class ComposeViewController: UIViewController {
             .disposed(by: disposeBag)
         
         viewModel.outputs.isLoading
-            .drive(activityIndicatorView.rx.isAnimating)
+            .bind(to: activityIndicatorView.rx.isAnimating)
             .disposed(by: disposeBag)
         
         viewModel.outputs.shouldDismiss
-            .drive(onNext: { [unowned self] in
+            .bind { [unowned self] in
                 self.dismiss(animated: true)
-            })
+            }
             .disposed(by: disposeBag)
         
         // MARK: UI

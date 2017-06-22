@@ -13,11 +13,38 @@ import SwiftRandom
 
 extension ObservableType {
     
-    /// Converts the type of the elements in observable sequence to optionals
-    ///
-    /// - Returns: An observable sequence of optional elements
-    func asOptional() -> Observable<E?> {
-        return self.map { $0 as E? }
+    func ignoreCompleted() -> Observable<E> {
+        return self.materialize().skipCompleted().dematerialize()
+    }
+    
+    func thread<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
+        return self.flatMap(selector).ignoreCompleted()
+    }
+    
+    func threadWithIndex<O: ObservableConvertibleType>(_ selector: @escaping (E, Int) throws -> O) -> Observable<O.E> {
+        return self.flatMapWithIndex(selector).ignoreCompleted()
+    }
+    
+    func threadFirst<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
+        return self.flatMapFirst(selector).ignoreCompleted()
+    }
+    
+    func threadLatest<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
+        return self.flatMapLatest(selector).ignoreCompleted()
+    }
+}
+
+extension ObservableType where E: EventConvertible {
+    
+    func skipCompleted() -> Observable<E> {
+        return self.filter { e in
+            switch e.event {
+            case .completed:
+                return false
+            default:
+                return true
+            }
+        }
     }
 }
 
@@ -31,18 +58,11 @@ extension PrimitiveSequence {
         return self.map { _ in value }
     }
     
-    /// Converts the type of the elements in observable sequence to optionals
-    ///
-    /// - Returns: An observable sequence of optional elements
-    func asOptional() -> PrimitiveSequence<Trait, E?> {
-        return self.map { $0 as E? }
-    }
-    
     /// Simulate a random network delay
     ///
     /// - Returns: the source Observable shifted in time by the random network delay
     func simulateNetworkDelay() -> PrimitiveSequence<Trait, Element> {
-        return self.delay(TimeInterval.random(0.1, 1.0), scheduler: MainScheduler.instance)
+        return self.delay(TimeInterval.random(0.1, 0.2), scheduler: MainScheduler.instance)
     }
 }
 
@@ -59,28 +79,5 @@ extension PrimitiveSequence where TraitType == CompletableTrait {
             .mapTo(())
             .concat(Observable.just(()))
             .asSingle()
-    }
-}
-
-extension SharedSequenceConvertibleType {
-    
-    /// Returns an observable sequence containing as many elements as its input but all of them are the constant provided as a parameter
-    ///
-    /// - Parameter value: A constant that each element of the input sequence is being replaced with
-    /// - Returns: An observable sequence containing the values `value` provided as a parameter
-    func mapTo<R>(_ value: R) -> SharedSequence<SharingStrategy, R> {
-        return self.map { _ in value }
-    }
-}
-
-extension SharedSequenceConvertibleType where E: Optionable {
-    
-    /// Takes a sequence of optional elements and returns a sequence of non-optional elements, filtering out any nil values
-    ///
-    /// - Returns: An observable sequence of non-optional elements
-    public func unwrap() -> SharedSequence<SharingStrategy, E.WrappedType> {
-        return self
-            .filter { !$0.isEmpty() }
-            .map { $0.unwrap() }
     }
 }
