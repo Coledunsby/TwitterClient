@@ -24,6 +24,13 @@ final class Tweet: Object {
     /// The post date of the tweet
     dynamic var date = Date()
     
+    convenience init(user: User, message: String, date: Date = Date()) {
+        self.init()
+        self.user = user
+        self.message = message
+        self.date = date
+    }
+    
     public override static func primaryKey() -> String? {
         return "id"
     }
@@ -32,10 +39,10 @@ final class Tweet: Object {
 extension Tweet {
     
     static func random(newerThan: Date = Date()) -> Tweet {
-        let tweet = Tweet()
-        tweet.user = User.random()
-        tweet.message = Randoms.randomFakeConversation()
-        tweet.date = Date.randomWithinDaysBeforeToday(30)
-        return tweet
+        return Tweet(
+            user: User.random(),
+            message: Randoms.randomFakeConversation(),
+            date: Date.randomWithinDaysBeforeToday(30)
+        )
     }
 }

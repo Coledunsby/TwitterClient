@@ -55,9 +55,7 @@ struct LocalLoginProvider: LoginProviding {
             user = existingUser
         } else {
             // Create a new user if one does not already exist with that email
-            user = User()
-            user.email = parameter.email
-            user.password = parameter.password
+            user = User(email: parameter.email, password: parameter.password)
         }
         
         return Single

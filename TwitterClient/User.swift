@@ -35,6 +35,12 @@ final class User: Object {
     /// A list of the user's tweets
     let tweets = LinkingObjects(fromType: Tweet.self, property: "user")
     
+    convenience init(email: String, password: String) {
+        self.init()
+        self.email = email
+        self.password = password
+    }
+    
     public override static func primaryKey() -> String? {
         return "email"
     }
@@ -47,18 +53,22 @@ final class User: Object {
 extension User {
     
     static func random() -> User {
-        let user = User()
-        user.email = Randoms.randomFakeEmail()
-        return user
+        return User(email: Randoms.email(), password: Randoms.password())
     }
 }
 
 private extension Randoms {
     
-    static func randomFakeEmail() -> String {
+    static func email() -> String {
         let fakeNames = Randoms.randomFakeName().components(separatedBy: " ")
         let firstName = fakeNames[0].lowercased()
         let lastName = fakeNames[1].lowercased()
         return "\(firstName).\(lastName)@gmail.com"
+    }
+    
+    static func password() -> String {
+        let charactersString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()-=_+[]{}|;:,./<>?"
+        let characters = Array(charactersString.characters)
+        return String((0 ..< 10).flatMap({ _ in characters.randomItem() }))
     }
 }

@@ -6,11 +6,13 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import XCTest
-@testable import TwitterClient
+import RealmSwift
 import RxCocoa
 import RxSwift
 import RxTest
+import XCTest
+
+@testable import TwitterClient
 
 final class LoginViewModelTests: XCTestCase {
     
@@ -20,6 +22,8 @@ final class LoginViewModelTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
+        
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = "test database"
         
         Cache.shared.clear()
         
@@ -71,7 +75,7 @@ final class LoginViewModelTests: XCTestCase {
     }
     
     func testValidCredentials() {
-        addUser(email: "test@gmail.com", password: "password")
+        Cache.shared.addUser(User(email: "test@gmail.com", password: "password"))
         
         let email = scheduler.createHotObservable([next(50, "")])
         let password = scheduler.createHotObservable([next(50, "")])
@@ -87,13 +91,6 @@ final class LoginViewModelTests: XCTestCase {
     }
     
     // MARK: - Private Helper Functions
-    
-    private func addUser(email: String, password: String) {
-        let user = User()
-        user.email = email
-        user.password = password
-        Cache.shared.addUser(user)
-    }
     
     private func bindInputs(email: TestableObservable<String>, password: TestableObservable<String>, login: TestableObservable<()>) {
         email.bind(to: viewModel.inputs.email).disposed(by: disposeBag)

@@ -62,12 +62,8 @@ struct LocalTweetPoster: TweetPosting {
     }
     
     func post(_ text: String) -> Single<Tweet> {
-        let tweet = Tweet()
-        tweet.message = text
-        tweet.user = user
-        
         return Single
-            .just(tweet)
+            .just(Tweet(user: user, message: text))
             .simulateNetworkDelay()
     }
 }
