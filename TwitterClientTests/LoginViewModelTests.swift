@@ -61,8 +61,10 @@ final class LoginViewModelTests: XCTestCase {
     }
     
     func testInvalidCredentials() {
+        Cache.shared.addUser(User(email: "test@gmail.com", password: "password"))
+        
         let email = scheduler.createHotObservable([next(50, "test@gmail.com")])
-        let password = scheduler.createHotObservable([next(50, "password")])
+        let password = scheduler.createHotObservable([next(50, "notpassword")])
         let login = scheduler.createHotObservable([next(100, ())])
         let errors = scheduler.createObserver(Error.self)
         
@@ -74,7 +76,21 @@ final class LoginViewModelTests: XCTestCase {
         XCTAssertEqual(errors.events.first?.value.element as? LoginError, .invalidCredentials)
     }
     
-    func testValidCredentials() {
+    func testValidSignup() {
+        let email = scheduler.createHotObservable([next(50, "test@gmail.com")])
+        let password = scheduler.createHotObservable([next(50, "password")])
+        let login = scheduler.createHotObservable([next(100, ())])
+        let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
+        
+        bindInputs(email: email, password: password, login: login)
+        viewModel.outputs.tweetsViewModel.drive(tweetsViewModel).disposed(by: disposeBag)
+        
+        scheduler.start()
+        
+        XCTAssertNotNil(tweetsViewModel.events.first?.value)
+    }
+    
+    func testValidLogin() {
         Cache.shared.addUser(User(email: "test@gmail.com", password: "password"))
         
         let email = scheduler.createHotObservable([next(50, "")])

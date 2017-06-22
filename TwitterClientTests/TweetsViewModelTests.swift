@@ -6,26 +6,29 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
+import RealmSwift
+import RxCocoa
+import RxSwift
+import RxTest
 import XCTest
+
 @testable import TwitterClient
 
 final class TweetsViewModelTests: XCTestCase {
     
+    var viewModel: TweetsViewModelIO!
+    var scheduler: TestScheduler!
+    var disposeBag = DisposeBag()
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testInitialization() {
-        let user = User()
-        let loginProvider = LocalLoginProvider().asAnyLoginProvider()
-        let tweetProvider = LocalTweetProvider(user: user)
-        let tweetsViewModel = TweetsViewModel(loginProvider: loginProvider, tweetProvider: tweetProvider)
-        XCTAssertNotNil(tweetsViewModel, "The tweets view model should not be nil.")
+        
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = "test database"
+        
+        Cache.shared.clear()
+        
+        viewModel = TweetsViewModel(loginProvider: LocalLoginProvider().asAnyLoginProvider(), tweetProvider: LocalTweetProvider(user: User()))
+        scheduler = TestScheduler(initialClock: 0)
+        disposeBag = DisposeBag()
     }
 }

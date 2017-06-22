@@ -6,25 +6,29 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
+import RealmSwift
+import RxCocoa
+import RxSwift
+import RxTest
 import XCTest
+
 @testable import TwitterClient
 
 final class ComposeViewModelTests: XCTestCase {
     
+    var viewModel: ComposeViewModelIO!
+    var scheduler: TestScheduler!
+    var disposeBag = DisposeBag()
+    
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
-    
-    func testInitialization() {
-        let user = User()
-        let tweetProvider = LocalTweetProvider(user: user)
-        let composeViewModel = ComposeViewModel(provider: tweetProvider)
-        XCTAssertNotNil(composeViewModel, "The compose view model should not be nil.")
+        
+        Realm.Configuration.defaultConfiguration.inMemoryIdentifier = "test database"
+        
+        Cache.shared.clear()
+        
+        viewModel = ComposeViewModel(provider: LocalTweetProvider(user: User()))
+        scheduler = TestScheduler(initialClock: 0)
+        disposeBag = DisposeBag()
     }
 }
