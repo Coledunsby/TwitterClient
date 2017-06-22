@@ -6,7 +6,6 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import RxCocoa
 import RxSwift
 
 protocol TweetsViewModelInputs {
@@ -18,9 +17,11 @@ protocol TweetsViewModelInputs {
 
 protocol TweetsViewModelOutputs {
     
-    var doneLoadingNewer: Observable<Void> { get }
+    var tweets: Observable<TweetChangeset> { get }
     var composeViewModel: Observable<ComposeViewModel> { get }
+    var isLoading: Observable<Bool> { get }
     var loggedOut: Observable<Void> { get }
+    var errors: Observable<Error> { get }
 }
 
 protocol TweetsViewModelIO {
@@ -47,33 +48,50 @@ struct TweetsViewModel: TweetsViewModelIO, TweetsViewModelInputs, TweetsViewMode
         return self
     }
     
-    let doneLoadingNewer: Observable<Void>
+    let tweets: Observable<TweetChangeset>
     let composeViewModel: Observable<ComposeViewModel>
+    let isLoading: Observable<Bool>
     let loggedOut: Observable<Void>
+    let errors: Observable<Error>
     
     // MARK: - Init
     
     init<T>(loginProvider: AnyLoginProvider<T>, tweetProvider: TweetProviding) {
-        doneLoadingNewer = loadNewer
+        let isLoadingSubject = PublishSubject<Bool>()
+        
+        let loadNewer = self.loadNewer
             .startWith(())
-            .threadLatest {
+            .flatMapLatest {
                 tweetProvider.fetcher
                     .fetch()
-                    .do(onNext: { Cache.shared.addTweets($0) })
+                    .do(onNext: {
+                        Cache.shared.addTweets($0)
+                    }, onSubscribe: {
+                        isLoadingSubject.onNext(true)
+                    }, onDispose: {
+                        isLoadingSubject.onNext(false)
+                    })
                     .mapTo(())
+                    .asObservable()
+                    .materialize()
             }
-            .ignoreErrors()
+            .share()
         
-        loggedOut = logout
-            .threadLatest {
+        let logout = self.logout
+            .flatMapLatest {
                 loginProvider
                     .logout()
                     .asSingle()
                     .do(onNext: { Cache.shared.invalidateCurrentUser() })
+                    .asObservable()
+                    .materialize()
             }
-            .ignoreErrors()
+            .share()
         
-        composeViewModel = compose
-            .mapTo(ComposeViewModel(provider: tweetProvider))
+        tweets = Cache.shared.tweets
+        isLoading = isLoadingSubject
+        loggedOut = logout.elements()
+        errors = Observable.merge([loadNewer.errors(), logout.errors()])
+        composeViewModel = compose.mapTo(ComposeViewModel(provider: tweetProvider))
     }
 }

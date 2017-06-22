@@ -10,7 +10,6 @@ import RxCocoa
 import RxGesture
 import RxKeyboard
 import RxSwift
-import RxSwiftExt
 
 final class LoginViewController: UIViewController {
     
@@ -67,9 +66,7 @@ final class LoginViewController: UIViewController {
         
         viewModel.outputs.errors
             .bind { [unowned self] error in
-                let alertController = UIAlertController(title: "Error!", message: error.localizedDescription, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-                self.present(alertController, animated: true)
+                self.present(UIAlertController.error(error), animated: true)
                 
                 guard let loginError = error as? LoginError else { return }
                 

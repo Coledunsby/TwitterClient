@@ -54,14 +54,8 @@ final class TweetsViewController: UIViewController {
             cell.viewModel.inputs.tweet.value = tweet
         }
         
-        Cache.shared.tweets
+        viewModel.outputs.tweets
             .bind(to: tableView.rx.realmChanges(dataSource))
-            .disposed(by: disposeBag)
-        
-        viewModel.outputs.doneLoadingNewer
-            .skip(1)
-            .mapTo(false)
-            .bind(to: refreshControl.rx.isRefreshing)
             .disposed(by: disposeBag)
         
         viewModel.outputs.composeViewModel
@@ -73,9 +67,21 @@ final class TweetsViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        viewModel.outputs.isLoading.debug()
+            .bind(to: refreshControl.rx.isRefreshing)
+            .disposed(by: disposeBag)
+        
         viewModel.outputs.loggedOut
             .bind { [unowned self] in
                 self.navigationController?.popViewController(animated: true)
+            }
+            .disposed(by: disposeBag)
+        
+        viewModel.outputs.errors
+            // Without delay UIRefreshControl wouldn't hide
+            .delay(0.25, scheduler: MainScheduler.instance)
+            .bind { [unowned self] error in
+                self.present(UIAlertController.error(error), animated: true)
             }
             .disposed(by: disposeBag)
     }

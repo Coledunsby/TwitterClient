@@ -11,43 +11,6 @@ import RxSwift
 import RxSwiftExt
 import SwiftRandom
 
-extension ObservableType {
-    
-    func ignoreCompleted() -> Observable<E> {
-        return self.materialize().skipCompleted().dematerialize()
-    }
-    
-    func thread<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
-        return self.flatMap(selector).ignoreCompleted()
-    }
-    
-    func threadWithIndex<O: ObservableConvertibleType>(_ selector: @escaping (E, Int) throws -> O) -> Observable<O.E> {
-        return self.flatMapWithIndex(selector).ignoreCompleted()
-    }
-    
-    func threadFirst<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
-        return self.flatMapFirst(selector).ignoreCompleted()
-    }
-    
-    func threadLatest<O: ObservableConvertibleType>(_ selector: @escaping (E) throws -> O) -> Observable<O.E> {
-        return self.flatMapLatest(selector).ignoreCompleted()
-    }
-}
-
-extension ObservableType where E: EventConvertible {
-    
-    func skipCompleted() -> Observable<E> {
-        return self.filter { e in
-            switch e.event {
-            case .completed:
-                return false
-            default:
-                return true
-            }
-        }
-    }
-}
-
 extension PrimitiveSequence {
     
     /// Returns an observable sequence containing as many elements as its input but all of them are the constant provided as a parameter
@@ -62,7 +25,7 @@ extension PrimitiveSequence {
     ///
     /// - Returns: the source Observable shifted in time by the random network delay
     func simulateNetworkDelay() -> PrimitiveSequence<Trait, Element> {
-        return self.delay(TimeInterval.random(0.1, 0.2), scheduler: MainScheduler.instance)
+        return self.delay(TimeInterval.random(0.1, 1.0), scheduler: MainScheduler.instance)
     }
 }
 

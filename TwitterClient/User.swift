@@ -7,7 +7,6 @@
 //
 
 import RealmSwift
-import RxSwift
 import SwiftRandom
 
 /// Represents a user object in the realm database
@@ -41,11 +40,11 @@ final class User: Object {
         self.password = password
     }
     
-    public override static func primaryKey() -> String? {
+    override static func primaryKey() -> String? {
         return "email"
     }
     
-    public override static func ignoredProperties() -> [String] {
+    override static func ignoredProperties() -> [String] {
         return ["password"]
     }
 }

@@ -6,7 +6,6 @@
 //  Copyright © 2017 Cole Dunsby. All rights reserved.
 //
 
-import RxCocoa
 import RxSwift
 
 enum LoginError: LocalizedError {
@@ -83,9 +82,9 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
         let provider = LocalLoginProvider().asAnyLoginProvider()
         let isLoadingSubject = PublishSubject<Bool>()
         
-        let loginComplete = login.debug()
+        let loginComplete = login
             .withLatestFrom(credentials)
-            .threadLatest { credentials in
+            .flatMapLatest { credentials in
                 provider
                     .login(with: credentials)
                     .do(onNext: { user in
@@ -95,24 +94,18 @@ struct LoginViewModel: LoginViewModelIO, LoginViewModelInputs, LoginViewModelOut
                     }, onDispose: {
                         isLoadingSubject.onNext(false)
                     })
+                    .asObservable()
+                    .materialize()
             }
             .share()
         
-        isLoading = isLoadingSubject.share().debug()
-
-        tweetsViewModel = loginComplete
-            .ignoreErrors()
-            .map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
+        let userFromLoginOrCache = Observable.merge([
+            loginComplete.elements(),
+            Observable<User?>.just(Cache.shared.user).unwrap()
+        ])
         
-//        tweetsViewModel = Observable
-//            .merge([
-//                loginComplete.ignoreErrors(),
-//                Observable<User?>.just(Cache.shared.user).unwrap().ignoreCompleted()
-//            ])
-//            .map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
-        
-        errors = loginComplete.debug()
-            .materialize().debug()
-            .errors().debug()
+        isLoading = isLoadingSubject
+        tweetsViewModel = userFromLoginOrCache.map { TweetsViewModel(loginProvider: provider, tweetProvider: LocalTweetProvider(user: $0)) }
+        errors = loginComplete.errors()
     }
 }

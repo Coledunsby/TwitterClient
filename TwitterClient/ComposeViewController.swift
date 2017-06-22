@@ -63,6 +63,12 @@ final class ComposeViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        viewModel.outputs.errors
+            .bind { [unowned self] error in
+                self.present(UIAlertController.error(error), animated: true)
+            }
+            .disposed(by: disposeBag)
+        
         // MARK: UI
         
         RxKeyboard.instance.visibleHeight

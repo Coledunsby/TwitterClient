@@ -22,6 +22,7 @@ protocol ComposeViewModelOutputs {
     var isValid: Driver<Bool> { get }
     var isLoading: Observable<Bool> { get }
     var shouldDismiss: Observable<Void> { get }
+    var errors: Observable<Error> { get }
 }
 
 protocol ComposeViewModelIO {
@@ -52,6 +53,7 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
     let isValid: Driver<Bool>
     let isLoading: Observable<Bool>
     let shouldDismiss: Observable<Void>
+    let errors: Observable<Error>
     
     // MARK: - Init
     
@@ -63,7 +65,7 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
         
         let post = tweet
             .withLatestFrom(text)
-            .threadLatest { text in
+            .flatMapLatest { text in
                 provider.poster
                     .post(text ?? "")
                     .do(onNext: { tweet in
@@ -74,12 +76,15 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
                         isLoadingSubject.onNext(false)
                     })
                     .mapTo(())
+                    .asObservable()
+                    .materialize()
             }
-            .ignoreErrors()
+            .share()
         
         charactersRemaining = text.map { 140 - ($0?.characters.count ?? 0) }
         isValid = charactersRemaining.map { (0 ..< 140) ~= $0 }
         isLoading = isLoadingSubject
-        shouldDismiss = Observable.merge([dismiss, post])
+        shouldDismiss = Observable.merge([dismiss, post.elements()])
+        errors = post.errors()
     }
 }

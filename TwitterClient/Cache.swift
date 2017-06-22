@@ -11,6 +11,8 @@ import RealmSwift
 import RxRealm
 import RxSwift
 
+typealias TweetChangeset = (AnyRealmCollection<Tweet>, RealmChangeset?)
+
 /// Cache implemented using `Realm`
 /// All data passes through the cache before being displayed
 /// State (e.g. current user) is persisted via `UserDefaults`
@@ -28,8 +30,6 @@ final class Cache {
     private static let userDefaultsKey = "email"
     
     // MARK: - Public API
-    
-    typealias TweetChangeset = (AnyRealmCollection<Tweet>, RealmChangeset?)
     
     /// A shared instance to the `Cache`
     static let shared = Cache()

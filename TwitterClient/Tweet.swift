@@ -31,7 +31,7 @@ final class Tweet: Object {
         self.date = date
     }
     
-    public override static func primaryKey() -> String? {
+    override static func primaryKey() -> String? {
         return "id"
     }
 }
