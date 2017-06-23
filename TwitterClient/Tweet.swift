@@ -41,7 +41,7 @@ extension Tweet {
     static func random(withUser user: User? = nil) -> Tweet {
         return Tweet(
             user: user ?? User.random(),
-            message: Randoms.randomFakeConversation(),
+            message: (0 ..< Int.random(1, 3)).map({ _ in Randoms.randomFakeConversation() }).joined(separator: " "),
             date: Date.randomWithinDaysBeforeToday(30)
         )
     }
