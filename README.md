@@ -101,6 +101,7 @@ I wrote several integration tests for the view models (`LoginViewModelTests`, `T
 ## Notes
  - A random delay is added to most data provider actions to simulate a network delay.
  - I did not implement any reachability detection in the app meaning log in and sign up can occur at any time regardless of network connectivity. I figured the data providers would be responsible for returning appropriate errors. I did not include such feedback in my local data providers.
+ - A common pattern in my view model outputs was to have an observable for the successful result (e.g. `composeViewModel` in `LoginViewModel`) and an observable for the errors. This was because in `flatMap`ing the inputs to the outputs, the observable returned in the `flatMap` was to error, the error would not be propagated up the stream. Instead, the sequence would complete and further inputs would have no effect. To circumvent this, I use the `materialize()` function of `RxSwiftExt` to convert the stream into a stream of events. I then use the `elements()` and `errors()` property to forward the event to the correct stream. Another benefit is that all the errors get propagated to one observable and can be handled together (e.g. in the `TweetsViewModel` both loading newer tweets and logging out can error).
 
 ## Author
 Cole Dunsby, coledunsby@gmail.com
