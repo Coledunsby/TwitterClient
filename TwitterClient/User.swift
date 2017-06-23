@@ -23,10 +23,12 @@ final class User: Object {
         return email.components(separatedBy: "@").first
     }
     
+    /// The user's first tweet
     var firstTweet: Tweet? {
         return tweets.sorted(byKeyPath: "date").first
     }
     
+    /// The user's last tweet
     var lastTweet: Tweet? {
         return tweets.sorted(byKeyPath: "date").last
     }

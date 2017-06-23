@@ -37,7 +37,7 @@ struct LoginCredentials {
     }
 }
 
-/// A login provider
+/// A local login provider
 struct LocalLoginProvider: LoginProviding {
     
     typealias Parameter = LoginCredentials

@@ -21,8 +21,10 @@ final class Cache {
     
     // MARK: - Private
     
+    /// An instance of a keychain helper class
     private let keychain = KeychainSwift()
     
+    /// An instance of NSUserDefaults configured to search the current application's search list
     private let userDefaults = UserDefaults.standard
     
     /// A `Variable` instance to store the current `User`

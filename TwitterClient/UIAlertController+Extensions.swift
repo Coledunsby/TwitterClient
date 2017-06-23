@@ -10,6 +10,10 @@ import UIKit
 
 extension UIAlertController {
     
+    /// Returns a `UIAlertController` formatted to display an error
+    ///
+    /// - Parameter error: The error to alert the user of
+    /// - Returns: An error alert
     static func error(_ error: Error) -> UIAlertController {
         let alertController = UIAlertController(title: "Error!", message: error.localizedDescription, preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
