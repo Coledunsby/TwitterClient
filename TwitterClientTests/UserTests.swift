@@ -19,6 +19,8 @@ final class UserTests: XCTestCase {
         super.setUp()
         
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = "test database"
+        
+        Cache.shared.clear()
     }
     
     func testConvenienceInitializer() {
