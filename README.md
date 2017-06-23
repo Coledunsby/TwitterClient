@@ -15,18 +15,25 @@ This is a very basic Twitter client without using the real Twitter API, OAuth, o
 #### 1. Sign Up / Log In
 Users can sign up and/or log in using an email and password form. If an account exists with the entered email and password combination, the user will be logged in, otherwise a new user account will be created provided the credentials pass form validation. The email must be a valid email address and the password must be at least 6 characters in length. The user will be logged in automatically on subsequent launches of the app unless they log out.
 
-<img src="Screenshots/login1.png" alt="Login 1" style="width: 200px;"/>
-<img src="Screenshots/login2.png" alt="Login 2" style="width: 200px;"/>
+![Login 1](Images/login1.png)
+![Login 2](Images/login2.png)
 
 #### 2. Tweets
 Once the user is logged in, the app will display a feed of cached tweets and attempt to load new tweets. Reloading the feed by swiping down on the feed will cause the feed to attempt to fetch newer tweets from the provider. This screen also contains a log out button and a compose (+) button.
+
+![Tweets 1](Images/tweets1.png)
+![Tweets 2](Images/tweets2.png)
+
 #### 3. Compose
 On the compose screen, the user can compose a new tweet to post. This content of the tweet is a string between 1 and 140 characters in length. From this screen the user can either cancel or post the tweet. Both cases return the user to the tweets screen. If a new tweet was posted it will be added to the top of the feed.
+
+![Compose 1](Images/compose1.png)
+![Compose 2](Images/compose2.png)
 
 ## Architecture
 The application is written using a MVVM (Model-View-ViewModel) pattern and a functional reactive programming library called RxSwift. MVVM
 
-<p align="center"><img src="https://www.devexpress.com/Products/NET/Controls/WPF/i/features/mvvm-light.png" alt="MVVM" style="height: 100px;"/></p>
+![Login 2](Images/mvvm.png)
 
 ## Tests
 #### Unit Tests
