@@ -15,10 +15,8 @@ This is a very basic Twitter client without using the real Twitter API, OAuth, o
 #### 1. Sign Up / Log In
 Users can sign up and/or log in using an email and password form. If an account exists with the entered email and password combination, the user will be logged in, otherwise a new user account will be created provided the credentials pass form validation. The email must be a valid email address and the password must be at least 6 characters in length. The user will be logged in automatically on subsequent launches of the app unless they log out.
 
-<p align="center">
 <img src="Screenshots/login1.png" alt="Login 1" style="width: 200px;"/>
 <img src="Screenshots/login2.png" alt="Login 2" style="width: 200px;"/>
-</p>
 
 #### 2. Tweets
 Once the user is logged in, the app will display a feed of cached tweets and attempt to load new tweets. Reloading the feed by swiping down on the feed will cause the feed to attempt to fetch newer tweets from the provider. This screen also contains a log out button and a compose (+) button.
