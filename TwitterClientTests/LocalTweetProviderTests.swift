@@ -30,7 +30,7 @@ final class LocalTweetProviderTests: XCTestCase {
         provider.fetcher
             .fetch()
             .subscribe(onSuccess: { tweets in
-                XCTAssertTrue((1 ..< 5) ~= tweets.count)
+                XCTAssertTrue((1 ... 5) ~= tweets.count)
                 expectation.fulfill()
             }, onError: { error in
                 XCTFail(error.localizedDescription)

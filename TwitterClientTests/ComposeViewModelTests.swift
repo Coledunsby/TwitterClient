@@ -34,9 +34,10 @@ final class ComposeViewModelTests: XCTestCase {
     
     func testCharactersRemaining() {
         let text = scheduler.createHotObservable([
-            next(1, "12345"),
-            next(2, "0Hv17UXambW7iNBNT0PwoRP0L2aILGYjmbysEL1oOmpUSyaMuxlNt1Uh8tiTzaRIL3jIF5NRMiHVV6ByH0MLI58JcCfUsPi9sSTo4meQYYBeZRtbf4UlRbc3zPyfPRL4QfAbevH73131"),
-            next(3, "0Hv17UXambW7iNBNT0PwoRP0L2aILGYjmbysEL1oOmpUSyaMuxlNt1Uh8tiTzaRIL3jIF5NRMiHVV6ByH0MLI58JcCfUsPi9sSTo4meQYYBeZRtbf4UlRbc3zPyfPRL4QfAbevH731312")
+            next(1, "     "),
+            next(2, "12345"),
+            next(3, "0Hv17UXambW7iNBNT0PwoRP0L2aILGYjmbysEL1oOmpUSyaMuxlNt1Uh8tiTzaRIL3jIF5NRMiHVV6ByH0MLI58JcCfUsPi9sSTo4meQYYBeZRtbf4UlRbc3zPyfPRL4QfAbevH73131"),
+            next(4, "0Hv17UXambW7iNBNT0PwoRP0L2aILGYjmbysEL1oOmpUSyaMuxlNt1Uh8tiTzaRIL3jIF5NRMiHVV6ByH0MLI58JcCfUsPi9sSTo4meQYYBeZRtbf4UlRbc3zPyfPRL4QfAbevH731312")
         ])
         text.bind(to: viewModel.inputs.text).disposed(by: disposeBag)
         
@@ -51,16 +52,18 @@ final class ComposeViewModelTests: XCTestCase {
         
         let charactersRemainingExpected = [
             next(0, 140),
-            next(1, 135),
-            next(2, 0),
-            next(3, -1)
+            next(1, 140),
+            next(2, 135),
+            next(3, 0),
+            next(4, -1)
         ]
         
         let isValidExpected = [
             next(0, false),
-            next(1, true),
+            next(1, false),
             next(2, true),
-            next(3, false)
+            next(3, true),
+            next(4, false)
         ]
         
         XCTAssertEqual(charactersRemaining.events, charactersRemainingExpected)

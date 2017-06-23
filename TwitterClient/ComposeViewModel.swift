@@ -58,7 +58,7 @@ struct ComposeViewModel: ComposeViewModelIO, ComposeViewModelInputs, ComposeView
     // MARK: - Init
     
     init(provider: TweetProviding) {
-        let text = self.text.asDriver()
+        let text = self.text.asDriver().map { $0?.trimmingCharacters(in: .whitespacesAndNewlines) }
         let dismiss = self.dismiss.asObservable()
         
         let isLoadingSubject = PublishSubject<Bool>()

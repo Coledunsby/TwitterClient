@@ -38,7 +38,7 @@ struct LocalTweetFetcher: TweetFetching {
     func fetch() -> Single<[Tweet]> {
         let lastTweet = user.lastTweet
         
-        let newTweets = (1 ..< Int.random(1, 5))
+        let newTweets = (0 ..< Int.random(1, 5))
             .map { _ -> Tweet in
                 let tweet = Tweet.random()
                 tweet.user = user
