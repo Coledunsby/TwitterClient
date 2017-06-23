@@ -26,7 +26,9 @@ struct LoginCredentials {
     let email: String
     let password: String
     
-    /// Validate the credentials based on some criteria
+    /// Validate the credentials based on the following criteria
+    /// 1) The email address must be valid
+    /// 2) The password must be at least characters in length
     ///
     /// - Throws: an `Error` if the criteria is not met
     func validate() throws {
