@@ -44,7 +44,7 @@ final class Cache {
     /// An `Observable` instance delivering the tweet changeset for the current user
     let tweets: Observable<TweetChangeset>
     
-    init() {
+    private init() {
         tweets = _user
             .asObservable()
             .unwrap()
