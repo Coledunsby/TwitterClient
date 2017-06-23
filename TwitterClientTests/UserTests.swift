@@ -19,8 +19,6 @@ final class UserTests: XCTestCase {
         super.setUp()
         
         Realm.Configuration.defaultConfiguration.inMemoryIdentifier = "test database"
-        
-        Cache.shared.clear()
     }
     
     func testConvenienceInitializer() {
@@ -35,6 +33,13 @@ final class UserTests: XCTestCase {
     func testFirstTweet() {
         let tweet1 = tweet(date: Date())
         let tweet2 = tweet(date: Date().addingTimeInterval(1))
+        
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(tweet1)
+            realm.add(tweet2)
+        }
+        
         Cache.shared.addTweets([tweet1, tweet2])
         XCTAssertEqual(user.firstTweet, tweet1)
     }
@@ -42,7 +47,13 @@ final class UserTests: XCTestCase {
     func testLastTweet() {
         let tweet1 = tweet(date: Date())
         let tweet2 = tweet(date: Date().addingTimeInterval(1))
-        Cache.shared.addTweets([tweet1, tweet2])
+        
+        let realm = try! Realm()
+        try! realm.write {
+            realm.add(tweet1)
+            realm.add(tweet2)
+        }
+        
         XCTAssertEqual(user.lastTweet, tweet2)
     }
     

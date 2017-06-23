@@ -31,14 +31,76 @@ On the compose screen, the user can compose a new tweet to post. This content of
 ![Compose 2](Images/compose2.png)
 
 ## Architecture
-The application is written using a MVVM (Model-View-ViewModel) pattern and a functional reactive programming library called RxSwift. MVVM
+The application was developed using a MVVM (Model-View-ViewModel) pattern and a functional reactive programming library called RxSwift. I chose to use a reactive library because they help eliminate state and provide better local reasoning ultimately leading to cleaner, more maintainable code written faster with fewer bugs. I chose RxSwift in particular because of it has similar implementations in many other languages (see [ReactiveX](http://reactivex.io/languages.html) site for more) so it would be ideal for cross platform applications. I chose MVVM because the data flow plays nicely with the Rx concepts of observables and observers. There is a 1-1 relationship between view controllers & view models and cells & view models.
 
 ![Login 2](Images/mvvm.png)
 
+I divided the app into 3 main sections. Each section is
+
+#### 1. Login
+ - `Login.storyboard`: Log in and sign up GUI.
+ - `User.swift`: The `User` class represents a user in the Realm database.
+ - `LoginViewController.swift`: The view controller binds to the `LoginViewModel` inputs and outputs.
+ - `LoginViewModel.swift`: The view model maps the inputs into outputs.
+ - `LoginProvider.swift`: Defines a `LoginProviding` protocol that all login providers must conform to. This protocol has an associated type called `Parameter` which defines what the login provider requires as input. I did this because I figured different login providers (e.g. username/password, Facebook, Twitter, etc.) would require different inputs. This way a login provider can anything as input (e.g. set of credentials, key, etc.) take while maintaining type safety. This file also contains a type erased `LoginProvider` `AnyLoginProvider<T>`.
+ - `LocalLoginProvider.swift`: Defines a struct `LoginCredentials` to encapsulate an email and password. Contains an implementation of `LoginProviding` with a `Parameter` of `LoginCredentials`.
+
+#### 2. Tweets
+ - `Tweets.storyboard`: Tweet feed GUI.
+ - `Tweet.swift`: The `Tweet` class represents a tweet in the Realm database.
+ - `TweetsViewController.swift`: The view controller binds to the `TweetsViewModel` inputs and outputs.
+ - `TweetsViewModel.swift`: The view model maps the inputs into outputs.
+ - `TweetCell.swift`: The cell binds to the `TweetCellViewModel` inputs and outputs.
+ - `TweetCellViewModel.swift`: The view model maps a `Tweet` into outputs to update the cell UI elements.
+ - `TweetProvider.swift`: Defines protocols `TweetFetching`, `TweetPosting` and `TweetProviding` to define the requirements of the various tweet related operations. All protocols require a `User` as input.
+ - `LocalLoginProvider.swift`: Contains an implementation of `TweetFetching`, `TweetPosting` and `TweetProviding` using random data.
+
+#### 3. Compose
+ - `Compose.storyboard`: Compose GUI.
+ - `ComposeViewController.swift`: The view controller binds to the `ComposeViewModel` inputs and outputs.
+ - `ComposeViewModel.swift`: The view model maps the inputs into outputs.
+
+## Database
+
+The Cache was implemented using Realm – a relational mobile database. All data flows through the Cache. This means that data providers must update the Cache and the Cache updates the UI. This was done to create a funnel and standardize the way the UI is updated. The implementation of the Cache also uses `NSUserDefaults` to persist a user across app launches and the Keychain to securely store user passwords. The passwords are not stored in plain text in the Realm database. They are stripped upon saving and injected upon retrieval.
+
+There are 2 model objects:
+
+| User             |
+| ---------------- |
+| email: String    |
+| password: String |
+
+| Tweet           |
+| --------------- |
+| id: String      |
+| user: User      |
+| message: String |
+| date: Date      |
+
+## Dependencies
+ 1. [KeychainSwift](https://github.com/evgenyneu/keychain-swift): Keychain wrapper to simplify reading from and writing to the Keychain
+ 2. [Realm](https://github.com/realm/realm-cocoa): Mobile database used for caching
+ 2. [RxCocoa](https://github.com/ReactiveX/RxSwift/tree/master/RxCocoa): Reactive wrapper for Cocoa
+ 3. [RxGesture](https://github.com/Coledunsby/RxGesture): Reactive wrapper for view gestures
+ 4. [RxKeyboard](https://github.com/RxSwiftCommunity/RxKeyboard): Reactive wrapper for keyboard
+ 5. [RxRealm](https://github.com/RxSwiftCommunity/RxRealm): Reactive wrapper for Realm
+ 6. [RxRealmDataSources](https://github.com/RxSwiftCommunity/RxRealmDataSources): Reactive extensions for binding Realm data to table and collection views
+ 7. [RxSwift](https://github.com/ReactiveX/RxSwift): Core functional reactive programming library
+ 8. [RxSwiftExt](https://github.com/RxSwiftCommunity/RxSwiftExt): Additional operators for RxSwift
+ 9. [RxTest](https://github.com/ReactiveX/RxSwift/tree/master/RxTest): Testing framework for RxSwift
+ 10. [SwiftLint](https://github.com/realm/SwiftLint): A tool to enforce Swift style and conventions (runs as a build phase)
+ 11. [SwiftRandom](https://github.com/thellimist/SwiftRandom): Random data generator
+
 ## Tests
 #### Unit Tests
+I wrote several unit tests for the models (`UserTests`, `TweetTests`, `CacheTests`, `LoginCredentialsTest`, `LocalTweetProviderTests`) to test the various operators that are defined for each.
 #### Integration tests
+I wrote several integration tests for the view models (`LoginViewModelTests`, `TweetsViewModelTests`, `ComposeViewModelTests`) to test the mapping of the various inputs to the outputs. For these tests I used the `TestScheduler` class in `RxTest` to test observable sequences in virtual time.
+
+## Notes
+ - I add random delay to most data provider actions to simulate a network delay.
+ - I did not implement any reachability detection in the app meaning log in and sign up can occur at any time regardless of network connectivity. I figured the data providers would be responsible for returning appropriate errors. I did not include such feedback in my local data providers.
 
 ## Author
-
 Cole Dunsby, coledunsby@gmail.com

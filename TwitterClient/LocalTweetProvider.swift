@@ -40,8 +40,7 @@ struct LocalTweetFetcher: TweetFetching {
         
         let newTweets = (0 ..< Int.random(1, 5))
             .map { _ -> Tweet in
-                let tweet = Tweet.random()
-                tweet.user = user
+                let tweet = Tweet.random(withUser: user)
                 tweet.date = Date.random(startDate: lastTweet?.date ?? Date.randomWithinDaysBeforeToday(30), endDate: Date())
                 return tweet
             }
