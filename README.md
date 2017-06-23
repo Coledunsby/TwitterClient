@@ -5,7 +5,7 @@
 [![Language](http://img.shields.io/badge/language-swift-orange.svg?style=flat
              )](https://developer.apple.com/swift/)
 
-The app is written in Swift 3 and requires a minimum deployment target of iOS 10. It has not been optimized for iPad.
+The app is written in Swift 3 and has a minimum deployment target of iOS 10. It has not been optimized for iPad.
 
 ## Setup
 [CocoaPods](http://cocoapods.org) is used as a dependency manager for the application. Before running the application make sure CocoaPods is installed on your machine. You can install/update CocoaPods by running the command `sudo gem install cocoapods` in Terminal. Once CocoaPods is installed navigate to the root directory of the project in Terminal and run `pod install`.
