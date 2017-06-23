@@ -37,6 +37,7 @@
 		EDC7A3F01EFC72CE009FE14A /* UIAlertController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC7A3EF1EFC72CE009FE14A /* UIAlertController+Extensions.swift */; };
 		EDC7A3F21EFC7AAF009FE14A /* CacheTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC7A3F11EFC7AAF009FE14A /* CacheTests.swift */; };
 		EDC7A3F61EFCB30E009FE14A /* LoginCredentialsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC7A3F51EFCB30E009FE14A /* LoginCredentialsTests.swift */; };
+		EDC7A3F81EFCBD76009FE14A /* LocalTweetProviderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDC7A3F71EFCBD76009FE14A /* LocalTweetProviderTests.swift */; };
 		EDCCBD091EF85ABD0048F971 /* UIStoryboard+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCCBD081EF85ABD0048F971 /* UIStoryboard+Extensions.swift */; };
 		EDCCBD0B1EF85B1C0048F971 /* RxSwift+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCCBD0A1EF85B1C0048F971 /* RxSwift+Extensions.swift */; };
 		EDCCBD0D1EF85E790048F971 /* Cache.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDCCBD0C1EF85E790048F971 /* Cache.swift */; };
@@ -91,6 +92,7 @@
 		EDC7A3EF1EFC72CE009FE14A /* UIAlertController+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Extensions.swift"; sourceTree = "<group>"; };
 		EDC7A3F11EFC7AAF009FE14A /* CacheTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CacheTests.swift; sourceTree = "<group>"; };
 		EDC7A3F51EFCB30E009FE14A /* LoginCredentialsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginCredentialsTests.swift; sourceTree = "<group>"; };
+		EDC7A3F71EFCBD76009FE14A /* LocalTweetProviderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalTweetProviderTests.swift; sourceTree = "<group>"; };
 		EDCCBD081EF85ABD0048F971 /* UIStoryboard+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Extensions.swift"; sourceTree = "<group>"; };
 		EDCCBD0A1EF85B1C0048F971 /* RxSwift+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "RxSwift+Extensions.swift"; sourceTree = "<group>"; };
 		EDCCBD0C1EF85E790048F971 /* Cache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cache.swift; sourceTree = "<group>"; };
@@ -168,6 +170,7 @@
 				EDC182981EFB5AFE004421B5 /* TweetTests.swift */,
 				EDC7A3F11EFC7AAF009FE14A /* CacheTests.swift */,
 				EDC7A3F51EFCB30E009FE14A /* LoginCredentialsTests.swift */,
+				EDC7A3F71EFCBD76009FE14A /* LocalTweetProviderTests.swift */,
 				ED5341B11EF9F09200176FE8 /* LoginViewModelTests.swift */,
 				ED5341B31EF9F20400176FE8 /* TweetsViewModelTests.swift */,
 				ED5341B51EF9F20D00176FE8 /* ComposeViewModelTests.swift */,
@@ -484,6 +487,7 @@
 			files = (
 				EDC7A3F61EFCB30E009FE14A /* LoginCredentialsTests.swift in Sources */,
 				EDC182991EFB5AFE004421B5 /* TweetTests.swift in Sources */,
+				EDC7A3F81EFCBD76009FE14A /* LocalTweetProviderTests.swift in Sources */,
 				EDC182971EFB5A9D004421B5 /* UserTests.swift in Sources */,
 				EDC7A3F21EFC7AAF009FE14A /* CacheTests.swift in Sources */,
 				ED5341B41EF9F20400176FE8 /* TweetsViewModelTests.swift in Sources */,
