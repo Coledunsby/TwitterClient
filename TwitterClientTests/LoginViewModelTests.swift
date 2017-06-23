@@ -101,7 +101,7 @@ final class LoginViewModelTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertNotNil(tweetsViewModel.events.first?.value)
+        XCTAssertEqual(tweetsViewModel.events.count, 1)
         XCTAssertEqual(errors.events.count, 0)
     }
     
@@ -120,7 +120,7 @@ final class LoginViewModelTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertNotNil(tweetsViewModel.events.first?.value)
+        XCTAssertEqual(tweetsViewModel.events.count, 1)
         XCTAssertEqual(errors.events.count, 0)
     }
     

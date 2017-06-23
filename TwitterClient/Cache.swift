@@ -50,6 +50,7 @@ final class Cache {
                 let tweets = user.tweets.sorted(byKeyPath: "date", ascending: false)
                 return Observable.changeset(from: tweets)
             }
+            .share()
         
 //        This was to show tweets from all users
 //        tweets = Observable.changeset(from: realm.objects(Tweet.self).sorted(byKeyPath: "date", ascending: false))

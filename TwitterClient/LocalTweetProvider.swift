@@ -34,11 +34,11 @@ struct LocalTweetFetcher: TweetFetching {
         self.user = user
     }
     
-    /// Return a random number of new random tweets after the last cached tweet and before the current date
+    /// Return a random number (at least 1) of new random tweets after the last cached tweet and before the current date
     func fetch() -> Single<[Tweet]> {
         let lastTweet = user.lastTweet
         
-        let newTweets = (0 ..< Int.random(0, 5))
+        let newTweets = (1 ..< Int.random(1, 5))
             .map { _ -> Tweet in
                 let tweet = Tweet.random()
                 tweet.user = user
