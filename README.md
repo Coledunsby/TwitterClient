@@ -31,9 +31,9 @@ On the compose screen, the user can compose a new tweet to post. The content of 
 ![Compose 2](Images/compose2.png)
 
 ## Architecture
-The application was developed using a MVVM (Model-View-ViewModel) pattern and a functional reactive programming library called RxSwift. I chose to use a reactive library because it helps eliminate state and provides better local reasoning, ultimately leading to cleaner and more maintainable code written faster with fewer bugs. I chose RxSwift in particular because it has similar implementations in many other languages (see [ReactiveX](http://reactivex.io/languages.html) site for more) so it would be ideal for cross platform development. I chose MVVM because the data flow plays nicely with the Rx concepts of observables and observers. There is a 1-1 relationship between view controllers & view models and cells & view models.
+The application was developed using a MVVM (Model-View-ViewModel) pattern and a functional reactive programming library called RxSwift. I chose to use a reactive library because it helps eliminate state and provides better local reasoning, ultimately leading to cleaner and more maintainable code written faster with fewer bugs. I chose RxSwift in particular because it has similar implementations in many other languages (see [ReactiveX](http://reactivex.io/languages.html) site for more) so it would be ideal for cross platform development. I prefer MVVM over MVC in iOS because it allows for better separation of concerns. In iOS, the view (V) and controller (C) are both managed by view controllers. This leads to massive view controllers. MVVM does a better job separating presentation logic from business logic. There is a 1-1 relationship between view controllers <–> view models and cells <–> view models.
 
-![Login 2](Images/mvvm.png)
+![MVVM](Images/mvvm.png)
 
 I divided the app into 3 main sections:
 
