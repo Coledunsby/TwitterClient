@@ -8,7 +8,7 @@
 
 import RxSwift
 
-extension String {
+private extension String {
     
     /// Checks if a given string is a valid email address using a regular expression
     ///
@@ -42,22 +42,22 @@ struct LocalLoginProvider: LoginProviding {
     
     typealias Parameter = LoginCredentials
     
-    func login(with parameter: LoginCredentials) -> Single<User> {
+    func login(with credentials: LoginCredentials) -> Single<User> {
         do {
-            try parameter.validate()
+            try credentials.validate()
         } catch {
             return .error(error)
         }
         
         let user: User
         
-        if let existingUser = Cache.shared.getUser(withEmail: parameter.email) {
+        if let existingUser = Cache.shared.getUser(withEmail: credentials.email) {
             // If a user exists with the provided email, check if the passwords match
-            guard existingUser.password == parameter.password else { return .error(LoginError.invalidCredentials) }
+            guard existingUser.password == credentials.password else { return .error(LoginError.invalidCredentials) }
             user = existingUser
         } else {
             // Create a new user if one does not already exist with that email
-            user = User(email: parameter.email, password: parameter.password)
+            user = User(email: credentials.email, password: credentials.password)
         }
         
         return Single
