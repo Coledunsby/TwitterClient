@@ -16,9 +16,9 @@ import XCTest
 
 final class LoginViewModelTests: XCTestCase {
     
-    var viewModel: LoginViewModelIO!
-    var scheduler: TestScheduler!
-    var disposeBag = DisposeBag()
+    private var viewModel: LoginViewModelIO!
+    private var scheduler: TestScheduler!
+    private var disposeBag = DisposeBag()
     
     override func setUp() {
         super.setUp()

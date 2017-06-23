@@ -17,9 +17,9 @@ import XCTest
 
 final class TweetsViewModelTests: XCTestCase {
     
-    var viewModel: TweetsViewModelIO!
-    var scheduler: TestScheduler!
-    var disposeBag = DisposeBag()
+    private var viewModel: TweetsViewModelIO!
+    private var scheduler: TestScheduler!
+    private var disposeBag = DisposeBag()
     
     override func setUp() {
         super.setUp()
@@ -62,7 +62,7 @@ final class TweetsViewModelTests: XCTestCase {
         
         scheduler.start()
         
-        XCTAssertEqual(tweetChangeset.events.count, 1)
+        XCTAssertEqual(tweetChangeset.events.count, 2)
         XCTAssertEqual(errors.events.count, 0)
     }
     
