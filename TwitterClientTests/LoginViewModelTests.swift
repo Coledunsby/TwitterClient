@@ -36,13 +36,17 @@ final class LoginViewModelTests: XCTestCase {
         let email = scheduler.createHotObservable([next(50, "")])
         let password = scheduler.createHotObservable([next(50, "password")])
         let login = scheduler.createHotObservable([next(100, ())])
+        let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
         let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
+        viewModel.outputs.tweetsViewModel.bind(to: tweetsViewModel).disposed(by: disposeBag)
         viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
+        XCTAssertEqual(tweetsViewModel.events.count, 0)
+        XCTAssertEqual(errors.events.count, 1)
         XCTAssertEqual(errors.events.first?.value.element as? LoginError, .invalidEmail)
     }
     
@@ -50,13 +54,17 @@ final class LoginViewModelTests: XCTestCase {
         let email = scheduler.createHotObservable([next(50, "test@gmail.com")])
         let password = scheduler.createHotObservable([next(50, "")])
         let login = scheduler.createHotObservable([next(100, ())])
+        let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
         let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
+        viewModel.outputs.tweetsViewModel.bind(to: tweetsViewModel).disposed(by: disposeBag)
         viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
+        XCTAssertEqual(tweetsViewModel.events.count, 0)
+        XCTAssertEqual(errors.events.count, 1)
         XCTAssertEqual(errors.events.first?.value.element as? LoginError, .invalidPassword)
     }
     
@@ -66,13 +74,17 @@ final class LoginViewModelTests: XCTestCase {
         let email = scheduler.createHotObservable([next(50, "test@gmail.com")])
         let password = scheduler.createHotObservable([next(50, "notpassword")])
         let login = scheduler.createHotObservable([next(100, ())])
+        let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
         let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
+        viewModel.outputs.tweetsViewModel.bind(to: tweetsViewModel).disposed(by: disposeBag)
         viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
+        XCTAssertEqual(tweetsViewModel.events.count, 0)
+        XCTAssertEqual(errors.events.count, 1)
         XCTAssertEqual(errors.events.first?.value.element as? LoginError, .invalidCredentials)
     }
     
@@ -81,29 +93,35 @@ final class LoginViewModelTests: XCTestCase {
         let password = scheduler.createHotObservable([next(50, "password")])
         let login = scheduler.createHotObservable([next(100, ())])
         let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
+        let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
         viewModel.outputs.tweetsViewModel.bind(to: tweetsViewModel).disposed(by: disposeBag)
+        viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
         XCTAssertNotNil(tweetsViewModel.events.first?.value)
+        XCTAssertEqual(errors.events.count, 0)
     }
     
     func testValidLogin() {
         Cache.shared.addUser(User(email: "test@gmail.com", password: "password"))
         
-        let email = scheduler.createHotObservable([next(50, "")])
-        let password = scheduler.createHotObservable([next(50, "")])
+        let email = scheduler.createHotObservable([next(50, "test@gmail.com")])
+        let password = scheduler.createHotObservable([next(50, "password")])
         let login = scheduler.createHotObservable([next(100, ())])
         let tweetsViewModel = scheduler.createObserver(TweetsViewModel.self)
+        let errors = scheduler.createObserver(Error.self)
         
         bindInputs(email: email, password: password, login: login)
         viewModel.outputs.tweetsViewModel.bind(to: tweetsViewModel).disposed(by: disposeBag)
+        viewModel.outputs.errors.bind(to: errors).disposed(by: disposeBag)
         
         scheduler.start()
         
         XCTAssertNotNil(tweetsViewModel.events.first?.value)
+        XCTAssertEqual(errors.events.count, 0)
     }
     
     // MARK: - Private Helper Functions

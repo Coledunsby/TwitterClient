@@ -23,16 +23,18 @@ final class Cache {
     
     private let keychain = KeychainSwift()
     
+    private let userDefaults = UserDefaults.standard
+    
     /// A `Variable` instance to store the current `User`
     private let _user = Variable<User?>(nil)
-    
-    /// The key to use to persist the `User` in `UserDefaults`
-    private static let userDefaultsKey = "email"
     
     // MARK: - Public API
     
     /// A shared instance to the `Cache`
     static let shared = Cache()
+    
+    /// The key to use to persist the `User` in `UserDefaults`
+    static let userDefaultsKey = "email"
     
     /// The current `User`
     var user: User? { return _user.value }
@@ -57,7 +59,7 @@ final class Cache {
     
     /// Check if user was persisted from a previous session
     func restoreFromUserDefaults() {
-        guard let email = UserDefaults.standard.string(forKey: Cache.userDefaultsKey) else { return }
+        guard let email = userDefaults.string(forKey: Cache.userDefaultsKey) else { return }
         let realm = try! Realm()
         guard let user = realm.object(ofType: User.self, forPrimaryKey: email) else { return }
         setCurrentUser(user)
@@ -68,7 +70,7 @@ final class Cache {
     /// - Parameter user: The new current `User`
     func setCurrentUser(_ user: User) {
         addUser(user)
-        UserDefaults.standard.set(user.email, forKey: Cache.userDefaultsKey)
+        userDefaults.set(user.email, forKey: Cache.userDefaultsKey)
         _user.value = user
     }
     
@@ -99,7 +101,7 @@ final class Cache {
     
     /// Invalidate the current `User` and clear from `UserDefaults`
     func invalidateCurrentUser() {
-        UserDefaults.standard.removeObject(forKey: Cache.userDefaultsKey)
+        userDefaults.removeObject(forKey: Cache.userDefaultsKey)
         _user.value = nil
     }
     
@@ -124,7 +126,9 @@ final class Cache {
     /// Clear all data from the `Cache`
     /// WARNING this cannot be undone
     func clear() {
+        _user.value = nil
         keychain.clear()
+        userDefaults.removeObject(forKey: Cache.userDefaultsKey)
         let realm = try! Realm()
         try! realm.write {
             realm.deleteAll()

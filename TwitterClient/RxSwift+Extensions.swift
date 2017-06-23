@@ -22,9 +22,11 @@ extension PrimitiveSequence {
     }
     
     /// Simulate a random network delay
+    /// NOTE: only applies to non test environment (delay was messing up tests)
     ///
     /// - Returns: the source Observable shifted in time by the random network delay
     func simulateNetworkDelay() -> PrimitiveSequence<Trait, Element> {
+        guard ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] == nil else { return self }
         return self.delay(TimeInterval.random(0.1, 1.0), scheduler: MainScheduler.instance)
     }
 }
