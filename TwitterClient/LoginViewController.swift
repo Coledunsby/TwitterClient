@@ -67,17 +67,6 @@ final class LoginViewController: UIViewController {
         viewModel.outputs.errors
             .bind { [unowned self] error in
                 self.present(UIAlertController.error(error), animated: true)
-                
-                guard let loginError = error as? LoginError else { return }
-                
-                switch loginError {
-                case .invalidEmail:
-                    self.emailTextField.becomeFirstResponder()
-                case .invalidPassword:
-                    self.passwordTextField.becomeFirstResponder()
-                default:
-                    break
-                }
             }
             .disposed(by: disposeBag)
         
